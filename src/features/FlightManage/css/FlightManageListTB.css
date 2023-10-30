@@ -1,0 +1,19 @@
+.home-list-TB-container {
+  display: flex;
+  align-items: center;
+  min-height: 16.7%;
+}
+.normal {
+  border: 2px solid black;
+}
+
+.error {
+  border: 2px solid red;
+}
+
+.home-list-TB-title {
+  min-width: 80%;
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+}

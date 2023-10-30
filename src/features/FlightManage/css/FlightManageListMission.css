@@ -1,0 +1,61 @@
+/* List Mission CSS */
+.homelist-container:hover,
+.homelist-container-onclick:hover {
+  cursor: pointer;
+}
+.homelist-container {
+  min-height: 18%;
+  border: 3px solid black;
+}
+
+.homelist-container-onclick {
+  border: 3px solid red;
+}
+
+.homelist-items-title {
+  display: flex;
+}
+
+.homelist-icon-top-right {
+  border-radius: 50%;
+  background-color: #1976d2;
+  margin: 5px;
+}
+
+.homelist-date-tittle {
+  margin: 8px 0 0 5px;
+  font-size: 31px;
+  font-weight: bold;
+}
+
+.homelist-content {
+  display: flex;
+  justify-content: space-evenly;
+
+  /* margin: 6px 0 0 7px !important; !important de de len CSS MUI goc */
+  font-size: 26px;
+}
+
+.homelist-content p {
+  color: red;
+}
+
+.homelist-icon-bottom-left {
+  width: 45%;
+}
+
+.homelist-icon-bottom-right {
+  margin: 0 0.5rem 0 0 !important; /*!important de de len CSS MUI goc*/
+  width: 45%;
+  /* height: 10%; */
+  /* font-size: 58px; */
+}
+
+.homelist-icon-bottom-right > button {
+  background-color: chartreuse;
+  border-radius: 10%;
+  color: white;
+}
+.homelist-icon-bottom-right > button:hover {
+  background-color: rgba(127, 255, 0, 0.6) !important;
+}

@@ -1,0 +1,20 @@
+.home-listVT-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.home-listVT-item {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  min-width: 50px;
+  min-height: 70px;
+  /* border: 2px solid green; */
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.error {
+  border: 2px solid red;
+}

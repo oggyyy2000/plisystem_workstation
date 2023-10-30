@@ -1,0 +1,20 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+}
+
+/* MUI style */
+.css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop {
+  z-index: 0;
+}
+
+/* React-slick */
+
+.slick-prev:before {
+  color: black;
+}
