@@ -40,8 +40,7 @@ jobs:
           # node-version-file: '.nvmrc'
 
       - name: Install Rust (Stable)
-        run:
-          curl https://sh.rustup.rs -sSf | sh -s -- -y
+        run: curl https://sh.rustup.rs -sSf | sh -s -- -y
 
       - name: Install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-20.04'
