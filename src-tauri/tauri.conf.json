@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.plisystem_maytram_v2.dev",
+      "identifier": "com.pli-system-maytram-v2.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
