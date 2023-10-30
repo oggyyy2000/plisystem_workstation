@@ -4,8 +4,8 @@
     "version": "../package.json"
   },
   "build": {
-    "beforeDevCommand": "npm start",
-    "beforeBuildCommand": "npm build",
+    "beforeDevCommand": "npm run start",
+    "beforeBuildCommand": "npm run build",
     "devPath": "http://localhost:3000",
     "distDir": "../build",
     "withGlobalTauri": false
