@@ -2,7 +2,7 @@ name: App Builder
 on:
   push:
     tags:
-      - "master"
+      - master
   workflow_dispatch:
 
 jobs:
