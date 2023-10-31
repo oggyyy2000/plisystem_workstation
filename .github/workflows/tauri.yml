@@ -1,4 +1,6 @@
 name: Release
+env:
+  CI: false
 on:
   push:
     branches:
