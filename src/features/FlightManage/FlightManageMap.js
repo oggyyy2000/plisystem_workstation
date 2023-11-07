@@ -36,23 +36,23 @@ export default function FlightManageMap() {
     const listGIS = [];
     const errorName = [];
 
-    // for (var key in VTdetail.data) {
-    //   if (typeof VTdetail.data[key] !== "string") {
-    //     VTdetail.data[key].forEach((item) => {
-    //       listGIS.push(item.defect_gis);
-    //       errorName.push(item.defect_name);
-    //     });
-    //   }
-    // }
-
-    Object.values(VTdetail.data).forEach((data) => {
-      if (Array.isArray(data)) {
-        data.forEach((item) => {
+    for (var key in VTdetail.data) {
+      if (typeof VTdetail.data[key] !== "string") {
+        VTdetail.data[key].forEach((item) => {
           listGIS.push(item.defect_gis);
           errorName.push(item.defect_name);
         });
       }
-    });
+    }
+
+    // Object.values(VTdetail.data).forEach((data) => {
+    //   if (Array.isArray(data)) {
+    //     data.forEach((item) => {
+    //       listGIS.push(item.defect_gis);
+    //       errorName.push(item.defect_name);
+    //     });
+    //   }
+    // });
 
     setGISlist(listGIS);
     setNameError(errorName);

@@ -36,7 +36,9 @@ const MainFlightInMission = ({
   );
 
   useEffect(() => {
-    navigator.mediaDevices.enumerateDevices().then(handleDevices);
+    if(navigator.mediaDevices?.enumerateDevices) {
+      navigator.mediaDevices.enumerateDevices().then(handleDevices)
+    }
   }, [handleDevices, devices]);
 
   const WebcamCapture = () => {
