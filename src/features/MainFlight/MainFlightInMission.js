@@ -24,7 +24,7 @@ const MainFlightInMission = ({
   }, [startfly]);
 
   // lay cam tu uav
-  const [deviceId, setDeviceId] = useState({});
+  const [deviceId] = useState({});
   const [devices, setDevices] = useState([]);
   // console.log("deviceId", deviceId);
   // console.log("devices", devices);

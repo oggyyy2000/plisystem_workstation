@@ -15,7 +15,6 @@ import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
   Polyline,
 } from "react-leaflet";
 import { Icon } from "leaflet";
@@ -145,7 +144,7 @@ const MainFlight = () => {
   //map variable
   const [typeMap, setTypeMap] = useState("roadmap");
   const [buttonText, setButtonText] = useState("Bản đồ");
-  const [zoom, setZoom] = useState(15);
+  const [zoom, setZoom] = useState(13);
   const [streetLine, setStreetLine] = useState([]);
   const [center, setCenter] = useState({
     lat: 21.028511,
@@ -170,7 +169,7 @@ const MainFlight = () => {
     if (open === true) {
       connect();
     }
-  }, [open]);
+  }, [open, connect]);
 
   useEffect(() => {
     try {
@@ -201,7 +200,7 @@ const MainFlight = () => {
             lng: parseFloat(gis.longtitude),
           });
           setStreetLine(temppoly);
-          setZoom(20);
+          setZoom(13);
           if (defectWS.length > 0) {
             setDefectInfo(defectWS);
           }
@@ -210,7 +209,7 @@ const MainFlight = () => {
     } catch (e) {
       console.log(e);
     }
-  }, [startFly, streetLine]);
+  }, [startFly, streetLine, ws]);
 
   useEffect(() => {
     setChange(false);
@@ -225,7 +224,7 @@ const MainFlight = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [getImgData, change, hadSubmittedError, errorImageBoxChecked]);
+  }, [getImgData, change, hadSubmittedError, errorImageBoxChecked, urlGetData]);
 
   // ---------- Add Info for mission dialog ----------
 
@@ -235,7 +234,7 @@ const MainFlight = () => {
     setHadSubmited(false);
     setTuyen(null);
     setCurrentLocation({});
-    setZoom(15);
+    setZoom(13);
     setDefectInfo([]);
   };
 
@@ -586,7 +585,7 @@ const MainFlight = () => {
       .post(urlPostNewImageLabel, imageLabel)
       .then((response) => {
         console.log(response);
-        if (response.data == "Change Success") {
+        if (response.data === "Change Success") {
           alert("Thay đổi nhãn thành công!");
           setChange(true);
           setOpenEditLabel(false);
@@ -893,7 +892,7 @@ const MainFlight = () => {
           <MapContainer
             center={center}
             zoomControl={false}
-            zoom={13}
+            zoom={zoom}
             className="mainflight-google-map"
           >
             <TileLayer

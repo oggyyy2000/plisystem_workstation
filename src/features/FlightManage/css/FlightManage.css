@@ -1,5 +1,5 @@
 .home-left-panel {
-  height: 93vh;
+  height: 95vh;
   border: 2px solid black;
   overflow-y: auto;
   -ms-overflow-style: none; /* hide scrollbar IE and Edge */
@@ -24,6 +24,6 @@
 }
 
 .home-right-panel {
-  height: 93vh;
+  height: 95vh;
   border: 2px solid black;
 }

@@ -90,7 +90,7 @@ export default function HomeModal({ schedule_id }) {
       .catch((err) => {
         console.log(err);
       });
-  }, [open, chooseTime]);
+  }, [open, chooseTime, urlViewData, urlGetData]);
 
   useEffect(() => {
     setChange(false);
@@ -112,6 +112,7 @@ export default function HomeModal({ schedule_id }) {
     errorImageBoxChecked,
     selectedLabels,
     open,
+    urlGetData
   ]);
 
   // TEST

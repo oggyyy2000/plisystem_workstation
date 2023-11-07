@@ -1,10 +1,4 @@
-import React, { useEffect } from "react";
-// import {
-//   GoogleMap,
-//   InfoWindowF,
-//   MarkerF,
-//   useJsApiLoader,
-// } from "@react-google-maps/api";
+import React, { useEffect, useCallback } from "react";
 
 import { Box } from "@mui/material";
 
@@ -36,30 +30,37 @@ export default function FlightManageMap() {
   const urlhomePageView = process.env.REACT_APP_API_URL + "homepageapiview/";
   // const urlLocations = process.env.REACT_APP_API_URL + "powerlinelocations";
 
-  console.log(missionData);
+  // console.log(missionData);
 
-  function getGIS() {
+  const getGIS = useCallback(() => {
     const listGIS = [];
     const errorName = [];
 
-    // console.log(errorName);
-    // console.log(listGIS);
-    setGISlist(listGIS);
-    setNameError(errorName);
+    // for (var key in VTdetail.data) {
+    //   if (typeof VTdetail.data[key] !== "string") {
+    //     VTdetail.data[key].forEach((item) => {
+    //       listGIS.push(item.defect_gis);
+    //       errorName.push(item.defect_name);
+    //     });
+    //   }
+    // }
 
-    for (var key in VTdetail.data) {
-      if (typeof VTdetail.data[key] !== "string") {
-        VTdetail.data[key].forEach((item) => {
+    Object.values(VTdetail.data).forEach((data) => {
+      if (Array.isArray(data)) {
+        data.forEach((item) => {
           listGIS.push(item.defect_gis);
           errorName.push(item.defect_name);
         });
       }
-    }
-  }
+    });
+
+    setGISlist(listGIS);
+    setNameError(errorName);
+  }, [VTdetail.data])
 
   useEffect(() => {
     getGIS();
-  }, [VTdetail]);
+  }, [getGIS]);
 
   useEffect(() => {
     missionId &&
@@ -74,7 +75,7 @@ export default function FlightManageMap() {
         .catch((err) => {
           console.log(err);
         });
-  }, [missionId]);
+  }, [missionId, urlhomePageView]);
 
   // const { isLoaded } = useJsApiLoader({
   //   id: "google-map-script",
