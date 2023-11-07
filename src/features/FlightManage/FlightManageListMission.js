@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import * as actions from "../../redux/types";
@@ -16,6 +16,11 @@ export default function FlightManageListMission() {
 
   const urlhomePageView = process.env.REACT_APP_API_URL + "homepageapiview/";
 
+  const handleListMissionClick = useCallback((mission_id) => {
+    setClicked(mission_id);
+    dispatch({ type: actions.MissionId, data: mission_id });
+  }, [dispatch])
+
   // call API lay du lieu
   useEffect(() => {
     axios
@@ -28,12 +33,7 @@ export default function FlightManageListMission() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
-  function handleListMissionClick(mission_id) {
-    setClicked(mission_id);
-    dispatch({ type: actions.MissionId, data: mission_id });
-  }
+  }, [handleListMissionClick, urlhomePageView]);
 
   return (
     <>

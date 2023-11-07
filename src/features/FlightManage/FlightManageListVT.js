@@ -36,7 +36,7 @@ export default function FlightManageListVT() {
         .catch((err) => {
           console.log(err);
         });
-  }, [missionId]);
+  }, [missionId, urlhomePageView]);
 
   useEffect(() => {
     if (missionData) {
@@ -50,7 +50,7 @@ export default function FlightManageListVT() {
         },
       });
     }
-  }, [missionData]);
+  }, [missionData, dispatch]);
 
   console.log(VTdetail);
 

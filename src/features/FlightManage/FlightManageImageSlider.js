@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 // import img4 from "../../assets/images/anh4.png";
 import thermalImg1 from "../../assets/images/ThermalIMG/DJI_0926_T.JPG";
@@ -21,7 +21,6 @@ import rgbImg7 from "../../assets/images/RGBIMG/DJI_0936_W.JPG";
 import rgbImg8 from "../../assets/images/RGBIMG/DJI_0937_W.JPG";
 import rgbImg9 from "../../assets/images/RGBIMG/DJI_0942_W.JPG";
 
-import noProblem from "../../assets/images/noproblem.jpg";
 
 import "./css/FlightManageImageSlider.css";
 
@@ -55,29 +54,29 @@ const imgList3 = [
 export default function FlightManageImageSlider() {
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
-  const [imgList2, setImgList2] = useState([]);
+  // const [imgList2, setImgList2] = useState([]);
   const VTdetail = useSelector(VTInfo);
   console.log(VTdetail);
 
-  function getIMG() {
-    const imgList2 = [];
-    setImgList2(imgList2);
-    console.log(imgList2);
+  // function getIMG() {
+  //   const imgList2 = [];
+  //   setImgList2(imgList2);
+  //   console.log(imgList2);
 
-    for (var keys in VTdetail.data) {
-      if (typeof VTdetail.data[keys] !== "string") {
-        VTdetail.data[keys].forEach((item) => {
-          item.defect_image.map((list) => {
-            return imgList2.push(process.env.REACT_APP_IMG + `${list}`);
-          });
-        });
-      }
-    }
-  }
+  //   for (var keys in VTdetail.data) {
+  //     if (typeof VTdetail.data[keys] !== "string") {
+  //       VTdetail.data[keys].forEach((item) => {
+  //         item.defect_image.map((list) => {
+  //           return imgList2.push(process.env.REACT_APP_IMG + `${list}`);
+  //         });
+  //       });
+  //     }
+  //   }
+  // }
 
-  useEffect(() => {
-    getIMG();
-  }, [VTdetail]);
+  // useEffect(() => {
+  //   getIMG();
+  // }, [VTdetail]);
 
   //co the render bang fuction nhung gap loi k the return ra slide ma tat ca anh
   //xep thanh 1 cot

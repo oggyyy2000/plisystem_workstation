@@ -6,7 +6,7 @@ export default function Redirect404() {
 
   useEffect(() => {
       navigate('/404', {replace:true })    
-  }, [])
+  }, [navigate])
 
   return (
     <>

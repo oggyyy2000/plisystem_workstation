@@ -146,7 +146,7 @@ export default function FlightRouteMap() {
     } else {
       // disconnect();
     }
-  }, [open]);
+  }, [open, connect]);
 
   useEffect(() => {
     try {
@@ -196,7 +196,7 @@ export default function FlightRouteMap() {
     } catch (e) {
       console.log(e);
     }
-  }, [currentLocation, defectInfo, currentFrame]);
+  }, [currentLocation, defectInfo, currentFrame, dispatch, streetLine, ws]);
 
   const handleChangeTabs = (event, newValue) => {
     setTab(newValue);
