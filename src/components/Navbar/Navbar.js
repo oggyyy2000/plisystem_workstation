@@ -52,11 +52,11 @@ const Navbar = [
     ten_navbar: "Hành lang tuyến",
     url: "/PowerlineCorridor",
   },
-  {
-    index: 3,
-    ten_navbar: "Demo",
-    url: "/DemoFlight",
-  },
+  // {
+  //   index: 3,
+  //   ten_navbar: "Demo",
+  //   url: "/DemoFlight",
+  // },
 ];
 
 export default function MainNavbar() {

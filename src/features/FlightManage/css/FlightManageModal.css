@@ -72,10 +72,10 @@
   cursor: pointer;
   font-size: 25px;
   font-weight: bold;
-  background-image: url("../../../assets/images/play_video_icon.png");
+  background-image: url("../../../assets/images/folder_icon.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 100px 100px;
+  background-size: 80px 80px;
 }
 
 .flightmanage-listdataitem-title {
@@ -115,4 +115,3 @@
 .flightmanage-imagelist-label:hover {
   border: 2px solid red;
 }
-

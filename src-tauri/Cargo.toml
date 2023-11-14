@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "0.2.0"
+version = "0.3.0"
 description = "Hệ thống kiểm tra giám sát và phát hiện bất thường thiết bị đường dây lưới cao thế"
 authors = ["oggydapopper"]
 license = ""

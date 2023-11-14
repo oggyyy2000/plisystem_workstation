@@ -187,7 +187,7 @@ export default function FlightManageMap() {
     return (
       <>
         <div>
-          <div id="home-btn-container">
+          <div className="home-btn-container">
             <button
               className={`home-btn-change-maptype`}
               value={"Vệ tinh"}

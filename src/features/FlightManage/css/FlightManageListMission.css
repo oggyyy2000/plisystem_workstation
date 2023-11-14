@@ -1,10 +1,9 @@
-/* List Mission CSS */
 .homelist-container:hover,
 .homelist-container-onclick:hover {
   cursor: pointer;
 }
 .homelist-container {
-  min-height: 18%;
+  min-height: 15%;
   border: 3px solid black;
 }
 
@@ -14,6 +13,7 @@
 
 .homelist-items-title {
   display: flex;
+  height: 50%;
 }
 
 .homelist-icon-top-right {
@@ -23,39 +23,35 @@
 }
 
 .homelist-date-tittle {
-  margin: 8px 0 0 5px;
-  font-size: 31px;
+  display: flex;
+  font-size: 1.8rem;
   font-weight: bold;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .homelist-content {
-  display: flex;
-  justify-content: space-evenly;
-
-  /* margin: 6px 0 0 7px !important; !important de de len CSS MUI goc */
   font-size: 26px;
-}
-
-.homelist-content p {
-  color: red;
-}
-
-.homelist-icon-bottom-left {
-  width: 45%;
+  height: 50%;
 }
 
 .homelist-icon-bottom-right {
-  margin: 0 0.5rem 0 0 !important; /*!important de de len CSS MUI goc*/
-  width: 45%;
-  /* height: 10%; */
-  /* font-size: 58px; */
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.homelist-icon-bottom-right > button {
+/* .homelist-icon-bottom-right > button {
   background-color: chartreuse;
   border-radius: 10%;
   color: white;
 }
 .homelist-icon-bottom-right > button:hover {
   background-color: rgba(127, 255, 0, 0.6) !important;
-}
+} */

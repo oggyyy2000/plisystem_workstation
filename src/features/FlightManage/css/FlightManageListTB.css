@@ -1,7 +1,10 @@
 .home-list-TB-container {
   display: flex;
   align-items: center;
-  min-height: 16.7%;
+  min-height: 16%;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 .normal {
   border: 2px solid black;

@@ -6,7 +6,7 @@ import * as actions from "../../redux/types";
 import "./css/FlightManageListMission.css";
 
 import FlightRoundedIcon from "@mui/icons-material/FlightRounded";
-import { Button } from "@mui/material";
+// import { Button } from "@mui/material";
 import HomeModal from "./FlightManageModal";
 
 export default function FlightManageListMission() {
@@ -16,12 +16,14 @@ export default function FlightManageListMission() {
 
   const urlhomePageView = process.env.REACT_APP_API_URL + "homepageapiview/";
 
-  const handleListMissionClick = useCallback((mission_id) => {
-    setClicked(mission_id);
-    dispatch({ type: actions.MissionId, data: mission_id });
-  }, [dispatch])
+  const handleListMissionClick = useCallback(
+    (mission_id) => {
+      setClicked(mission_id);
+      dispatch({ type: actions.MissionId, data: mission_id });
+    },
+    [dispatch]
+  );
 
-  // call API lay du lieu
   useEffect(() => {
     axios
       .get(urlhomePageView)
@@ -90,9 +92,7 @@ export default function FlightManageListMission() {
                 </div>
               </div>
               <div className="homelist-content">
-                <div className="homelist-icon-bottom-left">
-                  {/* <p>Last Update</p>
-                  {listmission.lastest_time_update_data} */}
+                {/* <div className="homelist-icon-bottom-left">
                   <Button
                     href="/DemoFlight"
                     style={{
@@ -106,7 +106,7 @@ export default function FlightManageListMission() {
                   >
                     thêm dữ liệu
                   </Button>
-                </div>
+                </div> */}
                 <div className="homelist-icon-bottom-right">
                   <HomeModal schedule_id={listmission.schedule_id} />
                 </div>

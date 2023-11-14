@@ -471,6 +471,7 @@ export default function HomeModal({ schedule_id }) {
           backgroundColor: "chartreuse",
           borderRadius: "10%",
           color: "white",
+          width: "100%"
         }}
         onClick={() => setOpen(true)}
       >
