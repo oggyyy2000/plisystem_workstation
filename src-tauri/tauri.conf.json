@@ -7,7 +7,7 @@
     "distDir": "../build"
   },
   "package": {
-    "productName": "plisystem_maytram_ver2",
+    "productName": "plisystem_maytram_deploy",
     "version": "0.2.0"
   },
   "tauri": {
