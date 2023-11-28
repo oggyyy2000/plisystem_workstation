@@ -50,7 +50,7 @@
 
 .flightroute-tableinfo {
   width: 100%;
-  height: 13.4vh;
+  height: 15vh;
 }
 
 .flightroute-tableinfo table {
@@ -148,4 +148,17 @@
   width: 50%;
   position: relative;
   border: 2px solid black;
+}
+
+.flightroute-thermalcam-expand-content,
+.flightroute-rgbcam-expand-content {
+  width: 100%;
+  height: 100%;
+}
+
+.flightroute-thermalcam-expand-content video,
+.flightroute-rgbcam-expand-content video {
+  object-fit: fill;
+  width: 100%;
+  height: 100%;
 }
