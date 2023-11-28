@@ -7,26 +7,54 @@ import "./css/MainFlightDefectList.css";
 
 const MainFlightDefectList = ({ startfly, currentvt, defectInfo }) => {
   const [close, setClose] = useState(false);
+  const [hadDefect, setHadDefect] = useState({});
 
   useEffect(() => {
-    if (startfly) {
+    if (startfly && defectInfo.length > 0) {
       setClose(true);
+    } else {
+      setClose(false)
     }
-  }, [startfly]);
+  }, [startfly, defectInfo.length]);
 
   const handleHidePanel = () => {
     setClose(!close);
   };
 
+  // const showImageError = (info, index) => {
+  //   return (
+  //     <img
+  //       src={process.env.REACT_APP_IMG + info}
+  //       srcSet={process.env.REACT_APP_IMG + info}
+  //       alt={info}
+  //       loading="lazy"
+  //       width={"100%"}
+  //       height={"100%"}
+  //     />
+  //   );
+  // };
+
   const handleDefectItem = (defectInfo, currentvt) => {
     if (defectInfo.length > 0) {
       return (
         <>
-          {defectInfo.map((gis1) => {
+          {/* {showImageError(hadDefect.info, hadDefect.index)} */}
+
+          {defectInfo.map((gis1, index) => {
             console.log(gis1);
             return (
               <>
-                <div className="mainflight-itemcard">
+                <div
+                  className="mainflight-itemcard"
+                  onClick={() =>
+                    Object.keys(hadDefect).length !== 0
+                      ? setHadDefect({})
+                      : setHadDefect({
+                          info: gis1.defect_image[0],
+                          index: index,
+                        })
+                  }
+                >
                   <div className="mainflight-itemcard-header">
                     <h1>Defect</h1>
                   </div>
@@ -89,8 +117,8 @@ const MainFlightDefectList = ({ startfly, currentvt, defectInfo }) => {
             <p>DO CAO: 40.625999</p>
           </div>
         </div> */}
-
         {handleDefectItem(defectInfo, currentvt)}
+        {/* {showImageError(hadDefect.info, hadDefect.index)} */}
       </div>
     </>
   );

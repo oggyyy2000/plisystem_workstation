@@ -9,18 +9,12 @@ import Webcam from "react-webcam";
 
 import "./css/MainFlightInMission.css";
 
-const MainFlightInMission = ({
-  startfly,
-  currentvt,
-  currentlocation,
-}) => {
+const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
 
   useEffect(() => {
-    if (startfly) {
-      setClose(true);
-    }
+    setClose(startfly);
   }, [startfly]);
 
   // lay cam tu uav
@@ -36,8 +30,8 @@ const MainFlightInMission = ({
   );
 
   useEffect(() => {
-    if(navigator.mediaDevices?.enumerateDevices) {
-      navigator.mediaDevices.enumerateDevices().then(handleDevices)
+    if (navigator.mediaDevices?.enumerateDevices) {
+      navigator.mediaDevices.enumerateDevices().then(handleDevices);
     }
   }, [handleDevices, devices]);
 
