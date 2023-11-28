@@ -1,31 +1,29 @@
-/* common use */
-.onclose-panel {
-  opacity: 1 !important;
-  transition: opacity 0.5s ease-in;
-}
-
-.onclose-btn {
-  left: 18.9% !important;
-  transition: 0.5s ease-out;
-}
-
-/* body */
-.mainflight-close-leftpanel {
+/* defect list button */
+.defect-list__btn {
   position: absolute;
   z-index: 2;
-  left: 0;
-  top: 67%;
-  transition: 0.5s ease-in;
 }
 
-.mainflight-close-leftpanel button {
+.defect-list__btn button {
   display: flex;
   justify-items: center;
   justify-content: center;
   width: 12px;
 }
 
-.mainflight-left-panel {
+.defect-list__btn--open {
+  top: 67%;
+  left: 18.9% !important;
+  transition: 0.5s ease-out;
+}
+
+.defect-list__btn--close {
+  left: 0;
+  top: 67%;
+  transition: 0.5s ease-in;
+}
+
+.defect-list__container {
   position: absolute;
   z-index: 1;
   width: 18rem;
@@ -37,18 +35,26 @@
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
+}
+
+.defect-list__container--open {
+  opacity: 1 !important;
+  transition: opacity 0.5s ease-in;
+}
+
+.defect-list__container--close {
   opacity: 0;
   transition: opacity 0.5s ease-in;
 }
 
-.mainflight-itemcard {
+.error-items-card {
   margin-top: 6px;
   width: 95%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   font-weight: bold;
 }
 
-.mainflight-itemcard-header {
+.error-items-card__header {
   background-color: red;
   color: white;
   padding: 1px;
@@ -58,7 +64,7 @@
   text-align: center;
 }
 
-.mainflight-itemcard-content {
+.error-items-card__body {
   padding: 10px;
   text-transform: uppercase;
   border: 1px solid black;

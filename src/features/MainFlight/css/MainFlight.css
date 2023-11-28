@@ -1,179 +1,34 @@
-/* Common use */
-.bold-text {
-  font-weight: bold;
-}
-
-/* khi anh da submit thi them cai nay */
-.hadsubmitted {
-  pointer-events: none;
-}
-
-.checkmark-hadsent {
-  position: absolute;
-  transform: rotate(45deg);
-  height: 50px;
-  width: 28px;
-  margin-top: 40%;
-  margin-left: 50%;
-  border-bottom: 7px solid #7fff00;
-  border-right: 7px solid #7fff00;
-}
-
-.checkmark-hadchoosed {
-  position: absolute;
-  transform: rotate(45deg);
-  height: 50px;
-  width: 28px;
-  margin-top: 40%;
-  margin-left: 50%;
-  border-bottom: 7px solid #d2042d;
-  border-right: 7px solid #d2042d;
-}
-
-.mainflight-line-seperate-items {
-  margin-left: 25%;
-  margin-top: 10px;
-  left: 25%;
-  width: 50%;
-  height: 5px;
-  background-color: #1976d2;
-}
-
-/* Body */
-.mainflight-btn-container {
-  display: flex;
-  margin: 0.625rem 0 0 1rem;
-  position: absolute;
-  z-index: 1;
-}
-
-.mainflight-btn-change-maptype {
-  text-align: center;
-  text-transform: none;
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-  border: 0px;
-  border-radius: 2px;
-  width: 80px;
-  height: 40px;
-  padding: 10px;
-}
-
-.mainflight-btn-addmission {
+/* Dialog */
+.add-mission-dialog__btn-addmission {
   text-align: center;
   text-transform: uppercase;
   width: 85px;
   padding: 10px;
-  margin: 3.5rem 0 0 -2px !important;
+  margin-left: 16px !important;
+  margin-top: 60px !important;
   z-index: 1;
   position: absolute !important;
   color: white;
 }
 
-/* Dialog */
-.mainflight-dialog-icon {
+.add-mission-dialog__icon {
   display: flex;
   margin-left: auto;
   margin-right: 10px;
   align-items: center;
 }
 
-.mainflight-select-date {
+.add-mission-dialog__select-date-textfield {
   min-width: 120px;
   margin-top: 8px;
 }
 
-.mainflight-select-tuyen {
+.add-mission-dialog__select-tuyen-form {
   margin-top: 8px;
   min-width: 120px;
 }
 
-.mainflight-select-superviseType {
+.add-mission-dialog__select-superviseType-form {
   margin-top: 8px;
   min-width: 120px;
-}
-
-.mainflight-google-map {
-  height: 95vh;
-  width: 100%;
-  z-index: 0;
-}
-
-/* test */
-.mainflight {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: 95%;
-  width: 91%;
-  border: 2px solid #000;
-  box-shadow: 24;
-  padding-right: 0;
-}
-
-.mainflight-container {
-  height: 100%;
-}
-
-.mainflight-listdata {
-  height: 100%;
-  border: 1px solid black;
-  overflow-y: auto;
-}
-
-.mainflight-listdata-item {
-  min-height: 18%;
-  border: 1px solid black;
-  display: flex;
-  cursor: pointer;
-  font-size: 25px;
-  font-weight: bold;
-  background-image: url("../../../assets/images/play_video_icon.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100px 100px;
-}
-
-.mainflight-listdataitem-title {
-  position: relative;
-}
-
-/* .mainflight-btn-close {
-  position: absolute !important;
-  top: 0;
-  right: 0;
-} */
-
-.mainflight-imgdata {
-  /* margin-top: 2rem !important; */
-  height: 95.5%;
-  border: 1px solid black;
-}
-
-.mainflight-imgdata-container {
-  height: 90vh;
-  overflow-y: auto;
-}
-
-.mainflight-imagelist {
-  width: 100%;
-  min-height: 90%;
-  max-height: 100%;
-}
-
-.mainflight-imagelist-title {
-  text-align: center;
-  margin-top: 10px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.mainflight-imagelist-label:hover {
-  border: 2px solid red;
-}
-
-.mainflight-imagelist-submit {
-  width: 100%;
-  text-align: center;
-  /* margin-top: 10px; */
 }

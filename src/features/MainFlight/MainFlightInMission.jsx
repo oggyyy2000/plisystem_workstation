@@ -10,11 +10,11 @@ import Webcam from "react-webcam";
 import "./css/MainFlightInMission.css";
 
 const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
-  const [open, setOpen] = useState(false);
-  const [close, setClose] = useState(false);
+  const [openZoomView, setOpenZoomView] = useState(false);
+  const [openInMissionPanel, setOpenInMissionPanel] = useState(false);
 
   useEffect(() => {
-    setClose(startfly);
+    setOpenInMissionPanel(startfly);
   }, [startfly]);
 
   // lay cam tu uav
@@ -39,32 +39,20 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
     return (
       <>
         <Webcam
+          className="info-panel__camera"
           audio={false}
           videoConstraints={{ deviceId }}
-          style={{ width: "100%", height: "100%", objectFit: "fill" }}
         />
       </>
     );
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleHidePanel = () => {
-    setClose(!close);
-  };
-
-  const zoomView = () => {
+  const cameraZoom = () => {
     return (
       <>
         <Dialog
-          open={open}
-          onClose={handleClose}
+          open={openZoomView}
+          onClose={() => setOpenZoomView(false)}
           sx={{
             "& .MuiDialog-container": {
               justifyContent: "flex-start",
@@ -75,18 +63,14 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
             sx: { height: "681px", width: "1535px", maxWidth: "1535px" },
           }}
         >
-          <div className="mainflight-expandcam-container">
-            <div className="mainflight-rgbcam-expand-container">
-              {devices.find(({ label }) =>
-                label.includes("USB Video (534d:2109)")
-              ) ? (
-                WebcamCapture()
-              ) : (
-                <div className="mainflight-before-datareturned">
-                  không có tín hiệu
-                </div>
-              )}
-            </div>
+          <div className="info-panel__camera-zoom-dialog">
+            {devices.find(({ label }) =>
+              label.includes("USB Video (534d:2109)")
+            ) ? (
+              WebcamCapture()
+            ) : (
+              <div className="info-panel__no-signal">không có tín hiệu</div>
+            )}
           </div>
         </Dialog>
       </>
@@ -96,25 +80,29 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
   return (
     <>
       <div
-        className={`mainflight-close-rightpanel ${
-          close === true ? "onclose-btn-rightpanel" : ""
+        className={`info-panel__btn ${
+          openInMissionPanel === true
+            ? "info-panel__btn--open"
+            : "info-panel__btn--close"
         }`}
       >
-        <button onClick={handleHidePanel}>
-          {close === true ? (
+        <button onClick={() => setOpenInMissionPanel(!openInMissionPanel)}>
+          {openInMissionPanel === true ? (
             <KeyboardArrowRightIcon />
           ) : (
             <KeyboardArrowLeftIcon />
           )}
         </button>
       </div>
-      <Fade in={close} timeout={1200}>
+      <Fade in={openInMissionPanel} timeout={1200}>
         <div
-          className={`mainflight-right-panel ${
-            close ? "onclose-rightpanel" : ""
+          className={`info-panel__container ${
+            openInMissionPanel
+              ? "info-panel__container--open"
+              : "info-panel__container--close"
           }`}
         >
-          <div className="mainflight-tableinfo">
+          <div className="info-panel__tableinfo">
             <table>
               <tr>
                 <td>VTHT: {currentvt}</td>
@@ -128,9 +116,9 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
               </tr>
             </table>
           </div>
-          <div className="mainflight-rgbview-container">
-            <div className="mainflight-rgb-expandbtn">
-              <button onClick={handleClickOpen}>
+          <div className="info-panel__cameraview">
+            <div className="info-panel__zoom-btn">
+              <button onClick={() => setOpenZoomView(true)}>
                 <img src={Icon} alt="Icon" height={"100%"} width={"100%"} />
               </button>
             </div>
@@ -140,13 +128,11 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
             ) ? (
               WebcamCapture()
             ) : (
-              <div className="mainflight-before-datareturned">
-                không có tín hiệu
-              </div>
+              <div className="info-panel__no-signal">không có tín hiệu</div>
             )}
           </div>
 
-          {zoomView()}
+          {cameraZoom()}
         </div>
       </Fade>
     </>
