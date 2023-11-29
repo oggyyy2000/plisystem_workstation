@@ -12,8 +12,8 @@ import Icon from "../../assets/images/expand-icon.png";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
-import videoRGB from "../../assets/images/RGBVID/BT_DJI_0701.mp4";
-import videoThermal from "../../assets/images/ThermalVID/T_DJI_0701.mp4";
+// import videoRGB from "../../assets/images/RGBVID/BT_DJI_0701.mp4";
+// import videoThermal from "../../assets/images/ThermalVID/T_DJI_0701.mp4";
 
 import "./css/DemoFlightInMission.css";
 
@@ -54,21 +54,21 @@ export default function DemoFlightInMission({ startfly, progress }) {
               <div className="flightroute-rgbcam-expand-title">RGB</div>
               {/* <div className="flightroute-before-datareturned">no rgb</div> */}
               <div className="flightroute-rgbcam-expand-content">
-                <video src={videoRGB} autoPlay loop controls muted />
+                {/* <video src={videoRGB} autoPlay loop controls muted /> */}
               </div>
             </div>
             <div className="flightroute-thermalcam-expand-container">
               <div className="flightroute-thermalcam-expand-title">thermal</div>
               {/* <div className="flightroute-before-datareturned">no thermal</div> */}
               <div className="flightroute-thermalcam-expand-content">
-                <video src={videoThermal} autoPlay loop controls muted />
+                {/* <video src={videoThermal} autoPlay loop controls muted /> */}
               </div>
             </div>
           </div>
         </Dialog>
       </>
     );
-  }
+  };
 
   return (
     <>
@@ -118,20 +118,20 @@ export default function DemoFlightInMission({ startfly, progress }) {
             </div>
             {/* <div className="flightroute-before-datareturned">no rgb</div> */}
             <div>
-              <video src={videoRGB} width="100%" autoPlay loop controls muted />
+              {/* <video src={videoRGB} width="100%" autoPlay loop controls muted /> */}
             </div>
           </div>
           <div className="flightroute-thermalview-container">
             <div className="flightroute-thermal-title">Thermal</div>
             {/* <div className="flightroute-before-datareturned">no thermal</div> */}
-            <video
+            {/* <video
               src={videoThermal}
               width="100%"
               autoPlay
               loop
               controls
               muted
-            />
+            /> */}
           </div>
           {zoomView()}
         </div>
