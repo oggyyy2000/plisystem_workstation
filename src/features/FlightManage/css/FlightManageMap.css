@@ -1,26 +1,13 @@
-.home-btn-container {
-  display: inline-block;
+.flightmanage-map__btn-change-maptype {
   margin: 0.625rem 0 0 1rem;
-}
-
-.home-btn-change-maptype {
-  position: relative;
-  z-index: 1; /* The z-index should be higher than Google Maps */
+  position: absolute;
+  z-index: 1; /* The z-index should be higher than Maps */
   text-align: center;
   width: 75px;
   padding: 10px;
 }
 
-.home-btn-change-maptype-bold-text {
-  position: relative;
-  z-index: 1; /*The z-index should be higher than Google Maps */
-  text-align: center;
-  width: 75px;
-  padding: 10px;
-  font-weight: bold;
-}
-
-.home-map-title {
+.flightmanage-map__title {
   position: absolute;
   /* margin: 9.5rem 0 0 27rem !important;  */ /*de lai MUI goc*/
   bottom: 1rem;
@@ -30,12 +17,16 @@
   font-weight: bold;
 }
 
-.home-google-map {
+.flightmanage-map__popup {
+  color: black;
+  width: 100;
+  word-wrap: break-word;
+}
+
+.flightmanage-map {
   height: 100%;
   width: 100%;
   position: absolute;
-  left: 0;
   top: 0;
-  z-index: 0;
-  /* Set z-index to 0 as it will be on a layer below the contact form */
+  z-index: 0; /* Set z-index to 0 as it will be on a layer below */
 }

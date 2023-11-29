@@ -1,0 +1,118 @@
+.modal-mission-data__show-modal-btn {
+  background-color: chartreuse !important;
+  color: white !important;
+  width: 50%;
+}
+
+.modal-mission-data {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100%;
+  width: 100%;
+  border: 2px solid #000;
+  box-shadow: 24;
+  padding-right: 0;
+}
+
+.modal-mission-data__container {
+  height: 100%;
+}
+
+.modal-mission-data__list-mission {
+  height: 100%;
+  border: 1px solid black;
+  overflow-y: auto;
+}
+
+.list-mission-items__container {
+  min-height: 18%;
+  display: flex;
+  cursor: pointer;
+  font-size: 25px;
+  font-weight: bold;
+  background-image: url("../../../assets/images/folder_icon.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80px 80px;
+}
+
+.list-mission-items__container--unchoosed {
+  border: 1px solid black;
+}
+
+.list-mission-items__container--choosed {
+  border: 3px solid red !important;
+}
+
+.list-mission-items__title {
+  position: relative;
+}
+
+.modal-mission-data__header {
+  display: flex;
+  justify-content: space-between;
+  height: fit-content;
+}
+
+.modal-mission-data__form-label {
+  margin: 0;
+  height: 33px;
+}
+
+.modal-mission-data__btn-group,
+.modal-mission-data__submit-btn,
+.modal-mission-data__close-btn {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-mission-data__submit-btn {
+  background-color: #1976d2 !important;
+  color: var(--white-color) !important;
+  height: 33px;
+  margin-right: 45px !important;
+}
+
+.modal-mission-data__close-btn {
+  align-items: center;
+  justify-items: center;
+}
+
+.modal-mission-data__body {
+  height: 100%;
+  border: 1px solid black;
+}
+
+.modal-mission-data__img-list {
+  height: 95vh;
+  overflow-y: auto;
+}
+
+.modal-mission-data__img-list-title {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.modal-mission-data__img-list-items-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-mission-data__img-list-items-label:hover {
+  border: 2px solid red;
+}
+
+.modal-mission-data__zoom-btn {
+  height: 36px !important;
+  min-width: 10px !important;
+  margin-right: 10px !important;
+}
+
+.modal-mission-data__edit-btn {
+  max-height: 36px !important;
+  min-width: 10px !important;
+}

@@ -1,28 +1,33 @@
-.homelist-container:hover,
-.homelist-container-onclick:hover {
+.mission-card__container:hover,
+.mission-card__container--choosed:hover {
   cursor: pointer;
 }
-.homelist-container {
+.mission-card__container {
   min-height: 15%;
-  border: 3px solid black;
 }
 
-.homelist-container-onclick {
+.mission-card__container--unchoosed {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.mission-card__container--choosed {
   border: 3px solid red;
 }
 
-.homelist-items-title {
+.mission-card__header {
   display: flex;
   height: 50%;
 }
 
-.homelist-icon-top-right {
+.mission-card__icon {
   border-radius: 50%;
   background-color: #1976d2;
   margin: 5px;
 }
 
-.homelist-date-tittle {
+.mission-card__title {
   display: flex;
   font-size: 1.8rem;
   font-weight: bold;
@@ -32,26 +37,7 @@
   flex-wrap: wrap;
 }
 
-.homelist-content {
-  font-size: 26px;
-  height: 50%;
-}
-
-.homelist-icon-bottom-right {
+.mission-card__body {
   display: flex;
-  width: 100%;
-  height: 100%;
-  align-content: center;
   justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
 }
-
-/* .homelist-icon-bottom-right > button {
-  background-color: chartreuse;
-  border-radius: 10%;
-  color: white;
-}
-.homelist-icon-bottom-right > button:hover {
-  background-color: rgba(127, 255, 0, 0.6) !important;
-} */

@@ -13,7 +13,7 @@ import { MissionId, VTInfo } from "../../redux/selectors";
 
 import "./css/FlightManageListVT.css";
 
-export default function FlightManageListVT() {
+const FlightManageListVT = () => {
   const [missionData, setMissionData] = useState();
   const dispatch = useDispatch();
   const missionId = useSelector(MissionId);
@@ -30,8 +30,8 @@ export default function FlightManageListVT() {
           // console.log(missionId);
           setMissionData(
             res.data.data.find((id) => id.schedule_id === missionId)
-            );
-            console.log(res.data.data.find((id) => id.schedule_id === missionId))
+          );
+          console.log(res.data.data.find((id) => id.schedule_id === missionId));
         })
         .catch((err) => {
           console.log(err);
@@ -54,14 +54,14 @@ export default function FlightManageListVT() {
 
   console.log(VTdetail);
 
-  function renderVT() {
+  const renderVT = () => {
     return (
       <>
         {typeof missionData.supervision_results !== "string" ? (
           Object.keys(missionData.supervision_results).map((item) => {
-            console.log(Object.values(missionData.supervision_results));
+            // console.log(Object.values(missionData.supervision_results));
             let error = false;
-            function handleListVTClick() {
+            const handleListVTClick = () => {
               dispatch({
                 type: actions.VTInfo,
                 data: {
@@ -69,7 +69,7 @@ export default function FlightManageListVT() {
                   data: missionData.supervision_results[item],
                 },
               });
-            }
+            };
             Object.keys(missionData.supervision_results[item]).forEach(
               (item2) => {
                 // console.log(missionData.supervision_results[item][item2]);
@@ -115,7 +115,7 @@ export default function FlightManageListVT() {
         )}
       </>
     );
-  }
+  };
 
   return (
     <>
@@ -124,4 +124,6 @@ export default function FlightManageListVT() {
       </div>
     </>
   );
-}
+};
+
+export default FlightManageListVT;

@@ -22,7 +22,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 
-import "./css/FlightManageModal.css";
+import "./css/FlightManageModalMissionData.css";
 
 const errorLabel = [
   "binhthuong",
@@ -34,7 +34,7 @@ const errorLabel = [
   "troita",
 ];
 
-export default function HomeModal({ schedule_id }) {
+const ModalMissionData = ({ schedule_id }) => {
   // MAIN DIALOG VARIABLE
   const [open, setOpen] = useState(false);
   // bien dung de lay data
@@ -112,7 +112,7 @@ export default function HomeModal({ schedule_id }) {
     errorImageBoxChecked,
     selectedLabels,
     open,
-    urlGetData
+    urlGetData,
   ]);
 
   // TEST
@@ -179,9 +179,9 @@ export default function HomeModal({ schedule_id }) {
       return (
         <>
           <div>
-            <div className="flightmanage-line-seperate-items"></div>
+            <div className="line-seperate-items"></div>
 
-            <div className="flightmanage-imagelist-title">{vt}</div>
+            <div className="modal-mission-data__img-list-title">{vt}</div>
             <ImageList
               sx={{
                 position: "relative",
@@ -193,18 +193,13 @@ export default function HomeModal({ schedule_id }) {
                 return (
                   <>
                     <ImageListItem key={index}>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
+                      <div className="modal-mission-data__img-list-items-header">
                         <TextField
                           id="outlined-multiline-flexible"
                           label="Tình trạng"
                           value={info.label.split("_").join("\n")}
                           multiline
-                          maxRows={3}
+                          maxRows={1}
                           style={{ height: "90%", marginTop: "7px" }}
                           disabled
                         />
@@ -219,7 +214,7 @@ export default function HomeModal({ schedule_id }) {
 
                       <label
                         for={`choose-img-${info.img_path}`}
-                        className={`flightmanage-imagelist-label ${
+                        className={`modal-mission-data__img-list-items-label ${
                           info.sent_check === 1 ? "hadsubmitted" : ""
                         } ${
                           selectedLabels.includes(info.img_path) ||
@@ -271,7 +266,7 @@ export default function HomeModal({ schedule_id }) {
     });
   };
 
-  const renderListData = (timeFlyStart) => {
+  const renderListMission = (timeFlyStart) => {
     return (
       <>
         {timeFlyStart.map((timeflystart) => {
@@ -279,16 +274,16 @@ export default function HomeModal({ schedule_id }) {
           return (
             <>
               <div
-                className={`flightmanage-listdata-item ${
-                  timeflystart === chooseTime ? "onclick" : ""
+                className={`list-mission-items__container ${
+                  timeflystart === chooseTime
+                    ? "list-mission-items__container--choosed"
+                    : "list-mission-items__container--unchoosed"
                 }`}
                 onClick={(e) => {
                   setChooseTime(e.target.innerText);
                 }}
               >
-                <div className="flightmanage-listdataitem-title">
-                  {timeflystart}
-                </div>
+                <div className="list-mission-items__title">{timeflystart}</div>
               </div>
             </>
           );
@@ -303,14 +298,8 @@ export default function HomeModal({ schedule_id }) {
     return (
       <>
         <Button
+          className="modal-mission-data__zoom-btn"
           variant="contained"
-          style={{
-            marginRight: "10px",
-            minHeight: "35px",
-            minWidth: "10px",
-            top: 0,
-            right: 0,
-          }}
           onClick={() => setOpenZoomingImg(info.img_path)}
         >
           <CropFreeIcon />
@@ -403,13 +392,8 @@ export default function HomeModal({ schedule_id }) {
     return (
       <>
         <Button
+          className="modal-mission-data__edit-btn"
           variant="contained"
-          style={{
-            minHeight: "35px",
-            minWidth: "10px",
-            top: 0,
-            right: 0,
-          }}
           onClick={() => {
             setOpenEditLabel(info.img_path);
             setImageNewLabels([...info.label.split("_")]);
@@ -465,18 +449,14 @@ export default function HomeModal({ schedule_id }) {
   };
 
   return (
-    <div>
+    <>
       <Button
-        style={{
-          backgroundColor: "chartreuse",
-          borderRadius: "10%",
-          color: "white",
-          width: "100%"
-        }}
+        className="modal-mission-data__show-modal-btn"
         onClick={() => setOpen(true)}
       >
         xem dữ liệu
       </Button>
+
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -492,21 +472,25 @@ export default function HomeModal({ schedule_id }) {
       >
         <Fade in={open}>
           <Box
-            className="flightmanage"
+            className="modal-mission-data"
             sx={{
               bgcolor: "background.paper",
             }}
           >
-            <Grid container className="flightmanage-container" spacing={0}>
-              <Grid item className="flightmanage-listdata" xs={2}>
-                {renderListData(timeFlyStart)}
+            <Grid
+              container
+              className="modal-mission-data__container"
+              spacing={0}
+            >
+              <Grid item className="modal-mission-data__list-mission" xs={2}>
+                {renderListMission(timeFlyStart)}
               </Grid>
               <Grid container xs={10}>
-                <Grid item xs={12}>
+                <Grid item className="modal-mission-data__header" xs={12}>
                   <FormControlLabel
+                    className="modal-mission-data__form-label"
                     control={<Checkbox />}
                     label="Ảnh bất thường"
-                    style={{ margin: 0, height: "33px" }}
                     onChange={(e) => handleErrorImageBoxChecked(e)}
                   />
                   {/* <FormControlLabel
@@ -515,34 +499,28 @@ export default function HomeModal({ schedule_id }) {
                     style={{ margin: 0, height: "33px" }}
                     onChange={(e) => handleChooseAllBoxChecked(e)}
                   /> */}
+                  <div className="modal-mission-data__btn-group">
+                    <Button
+                      className="modal-mission-data__submit-btn"
+                      variant="outlined"
+                      onClick={handleSubmit}
+                    >
+                      SUBMIT
+                    </Button>
 
-                  <Button
-                    variant="outlined"
-                    onClick={handleSubmit}
-                    style={{
-                      marginLeft: "740px",
-                      backgroundColor: "#1976d2",
-                      color: "white",
-                      height: "33px",
-                    }}
-                  >
-                    SUBMIT
-                  </Button>
-
-                  <Button
-                    className="flightmanage-btn-close"
-                    color="error"
-                    variant="contained"
-                    onClick={() => setOpen(false)}
-                  >
-                    <CloseIcon fontSize="small" />
-                  </Button>
+                    <Button
+                      className="modal-mission-data__close-btn"
+                      color="error"
+                      variant="contained"
+                      onClick={() => setOpen(false)}
+                    >
+                      <CloseIcon fontSize="small" />
+                    </Button>
+                  </div>
                 </Grid>
-                <Grid item className="flightmanage-imgdata" xs={12}>
-                  <div className="flightmanage-imgdata-container">
-                    <div className="flightmanage-imagelist">
-                      {renderImageList()}
-                    </div>
+                <Grid item className="modal-mission-data__body" xs={12}>
+                  <div className="modal-mission-data__img-list">
+                    {renderImageList()}
                   </div>
                 </Grid>
               </Grid>
@@ -550,6 +528,8 @@ export default function HomeModal({ schedule_id }) {
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </>
   );
-}
+};
+
+export default ModalMissionData;

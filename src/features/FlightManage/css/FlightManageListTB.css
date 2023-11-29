@@ -1,4 +1,4 @@
-.home-list-TB-container {
+.list-TB__container {
   display: flex;
   align-items: center;
   min-height: 16%;
@@ -6,15 +6,16 @@
   justify-content: center;
   flex-wrap: wrap;
 }
-.normal {
-  border: 2px solid black;
+
+.list-TB__container--normal {
+  border: 1px solid black;
 }
 
-.error {
+.list-TB__container--error {
   border: 2px solid red;
 }
 
-.home-list-TB-title {
+.list-TB__title {
   min-width: 80%;
   font-size: 20px;
   text-transform: uppercase;

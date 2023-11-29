@@ -8,16 +8,16 @@ import { VTInfo } from "../../redux/selectors";
 
 import "./css/FlightManageListTB.css";
 
-export default function FlightManageListTB() {
+const FlightManageListTB = () => {
   const VTdetail = useSelector(VTInfo);
 
-  console.log("VTdetail", VTdetail)
+  console.log("VTdetail", VTdetail);
 
-  function renderTB() {
+  const renderTB = () => {
     return (
       <>
         {Object.keys(VTdetail.data).map((nameTB) => {
-          console.log(typeof VTdetail.data[nameTB]);
+          // console.log(typeof VTdetail.data[nameTB]);
           var error = false;
           if (VTdetail.data[nameTB].length > 0) {
             error = true;
@@ -28,18 +28,19 @@ export default function FlightManageListTB() {
                 <Grid
                   item
                   xs={12}
-                  className={`home-list-TB-container normal ${
-                    error ? "error" : ""
+                  className={`list-TB__container ${
+                    error
+                      ? "list-TB__container--error"
+                      : "list-TB__container--normal"
                   }`}
                 >
-                  <div className="home-list-TB-title">{nameTB}</div>
-                  <div className="home-list-TB-icon">
-                    {error === true ? (
-                      <CancelIcon fontSize="large" color="error" />
-                    ) : (
-                      <CheckCircleIcon fontSize="large" color="success" />
-                    )}
-                  </div>
+                  <div className="list-TB__title">{nameTB}</div>
+
+                  {error === true ? (
+                    <CancelIcon fontSize="large" color="error" />
+                  ) : (
+                    <CheckCircleIcon fontSize="large" color="success" />
+                  )}
                 </Grid>
               </>
             );
@@ -49,25 +50,9 @@ export default function FlightManageListTB() {
         })}
       </>
     );
-  }
+  };
 
-  return (
-    <>
-      {JSON.stringify(VTdetail) !== "{}" && renderTB()}
-      {/* -------------------------------------------------- */}
-      {/* <Grid item xs={12} className="home-list-TB-container normal">
-        <div>
-          <div className="home-list-TB-title">DAY DIEN</div>
-          <div className="home-list-TB-content">
-            <div>
-              <Button variant="outlined">details</Button>
-            </div>
-            <div className="home-list-TB-content-icon">
-              <CheckCircleIcon fontSize="large" color="success" />
-            </div>
-          </div>
-        </div>
-      </Grid> */}
-    </>
-  );
-}
+  return <>{JSON.stringify(VTdetail) !== "{}" && renderTB()}</>;
+};
+
+export default FlightManageListTB;

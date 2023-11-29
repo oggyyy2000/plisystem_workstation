@@ -6,10 +6,9 @@ import * as actions from "../../redux/types";
 import "./css/FlightManageListMission.css";
 
 import FlightRoundedIcon from "@mui/icons-material/FlightRounded";
-// import { Button } from "@mui/material";
-import HomeModal from "./FlightManageModal";
+import ModalMissionData from "./FlightManageModalMissionData";
 
-export default function FlightManageListMission() {
+const FlightManageListMission = () => {
   const [clicked, setClicked] = useState("");
   const [listMissionData, setListMissionData] = useState([]);
   const dispatch = useDispatch();
@@ -39,77 +38,27 @@ export default function FlightManageListMission() {
 
   return (
     <>
-      {/* <div
-        item
-        className={`homelist-container ${
-          clicked === true ? "homelist-container-onclick" : ""
-        }`}
-        // onClick={checkClicked}
-      >
-        <div item className="homelist-items-title">
-          <div className="homelist-icon-top-right">
-            <FlightRoundedIcon fontSize="large" />
-          </div>
-          <div item className="homelist-date-tittle">
-            28-4-2023
-          </div>
-        </div>
-        <div item className="homelist-content">
-          <div>
-            <p>Last Update</p>
-            18h50
-          </div>
-          <div
-            style={{
-              marginLeft: " 1.14rem",
-              marginTop: "15px"
-              // fontSize: "58px",
-            }}
-          >
-            <CheckCircleIcon color="success" fontSize="inherit" /> 
-            <img src={checkMark} alt="checkMark" style={{height: "80%", width: "80%"}} />
-          </div>
-        </div>
-      </div> */}
-
       {listMissionData.map((listmission) => {
         return (
           <>
             <div
-              className={`homelist-container ${
+              className={`mission-card__container ${
                 clicked === listmission.schedule_id
-                  ? "homelist-container-onclick"
-                  : ""
+                  ? "mission-card__container--choosed"
+                  : "mission-card__container--unchoosed"
               }`}
               onClick={() => handleListMissionClick(listmission.schedule_id)}
             >
-              <div className="homelist-items-title">
-                <div className="homelist-icon-top-right">
+              <div className="mission-card__header">
+                <div className="mission-card__icon">
                   <FlightRoundedIcon fontSize="large" />
                 </div>
-                <div className="homelist-date-tittle">
+                <div className="mission-card__title">
                   {listmission.implementation_date}
                 </div>
               </div>
-              <div className="homelist-content">
-                {/* <div className="homelist-icon-bottom-left">
-                  <Button
-                    href="/DemoFlight"
-                    style={{
-                      backgroundColor: "chartreuse",
-                      borderRadius: "10%",
-                      color: "white",
-                      width: "90%",
-                      textAlign: "center",
-                      marginLeft: "8px",
-                    }}
-                  >
-                    thêm dữ liệu
-                  </Button>
-                </div> */}
-                <div className="homelist-icon-bottom-right">
-                  <HomeModal schedule_id={listmission.schedule_id} />
-                </div>
+              <div className="mission-card__body">
+                <ModalMissionData schedule_id={listmission.schedule_id} />
               </div>
             </div>
           </>
@@ -117,4 +66,6 @@ export default function FlightManageListMission() {
       })}
     </>
   );
-}
+};
+
+export default FlightManageListMission;

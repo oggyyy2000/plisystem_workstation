@@ -21,11 +21,10 @@ import rgbImg7 from "../../assets/images/RGBIMG/DJI_0936_W.JPG";
 import rgbImg8 from "../../assets/images/RGBIMG/DJI_0937_W.JPG";
 import rgbImg9 from "../../assets/images/RGBIMG/DJI_0942_W.JPG";
 
-
 import "./css/FlightManageImageSlider.css";
 
-import { useSelector } from "react-redux";
-import { VTInfo } from "../../redux/selectors";
+// import { useSelector } from "react-redux";
+// import { VTInfo } from "../../redux/selectors";
 
 const imgList = [
   thermalImg1,
@@ -51,12 +50,12 @@ const imgList3 = [
   rgbImg9,
 ];
 
-export default function FlightManageImageSlider() {
+const FlightManageImageSlider = () => {
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   // const [imgList2, setImgList2] = useState([]);
-  const VTdetail = useSelector(VTInfo);
-  console.log(VTdetail);
+  // const VTdetail = useSelector(VTInfo);
+  // console.log(VTdetail);
 
   // function getIMG() {
   //   const imgList2 = [];
@@ -155,15 +154,7 @@ export default function FlightManageImageSlider() {
           {imgList3.map((img) => {
             return (
               <>
-                <div
-                  // style={{
-                  //   padding: "1px",
-                  //   textAlign: "center",
-                  //   display: "flex",
-                  //   justifyContent: "center",
-                  // }}
-                  className="home-slide"
-                >
+                <div className="error-image-slide">
                   <img
                     src={`${img}`}
                     alt="img"
@@ -207,4 +198,6 @@ export default function FlightManageImageSlider() {
       </div>
     </>
   );
-}
+};
+
+export default FlightManageImageSlider;
