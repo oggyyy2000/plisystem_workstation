@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "plisystem_maytram_deploy",
-    "version": "0.2.0"
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.plisystem-maytram-ubuntu.dev",
+      "identifier": "com.plisystem-maytram-deploy.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -58,7 +58,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "EP SmartTech",
+        "title": "EPSmartTech",
         "width": 800
       }
     ]

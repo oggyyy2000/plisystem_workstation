@@ -31,13 +31,13 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: './src-tauri -> target'
+          workspaces: "./src-tauri -> target"
 
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
-          cache: 'npm'
+          node-version: "lts/*"
+          cache: "npm"
 
       - name: Install frontend dependencies
         run: npm install
@@ -48,8 +48,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: 'v__VERSION__'
-          releaseName: 'v__VERSION__'
-          releaseBody: 'See the assets to download and install this version.'
+          tagName: "v__VERSION__"
+          releaseName: "v__VERSION__"
+          releaseBody: "See the assets to download and install this version."
           releaseDraft: true
           prerelease: false
