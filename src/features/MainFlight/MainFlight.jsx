@@ -89,11 +89,11 @@ const MainFlight = () => {
     someDate: date,
   };
   const [DateDB, setDateDB] = useState(date);
-  console.log(DateDB)
+  console.log(DateDB);
   const [tuyen, setTuyen] = useState();
-  console.log(tuyen)
+  console.log(tuyen);
   const [superviseType, setSuperviseType] = useState();
-  console.log(superviseType)
+  console.log(superviseType);
 
   //map variable
   const [zoom, setZoom] = useState(17);
@@ -123,6 +123,7 @@ const MainFlight = () => {
         if (data.data_state === "supervise_complete") {
           setGetImgData(data.data);
           setFlightComplete(true);
+          setStartFly(false);
           disconnect();
         }
         console.log("data:", data);
