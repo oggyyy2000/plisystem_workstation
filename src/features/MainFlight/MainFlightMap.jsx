@@ -86,7 +86,7 @@ const MainFlightMap = ({
             center={[centerGPS.lat, centerGPS.lng]}
             zoomControl={false}
             zoom={zoom}
-            className="map"
+            className="mainflight-map"
           >
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -129,7 +129,7 @@ const MainFlightMap = ({
   return (
     <>
       <button
-        className="map__btn-change-maptype"
+        className="mainflight-map__btn-change-maptype"
         value={"Vệ tinh"}
         onClick={handleChangeMapType}
       >

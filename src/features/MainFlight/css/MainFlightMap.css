@@ -1,4 +1,4 @@
-.map__btn-change-maptype {
+.mainflight-map__btn-change-maptype {
   position: absolute;
   z-index: 1;
   text-align: center;
@@ -13,7 +13,7 @@
   margin-top: 10px;
 }
 
-.map {
+.mainflight-map {
   height: 100%;
   width: 100%;
   position: absolute;

@@ -30,7 +30,7 @@ import MainFlightInMission from "./MainFlightInMission";
 import MainFlightMap from "./MainFlightMap";
 import MainFlightDialogAfterFly from "./MainFlightDialogAfterFly";
 
-function CustomTabPanel(props) {
+const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -48,7 +48,7 @@ function CustomTabPanel(props) {
       )}
     </div>
   );
-}
+};
 
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
@@ -56,12 +56,12 @@ CustomTabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
+const a11yProps = (index) => {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
-}
+};
 
 const MainFlight = () => {
   const [open, setOpen] = useState(true);
@@ -89,8 +89,11 @@ const MainFlight = () => {
     someDate: date,
   };
   const [DateDB, setDateDB] = useState(date);
+  console.log(DateDB)
   const [tuyen, setTuyen] = useState();
+  console.log(tuyen)
   const [superviseType, setSuperviseType] = useState();
+  console.log(superviseType)
 
   //map variable
   const [zoom, setZoom] = useState(17);

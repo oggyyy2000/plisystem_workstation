@@ -66,6 +66,7 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
   useEffect(() => {
     setChange(false);
     setImageNewLabels([]);
+    setHadSubmittedError(false);
 
     if (openModalAfterFly) {
       axios
@@ -113,8 +114,8 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
   };
 
   // --------- Ham de submit tat ca cac anh nguoi dung chon --------
+  console.log(checked);
   const handleSubmitErrorImage = () => {
-    console.log(checked);
     setHadSubmittedError(false);
     axios
       .post(urlPostFlightData, checked)
@@ -316,7 +317,7 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
                           label="Tình trạng"
                           value={info.label.split("_").join("\n")}
                           multiline // multiline của TextField MUI đang lỗi
-                          maxRows={3}
+                          maxRows={1}
                           style={{ height: "70%", marginTop: "7px" }}
                           disabled
                         />

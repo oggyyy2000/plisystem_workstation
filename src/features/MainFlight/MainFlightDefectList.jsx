@@ -45,7 +45,7 @@ const MainFlightDefectList = ({ startfly, currentvt, defectInfo }) => {
             return (
               <>
                 <div
-                  className="error-items-card"
+                  className="defect-items-card"
                   onClick={() =>
                     Object.keys(hadDefect).length !== 0
                       ? setHadDefect({})
@@ -55,10 +55,10 @@ const MainFlightDefectList = ({ startfly, currentvt, defectInfo }) => {
                         })
                   }
                 >
-                  <div className="error-items-card__header">
+                  <div className="defect-items-card__header">
                     <h1>Defect</h1>
                   </div>
-                  <div class="error-items-card__body">
+                  <div class="defect-items-card__body">
                     <p>{gis1.defect_name}</p>
                     <p>VI TRI: {currentvt}</p>
                     <p>
