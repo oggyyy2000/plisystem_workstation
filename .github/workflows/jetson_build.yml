@@ -42,3 +42,5 @@ jobs:
         with:
           name: Debian Bundle
           path: ${{ github.workspace }}/target/release/bundle/deb/plisystem_maytram_deploy_0.1.0_arm64.deb
+
+          
