@@ -2,7 +2,7 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - deploy
   workflow_dispatch:
 
 jobs:
@@ -88,3 +88,5 @@ jobs:
           releaseBody: "See the assets to download and install this version."
           releaseDraft: true
           prerelease: false
+
+          
