@@ -40,6 +40,11 @@ jobs:
             npm install
             # Build the application
             cargo tauri build
+      - name: Upload deb bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: Debian Bundle
+          path: /plisystem_maytram_deploy/src-tauri/target/release/bundle/deb/plisystem-maytram-deploy_0.1.0_arm64.deb
 
   release:
     permissions:
