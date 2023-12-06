@@ -18,10 +18,8 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
   }, [startfly]);
 
   // lay cam tu uav
-  const [deviceId] = useState({});
   const [devices, setDevices] = useState([]);
-  // console.log("deviceId", deviceId);
-  // console.log("devices", devices);
+  console.log("devices", devices[0]);
 
   const handleDevices = useCallback(
     (mediaDevices) =>
@@ -38,11 +36,7 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
   const WebcamCapture = () => {
     return (
       <>
-        <Webcam
-          className="info-panel__camera"
-          audio={false}
-          videoConstraints={{ deviceId }}
-        />
+        <Webcam className="info-panel__camera" audio={false} />
       </>
     );
   };
@@ -64,9 +58,15 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
           }}
         >
           <div className="info-panel__camera-zoom-dialog">
-            {devices.find(({ label }) =>
+            {/* {devices.find(({ label }) =>
               label.includes("USB Video (534d:2109)")
-            ) ? (
+            ) ? ( */}
+            {/* {WebcamCapture()} */}
+            {/* ) : (
+              <div className="info-panel__no-signal">không có tín hiệu</div>
+            )} */}
+
+            {devices !== "[]" ? (
               WebcamCapture()
             ) : (
               <div className="info-panel__no-signal">không có tín hiệu</div>
@@ -123,9 +123,14 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
               </button>
             </div>
 
-            {devices.find(({ label }) =>
+            {/* {devices.find(({ label }) =>
               label.includes("USB Video (534d:2109)")
             ) ? (
+              WebcamCapture()
+            ) : (
+              <div className="info-panel__no-signal">không có tín hiệu</div>
+            )} */}
+            {devices !== "[]" ? (
               WebcamCapture()
             ) : (
               <div className="info-panel__no-signal">không có tín hiệu</div>
