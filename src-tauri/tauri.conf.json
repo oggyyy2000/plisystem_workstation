@@ -11,8 +11,11 @@
     "version": "0.1.0"
   },
   "tauri": {
+    "embeddedServer": {
+      "active": true
+    },
     "allowlist": {
-      "all": false
+      "all": true
     },
     "bundle": {
       "active": true,
