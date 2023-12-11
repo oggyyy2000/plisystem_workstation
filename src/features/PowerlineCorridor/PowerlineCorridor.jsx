@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function PowerlineCorridor() {
+const PowerlineCorridor = () => {
   const src3Dmap = `http://epsmarttech.com.vn:3132/examples/T87/T87.html`;
 
   return (
@@ -12,4 +12,6 @@ export default function PowerlineCorridor() {
       />
     </>
   );
-}
+};
+
+export default PowerlineCorridor;

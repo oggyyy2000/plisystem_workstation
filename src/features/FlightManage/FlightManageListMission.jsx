@@ -6,7 +6,7 @@ import * as actions from "../../redux/types";
 import "./css/FlightManageListMission.css";
 
 import FlightRoundedIcon from "@mui/icons-material/FlightRounded";
-import ModalMissionData from "./FlightManageModalMissionData";
+import ModalMissionData from "./FlightManageModal/FlightManageModalMissionData";
 
 const FlightManageListMission = () => {
   const [clicked, setClicked] = useState("");
