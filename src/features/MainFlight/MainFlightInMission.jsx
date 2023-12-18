@@ -19,7 +19,7 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
 
   // lay cam tu uav
   const [devices, setDevices] = useState([]);
-  console.log("devices", devices[0]);
+  // console.log("devices", devices[0]);
 
   const handleDevices = useCallback(
     (mediaDevices) =>
