@@ -68,7 +68,8 @@
   justify-content: space-between;
 }
 
-.modal-mission-data__submit-btn {
+.modal-mission-data__submit-btn,
+.modal-mission-data__print-btn {
   background-color: #1976d2 !important;
   color: var(--white-color) !important;
   height: 33px;
@@ -104,15 +105,4 @@
 
 .modal-mission-data__img-list-items-label:hover {
   border: 2px solid red;
-}
-
-.modal-mission-data__zoom-btn {
-  height: 36px !important;
-  min-width: 10px !important;
-  margin-right: 10px !important;
-}
-
-.modal-mission-data__edit-btn {
-  max-height: 36px !important;
-  min-width: 10px !important;
 }
