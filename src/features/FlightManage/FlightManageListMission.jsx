@@ -58,7 +58,7 @@ const FlightManageListMission = () => {
                 </div>
               </div>
               <div className="mission-card__body">
-                <ModalMissionData schedule_id={listmission.schedule_id} />
+                <ModalMissionData schedule_id={listmission.schedule_id} implementation_date={listmission.implementation_date} />
               </div>
             </div>
           </>

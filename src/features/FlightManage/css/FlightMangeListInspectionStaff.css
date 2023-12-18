@@ -1,0 +1,24 @@
+.list-inspection-staff__STT-field {
+  margin: 10px !important;
+  width: 50px;
+}
+
+.list-inspection-staff__STT-field input {
+  text-align: center;
+}
+
+.list-inspection-staff__name-field {
+  margin: 10px !important;
+  width: 200px;
+}
+
+.list-inspection-staff__staff-title-field {
+  margin: 10px !important;
+}
+
+.list-inspection-staff__form-control-bactho,
+.list-inspection-staff__form-control-bacAT {
+  width: 75px;
+  margin: 10px !important;
+  height: 56px;
+}

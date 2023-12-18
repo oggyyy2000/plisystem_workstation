@@ -1,0 +1,60 @@
+.modal-mission-data__print-btn {
+  display: flex;
+  justify-content: space-between;
+  background-color: #1976d2 !important;
+  color: var(--white-color) !important;
+  height: 33px;
+  margin-right: 45px !important;
+}
+
+.print-report-dialog__title,
+.print-report-dialog__btn-group,
+.list-inspection-staff__title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.print-report-dialog__title {
+  border: 1px solid black;
+}
+
+.print-report-dialog__btn-group {
+  width: 650px;
+}
+
+.print-report-dialog__content {
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+.print-report-dialog__content-container {
+  height: 99%;
+}
+
+.print-report-dialog__form-report-container {
+  overflow: hidden auto;
+  height: 100%;
+  border-right: 1px solid black;
+}
+
+.print-report-dialog__list-error-img-container {
+  overflow: hidden auto;
+  height: 100%;
+}
+
+.print-report-dialog__list-error-img {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.print-report-dialog__list-error-img > div {
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.print-report-dialog__list-error-img > div:hover {
+  border: 1px solid red;
+}

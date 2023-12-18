@@ -80,7 +80,6 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
         });
     }
   }, [
-    getImgData,
     change,
     hadSubmittedError,
     errorImageBoxChecked,
@@ -291,6 +290,7 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
     );
   };
 
+  // ------------- Render list error images Dialog ---------------
   const renderImageList = () => {
     return Object.keys(imgList2).map((vt) => {
       return (
