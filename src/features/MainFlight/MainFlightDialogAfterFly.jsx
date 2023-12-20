@@ -35,6 +35,8 @@ const errorLabel = [
   "troita",
 ];
 
+const imagePerRow = 3;
+
 const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
   const [openModalAfterFly, setOpenModalAfterFly] = useState(false);
   const [errorImageBoxChecked, setErrorImageBoxChecked] = useState(false);
@@ -49,6 +51,9 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
   const [change, setChange] = useState(false);
   const [checked, setChecked] = useState([]);
   const [hadSubmittedError, setHadSubmittedError] = useState(false);
+
+    // pagination
+    const [nextImg, setNextImg] = useState({});
 
   const urlPostFlightData = process.env.REACT_APP_API_URL + "flightdatas/";
   const urlGetData =
@@ -74,6 +79,12 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
         .then((res) => {
           console.log("data:", res.data);
           setImgList2(res.data);
+          setNextImg(
+            Object.keys(res.data).reduce((acc, galleryKey) => {
+              acc[galleryKey] = { loaded: imagePerRow };
+              return acc;
+            }, {})
+          );
         })
         .catch((err) => {
           console.log(err);
@@ -290,6 +301,14 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
     );
   };
 
+  // --------- Ham de xu ly pagination --------
+  const handleLoadMore = (vt) => {
+    setNextImg((prevNextImg) => ({
+      ...prevNextImg,
+      [vt]: { loaded: prevNextImg[vt].loaded + imagePerRow },
+    }));
+  };
+
   // ------------- Render list error images Dialog ---------------
   const renderImageList = () => {
     return Object.keys(imgList2).map((vt) => {
@@ -307,7 +326,9 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
               }}
               cols={3}
             >
-              {imgList2[vt].map((info, index) => {
+              {imgList2[vt]
+                ?.slice(0, nextImg[vt].loaded)
+                ?.map((info, index) => {
                 return (
                   <>
                     <ImageListItem key={index}>
@@ -379,6 +400,16 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
                 );
               })}
             </ImageList>
+
+            {nextImg[vt].loaded < imgList2[vt]?.length && (
+              <Button
+              className="modal-afterfly__load-more-btn"
+                variant="outlined"
+                onClick={() => handleLoadMore(vt)}
+              >
+                Load more
+              </Button>
+            )}
           </div>
         </>
       );
