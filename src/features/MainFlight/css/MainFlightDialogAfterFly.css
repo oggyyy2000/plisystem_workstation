@@ -48,6 +48,7 @@
 .modal-afterfly__img-list {
   height: 90vh;
   overflow-y: auto;
+  text-align: center;
 }
 
 .modal-afterfly__img-list-title {
@@ -75,4 +76,8 @@
 .modal-afterfly__edit-btn {
   max-height: 36px !important;
   min-width: 10px !important;
+}
+
+.modal-afterfly__load-more-btn {
+  margin-top: 5px !important;
 }

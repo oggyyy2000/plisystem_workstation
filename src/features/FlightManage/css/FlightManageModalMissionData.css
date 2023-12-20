@@ -89,6 +89,7 @@
 .modal-mission-data__img-list {
   height: 95vh;
   overflow-y: auto;
+  text-align: center;
 }
 
 .modal-mission-data__img-list-title {
@@ -105,4 +106,8 @@
 
 .modal-mission-data__img-list-items-label:hover {
   border: 2px solid red;
+}
+
+.modal-mission-data__load-more-btn {
+  margin-top: 5px !important;
 }
