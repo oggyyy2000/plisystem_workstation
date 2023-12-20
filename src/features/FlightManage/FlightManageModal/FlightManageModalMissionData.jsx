@@ -171,6 +171,7 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
       });
   };
 
+  // --------- Ham de xu ly pagination --------
   const handleLoadMore = (vt) => {
     setNextImg((prevNextImg) => ({
       ...prevNextImg,
@@ -287,7 +288,8 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
 
             {nextImg[vt].loaded < imgList2[vt]?.length && (
               <Button
-                // className="mt-4"
+              className="modal-mission-data__load-more-btn"
+                variant="outlined"
                 onClick={() => handleLoadMore(vt)}
               >
                 Load more
