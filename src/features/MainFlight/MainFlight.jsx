@@ -25,6 +25,7 @@ import {
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 
 import "./css/MainFlight.css";
+import Loading from "../../components/LoadingPage/LoadingPage";
 import MainFlightDefectList from "./MainFlightDefectList";
 import MainFlightInMission from "./MainFlightInMission";
 import MainFlightMap from "./MainFlightMap";
@@ -76,6 +77,8 @@ const MainFlight = () => {
   const [DefectInfo, setDefectInfo] = useState([]);
   const [currentLocation, setCurrentLocation] = useState({});
 
+  console.log(currentLocation);
+
   //modal addmission variable
   const [hadSubmited, setHadSubmited] = useState(false);
   const [tab, setTab] = useState(0);
@@ -109,11 +112,8 @@ const MainFlight = () => {
     process.env.REACT_APP_API_URL + "supervisionstreaming/";
 
   useEffect(() => {
-    // disconnect();
-    if (open === true) {
-      connect();
-    }
-  }, [open, connect]);
+    connect();
+  }, [connect]);
 
   useEffect(() => {
     try {
@@ -124,6 +124,7 @@ const MainFlight = () => {
           setGetImgData(data.data);
           setFlightComplete(true);
           setStartFly(false);
+          setHadSubmited(false);
           disconnect();
         }
         console.log("data:", data);
@@ -160,6 +161,7 @@ const MainFlight = () => {
   // ---------- Add Info for mission dialog ----------
 
   const handleClickOpen = () => {
+    connect();
     setOpen(true);
     setStartFly(false);
     setFlightComplete(false);
@@ -416,6 +418,12 @@ const MainFlight = () => {
           flightComplete={flightComplete}
           getImgData={getImgData}
         />
+
+        {!startFly && !open && hadSubmited ? (
+          <Loading startFly={startFly} />
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );
