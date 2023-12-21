@@ -84,20 +84,22 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
     setLabelChanged(false);
     setHadSubmittedError(false);
 
-    axios
-      .get(urlGetData)
-      .then((res) => {
-        setImgList2(res.data);
-        setNextImg(
-          Object.keys(res.data).reduce((acc, galleryKey) => {
-            acc[galleryKey] = { loaded: imagePerRow };
-            return acc;
-          }, {})
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (open && getImgData !== "") {
+      axios
+        .get(urlGetData)
+        .then((res) => {
+          setImgList2(res.data);
+          setNextImg(
+            Object.keys(res.data).reduce((acc, galleryKey) => {
+              acc[galleryKey] = { loaded: imagePerRow };
+              return acc;
+            }, {})
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, [
     labelChanged,
     hadSubmittedError,
@@ -105,6 +107,7 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
     selectedLabels,
     open,
     urlGetData,
+    getImgData
   ]);
 
   // TEST
@@ -288,7 +291,7 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
 
             {nextImg[vt].loaded < imgList2[vt]?.length && (
               <Button
-              className="modal-mission-data__load-more-btn"
+                className="modal-mission-data__load-more-btn"
                 variant="outlined"
                 onClick={() => handleLoadMore(vt)}
               >

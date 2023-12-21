@@ -17,7 +17,7 @@ const FlightManageListMission = () => {
 
   const handleListMissionClick = useCallback(
     (mission_id) => {
-      setClicked(mission_id);
+      // setClicked(mission_id);
       dispatch({ type: actions.MissionId, data: mission_id });
     },
     [dispatch]
@@ -29,12 +29,12 @@ const FlightManageListMission = () => {
       .then((res) => {
         console.log(res.data.data[0].schedule_id);
         setListMissionData(res.data.data);
-        handleListMissionClick(res.data.data[0].schedule_id);
+        setClicked(res.data.data[0].schedule_id);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [handleListMissionClick, urlhomePageView]);
+  }, [urlhomePageView]);
 
   return (
     <>
@@ -58,7 +58,10 @@ const FlightManageListMission = () => {
                 </div>
               </div>
               <div className="mission-card__body">
-                <ModalMissionData schedule_id={listmission.schedule_id} implementation_date={listmission.implementation_date} />
+                <ModalMissionData
+                  schedule_id={listmission.schedule_id}
+                  implementation_date={listmission.implementation_date}
+                />
               </div>
             </div>
           </>
