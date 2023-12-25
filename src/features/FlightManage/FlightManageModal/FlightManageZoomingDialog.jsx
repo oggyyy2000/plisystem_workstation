@@ -4,7 +4,11 @@ import Dialog from "@mui/material/Dialog";
 
 import "../css/FlightManageZoomingDialog.css";
 
-const FlightManageZoomingDialog = ({ info, openZoomingImg, setOpenZoomingImg }) => {
+const FlightManageZoomingDialog = ({
+  info,
+  openZoomingImg,
+  setOpenZoomingImg,
+}) => {
   return (
     <>
       <Dialog
@@ -12,17 +16,12 @@ const FlightManageZoomingDialog = ({ info, openZoomingImg, setOpenZoomingImg }) 
         onClose={() => setOpenZoomingImg(false)}
         sx={{
           "& .MuiDialog-container": {
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
+            justifyContent: "center",
+            alignItems: "center",
           },
         }}
-        PaperProps={{
-          sx: {
-            height: "681px",
-            width: "1535px",
-            maxWidth: "1535px",
-          },
-        }}
+        fullWidth
+        maxWidth={"lg"}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

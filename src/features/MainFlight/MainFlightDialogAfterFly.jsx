@@ -52,8 +52,8 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
   const [checked, setChecked] = useState([]);
   const [hadSubmittedError, setHadSubmittedError] = useState(false);
 
-    // pagination
-    const [nextImg, setNextImg] = useState({});
+  // pagination
+  const [nextImg, setNextImg] = useState({});
 
   const urlPostFlightData = process.env.REACT_APP_API_URL + "flightdatas/";
   const urlGetData =
@@ -159,17 +159,12 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
           onClose={() => setOpenZoomingImg(false)}
           sx={{
             "& .MuiDialog-container": {
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
+              justifyContent: "center",
+              alignItems: "center",
             },
           }}
-          PaperProps={{
-            sx: {
-              height: "681px",
-              width: "1535px",
-              maxWidth: "1535px",
-            },
-          }}
+          fullWidth
+          maxWidth="lg"
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -256,12 +251,7 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
           <EditIcon />
         </Button>
         <Dialog
-          sx={{
-            "& .MuiDialog-paper": {
-              width: "80%",
-              maxHeight: 435,
-            },
-          }}
+          fullWidth
           maxWidth="xs"
           open={openEditLabel === info.img_path ? true : false}
           slots={{ backdrop: Backdrop }}
@@ -329,81 +319,81 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
               {imgList2[vt]
                 ?.slice(0, nextImg[vt].loaded)
                 ?.map((info, index) => {
-                return (
-                  <>
-                    <ImageListItem key={index}>
-                      <div className="modal-afterfly__img-list-items-header">
-                        <TextField
-                          id="outlined-multiline-flexible"
-                          label="Tình trạng"
-                          value={info.label.split("_").join("\n")}
-                          multiline // multiline của TextField MUI đang lỗi
-                          maxRows={1}
-                          style={{ height: "70%", marginTop: "7px" }}
-                          disabled
-                        />
+                  return (
+                    <>
+                      <ImageListItem key={index}>
+                        <div className="modal-afterfly__img-list-items-header">
+                          <TextField
+                            id="outlined-multiline-flexible"
+                            label="Tình trạng"
+                            value={info.label.split("_").join("\n")}
+                            multiline // multiline của TextField MUI đang lỗi
+                            maxRows={1}
+                            style={{ height: "70%", marginTop: "7px" }}
+                            disabled
+                          />
 
-                        <div>
-                          {/* Zoom Dialog */}
-                          {zoomingDialog(info)}
+                          <div>
+                            {/* Zoom Dialog */}
+                            {zoomingDialog(info)}
 
-                          {/* Edit label Dialog */}
-                          {editLabelDialog(info)}
+                            {/* Edit label Dialog */}
+                            {editLabelDialog(info)}
+                          </div>
                         </div>
-                      </div>
 
-                      <label
-                        for={`choose-img-${info.img_path}`}
-                        className={`modal-afterfly__img-list-items-label ${
-                          info.sent_check === 1 ? "hadsubmitted" : ""
-                        } ${
-                          selectedLabels.includes(info.img_path) ||
-                          info.sent_check === 1
-                            ? "choosed"
-                            : ""
-                        }`}
-                        onClick={() => handleLabelClick(info.img_path)}
-                      >
-                        <img
-                          src={process.env.REACT_APP_IMG + info.img_path}
-                          srcSet={process.env.REACT_APP_IMG + info.img_path}
-                          alt={info.img_path}
-                          loading="lazy"
-                          width={"100%"}
-                          height={"100%"}
-                        />
-                      </label>
+                        <label
+                          for={`choose-img-${info.img_path}`}
+                          className={`modal-afterfly__img-list-items-label ${
+                            info.sent_check === 1 ? "hadsubmitted" : ""
+                          } ${
+                            selectedLabels.includes(info.img_path) ||
+                            info.sent_check === 1
+                              ? "choosed"
+                              : ""
+                          }`}
+                          onClick={() => handleLabelClick(info.img_path)}
+                        >
+                          <img
+                            src={process.env.REACT_APP_IMG + info.img_path}
+                            srcSet={process.env.REACT_APP_IMG + info.img_path}
+                            alt={info.img_path}
+                            loading="lazy"
+                            width={"100%"}
+                            height={"100%"}
+                          />
+                        </label>
 
-                      {selectedLabels.includes(info.img_path) ? (
-                        <div className="checkmark-hadchoosed"></div>
-                      ) : (
-                        <></>
-                      )}
+                        {selectedLabels.includes(info.img_path) ? (
+                          <div className="checkmark-hadchoosed"></div>
+                        ) : (
+                          <></>
+                        )}
 
-                      {info.sent_check === 1 ? (
-                        <div className="checkmark-hadsent"></div>
-                      ) : (
-                        <></>
-                      )}
-                    </ImageListItem>
+                        {info.sent_check === 1 ? (
+                          <div className="checkmark-hadsent"></div>
+                        ) : (
+                          <></>
+                        )}
+                      </ImageListItem>
 
-                    <input
-                      id={`choose-img-${info.img_path}`}
-                      type="checkbox"
-                      value={info.img_path}
-                      style={{
-                        display: "none",
-                      }}
-                      onChange={handleInputClick}
-                    />
-                  </>
-                );
-              })}
+                      <input
+                        id={`choose-img-${info.img_path}`}
+                        type="checkbox"
+                        value={info.img_path}
+                        style={{
+                          display: "none",
+                        }}
+                        onChange={handleInputClick}
+                      />
+                    </>
+                  );
+                })}
             </ImageList>
 
             {nextImg[vt].loaded < imgList2[vt]?.length && (
               <Button
-              className="modal-afterfly__load-more-btn"
+                className="modal-afterfly__load-more-btn"
                 variant="outlined"
                 onClick={() => handleLoadMore(vt)}
               >

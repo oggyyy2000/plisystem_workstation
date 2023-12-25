@@ -19,7 +19,6 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
 
   // lay cam tu uav
   const [devices, setDevices] = useState([]);
-  // console.log("devices", devices[0]);
 
   const handleDevices = useCallback(
     (mediaDevices) =>
@@ -53,9 +52,6 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
               alignItems: "center",
             },
           }}
-          // PaperProps={{
-          //   sx: { height: "681px", width: "1535px", maxWidth: "1535px" },
-          // }}
           fullWidth
           maxWidth={"xl"}
         >
@@ -108,8 +104,6 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
             <table>
               <tr>
                 <td>VTHT: {currentvt}</td>
-                {/* <td>VTHT: </td> */}
-
                 <td>
                   <span>Longtitude: {parseFloat(currentlocation.longtitude)} </span> <br />
                   <span>Latitude: {parseFloat(currentlocation.latitude)} </span> <br />

@@ -192,18 +192,7 @@ const MainFlight = () => {
           <FlightTakeoffIcon />
         </Button>
 
-        <Dialog
-          open={open}
-          PaperProps={
-            tab === 0
-              ? {
-                  sx: { maxWidth: "100%", width: "515px", height: "410px" },
-                }
-              : {
-                  sx: { maxWidth: "100%", width: "515px", height: "350px" },
-                }
-          }
-        >
+        <Dialog open={open} fullWidth maxWidth={"sm"}>
           <Tabs
             value={tab}
             onChange={handleChangeTabs}
