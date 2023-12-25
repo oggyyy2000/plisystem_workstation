@@ -49,13 +49,15 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
           onClose={() => setOpenZoomView(false)}
           sx={{
             "& .MuiDialog-container": {
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
+              justifyContent: "center",
+              alignItems: "center",
             },
           }}
-          PaperProps={{
-            sx: { height: "681px", width: "1535px", maxWidth: "1535px" },
-          }}
+          // PaperProps={{
+          //   sx: { height: "681px", width: "1535px", maxWidth: "1535px" },
+          // }}
+          fullWidth
+          maxWidth={"xl"}
         >
           <div className="info-panel__camera-zoom-dialog">
             {/* {devices.find(({ label }) =>
@@ -108,11 +110,11 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
                 <td>VTHT: {currentvt}</td>
                 {/* <td>VTHT: </td> */}
 
-                <td rowSpan={2}>
-                  Longtitude: {parseFloat(currentlocation.longtitude)} <br />
-                  Latitude: {parseFloat(currentlocation.latitude)} <br />
-                  Altitude: {parseFloat(currentlocation.altitude)}
-                </td>
+                <td>
+                  <span>Longtitude: {parseFloat(currentlocation.longtitude)} </span> <br />
+                  <span>Latitude: {parseFloat(currentlocation.latitude)} </span> <br />
+                  <span>Altitude: {parseFloat(currentlocation.altitude)} </span>
+                 </td>
               </tr>
             </table>
           </div>

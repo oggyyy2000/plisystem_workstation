@@ -58,16 +58,17 @@
 .info-panel__tableinfo table {
   width: 100%;
   height: 100%;
-  border: 3px solid black;
+  border: 1px solid black;
   border-collapse: collapse;
 }
 
 .info-panel__tableinfo table tr td {
-  border: 2px solid black;
+  border: 1px solid black;
+  vertical-align: center;
 }
 
 .info-panel__cameraview {
-  height: 227.5px;
+  height: fit-content;
   width: 100%;
   position: relative;
 }
