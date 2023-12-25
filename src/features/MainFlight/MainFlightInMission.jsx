@@ -49,13 +49,15 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
           onClose={() => setOpenZoomView(false)}
           sx={{
             "& .MuiDialog-container": {
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
+              justifyContent: "center",
+              alignItems: "center",
             },
           }}
-          PaperProps={{
-            sx: { height: "681px", width: "1535px", maxWidth: "1535px" },
-          }}
+          // PaperProps={{
+          //   sx: { height: "681px", width: "1535px", maxWidth: "1535px" },
+          // }}
+          fullWidth
+          maxWidth={"xl"}
         >
           <div className="info-panel__camera-zoom-dialog">
             {/* {devices.find(({ label }) =>
