@@ -71,7 +71,6 @@ const FlightManageMap = () => {
           setMissionData(
             res.data.data.find((id) => id.schedule_id === missionId)
           );
-          // console.log(typeof res.data.data);
         })
         .catch((err) => {
           console.log(err);

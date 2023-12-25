@@ -18,8 +18,19 @@
 .flight-manage__list-VT-container,
 .flight-manage__list-TB-container {
   border: 1px solid black;
+  overflow-y: auto;
 }
 
-.flight-manage__image-slide-container {
+.flight-manage__list-VT-container {
   border: 1px solid black;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 70px);
+  grid-gap: 10px;
+  padding: 10px;
+  height: fit-content;
+}
+
+.flight-manage__list-TB-container {
+  display: flex;
+  flex-wrap: wrap;
 }

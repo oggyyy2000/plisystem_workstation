@@ -1,5 +1,4 @@
 import React from "react";
-import { Grid } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 
@@ -25,9 +24,7 @@ const FlightManageListTB = () => {
           if (typeof VTdetail.data[nameTB] !== "string") {
             return (
               <>
-                <Grid
-                  item
-                  xs={12}
+                <div
                   className={`list-TB__container ${
                     error
                       ? "list-TB__container--error"
@@ -41,7 +38,7 @@ const FlightManageListTB = () => {
                   ) : (
                     <CheckCircleIcon fontSize="large" color="success" />
                   )}
-                </Grid>
+                </div>
               </>
             );
           } else {

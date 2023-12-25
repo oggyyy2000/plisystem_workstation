@@ -25,9 +25,6 @@ const FlightManageListVT = () => {
       axios
         .get(urlhomePageView)
         .then((res) => {
-          // console.log(res)
-          // console.log(res.data.data.find((el) => el.schedule_id == missionId));
-          // console.log(missionId);
           setMissionData(
             res.data.data.find((id) => id.schedule_id === missionId)
           );
@@ -59,7 +56,6 @@ const FlightManageListVT = () => {
       <>
         {typeof missionData.supervision_results !== "string" ? (
           Object.keys(missionData.supervision_results).map((item) => {
-            // console.log(Object.values(missionData.supervision_results));
             let error = false;
             const handleListVTClick = () => {
               dispatch({
@@ -72,8 +68,6 @@ const FlightManageListVT = () => {
             };
             Object.keys(missionData.supervision_results[item]).forEach(
               (item2) => {
-                // console.log(missionData.supervision_results[item][item2]);
-
                 if (missionData.supervision_results[item][item2].length > 0) {
                   error = true;
                 }
@@ -82,7 +76,7 @@ const FlightManageListVT = () => {
             return (
               <>
                 <div
-                  className={`home-listVT-item ${
+                  className={`listVT-item ${
                     VTdetail.name === item ? "error" : ""
                   }`}
                   onClick={handleListVTClick}
@@ -117,13 +111,7 @@ const FlightManageListVT = () => {
     );
   };
 
-  return (
-    <>
-      <div className="home-listVT-container">
-        {missionData && missionData.supervision_results && renderVT()}
-      </div>
-    </>
-  );
+  return <>{missionData && missionData.supervision_results && renderVT()}</>;
 };
 
 export default FlightManageListVT;
