@@ -8,6 +8,7 @@
   border-left: 1px solid black;
   border-right: 1px solid black;
   overflow-y: auto;
+  height: 99.9%;
 }
 
 .list-mission-items__container {
@@ -70,10 +71,11 @@
 .modal-mission-data__body {
   height: 100%;
   padding: 0 !important;
+  overflow: hidden;
 }
 
 .modal-mission-data__img-list {
-  height: fit-content;
+  height: 99.9%;
   overflow-y: auto;
   text-align: center;
 }

@@ -315,7 +315,7 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
         xem dữ liệu
       </Button>
 
-      <Dialog fullScreen open={open} onClose={() => setOpen(false)}>
+      <Dialog fullScreen open={open}>
         <DialogTitle className="modal-mission-data__header">
           <FormControlLabel
             className="modal-mission-data__form-label"
