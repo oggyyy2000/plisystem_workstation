@@ -21,7 +21,11 @@ const FlightManage = () => {
           <Grid
             container
             xs={2}
-            sx={{ display: "grid", gridTemplateRows: "1fr 1.65fr" }}
+            sx={{
+              display: "grid",
+              gridTemplateRows: "1fr 1.5fr",
+              height: "100%",
+            }}
           >
             <Grid item xs={12} className="flight-manage__list-VT-container">
               <FlightManageListVT />

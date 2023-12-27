@@ -18,16 +18,17 @@
 .flight-manage__list-VT-container,
 .flight-manage__list-TB-container {
   border: 1px solid black;
+  height: 100%;
   overflow-y: auto;
 }
 
 .flight-manage__list-VT-container {
   border: 1px solid black;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 70px);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   grid-gap: 10px;
   padding: 10px;
-  height: fit-content;
 }
 
 .flight-manage__list-TB-container {
