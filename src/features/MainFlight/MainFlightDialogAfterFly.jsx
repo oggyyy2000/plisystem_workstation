@@ -5,19 +5,16 @@ import axios from "axios";
 import {
   Button,
   Dialog,
+  DialogTitle,
   DialogActions,
   DialogContent,
-  Box,
   TextField,
   Backdrop,
-  Modal,
-  Fade,
   FormControlLabel,
   Checkbox,
   Grid,
   ImageList,
   ImageListItem,
-  DialogTitle,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CropFreeIcon from "@mui/icons-material/CropFree";
@@ -35,10 +32,10 @@ const errorLabel = [
   "troita",
 ];
 
-const imagePerRow = 3;
+const imagePerRow = 6;
 
 const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
-  const [openModalAfterFly, setOpenModalAfterFly] = useState(false);
+  const [openModalAfterFly, setOpenModalAfterFly] = useState(true);
   const [errorImageBoxChecked, setErrorImageBoxChecked] = useState(false);
   const [imageNewLabels, setImageNewLabels] = useState([]);
   const [imgList2, setImgList2] = useState({});
@@ -304,165 +301,139 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
     return Object.keys(imgList2).map((vt) => {
       return (
         <>
-          <div>
-            <div className="line-seperate-items"></div>
+          <div className="line-seperate-items"></div>
 
-            <div className="modal-afterfly__img-list-title">{vt}</div>
+          <div className="modal-afterfly__img-list-title">{vt}</div>
 
-            <ImageList
-              sx={{
-                position: "relative",
-                overflowY: "hidden",
-              }}
-              cols={3}
-            >
-              {imgList2[vt]
-                ?.slice(0, nextImg[vt].loaded)
-                ?.map((info, index) => {
-                  return (
-                    <>
-                      <ImageListItem key={index}>
-                        <div className="modal-afterfly__img-list-items-header">
-                          <TextField
-                            id="outlined-multiline-flexible"
-                            label="Tình trạng"
-                            value={info.label.split("_").join("\n")}
-                            multiline // multiline của TextField MUI đang lỗi
-                            maxRows={1}
-                            style={{ height: "70%", marginTop: "7px" }}
-                            disabled
-                          />
-
-                          <div>
-                            {/* Zoom Dialog */}
-                            {zoomingDialog(info)}
-
-                            {/* Edit label Dialog */}
-                            {editLabelDialog(info)}
-                          </div>
-                        </div>
-
-                        <label
-                          for={`choose-img-${info.img_path}`}
-                          className={`modal-afterfly__img-list-items-label ${
-                            info.sent_check === 1 ? "hadsubmitted" : ""
-                          } ${
-                            selectedLabels.includes(info.img_path) ||
-                            info.sent_check === 1
-                              ? "choosed"
-                              : ""
-                          }`}
-                          onClick={() => handleLabelClick(info.img_path)}
-                        >
-                          <img
-                            src={process.env.REACT_APP_IMG + info.img_path}
-                            srcSet={process.env.REACT_APP_IMG + info.img_path}
-                            alt={info.img_path}
-                            loading="lazy"
-                            width={"100%"}
-                            height={"100%"}
-                          />
-                        </label>
-
-                        {selectedLabels.includes(info.img_path) ? (
-                          <div className="checkmark-hadchoosed"></div>
-                        ) : (
-                          <></>
-                        )}
-
-                        {info.sent_check === 1 ? (
-                          <div className="checkmark-hadsent"></div>
-                        ) : (
-                          <></>
-                        )}
-                      </ImageListItem>
-
-                      <input
-                        id={`choose-img-${info.img_path}`}
-                        type="checkbox"
-                        value={info.img_path}
-                        style={{
-                          display: "none",
-                        }}
-                        onChange={handleInputClick}
+          <ImageList
+            sx={{
+              position: "relative",
+              overflowY: "hidden",
+            }}
+            cols={3}
+          >
+            {imgList2[vt]?.slice(0, nextImg[vt].loaded)?.map((info, index) => {
+              return (
+                <>
+                  <ImageListItem key={index}>
+                    <div className="modal-afterfly__img-list-items-header">
+                      <TextField
+                        id="outlined-multiline-flexible"
+                        label="Tình trạng"
+                        value={info.label.split("_").join("\n")}
+                        multiline // multiline của TextField MUI đang lỗi
+                        maxRows={1}
+                        style={{ height: "70%", marginTop: "7px" }}
+                        disabled
                       />
-                    </>
-                  );
-                })}
-            </ImageList>
 
-            {nextImg[vt].loaded < imgList2[vt]?.length && (
-              <Button
-                className="modal-afterfly__load-more-btn"
-                variant="outlined"
-                onClick={() => handleLoadMore(vt)}
-              >
-                Load more
-              </Button>
-            )}
-          </div>
+                      <div>
+                        {/* Zoom Dialog */}
+                        {zoomingDialog(info)}
+
+                        {/* Edit label Dialog */}
+                        {editLabelDialog(info)}
+                      </div>
+                    </div>
+
+                    <label
+                      for={`choose-img-${info.img_path}`}
+                      className={`modal-afterfly__img-list-items-label ${
+                        info.sent_check === 1 ? "hadsubmitted" : ""
+                      } ${
+                        selectedLabels.includes(info.img_path) ||
+                        info.sent_check === 1
+                          ? "choosed"
+                          : ""
+                      }`}
+                      onClick={() => handleLabelClick(info.img_path)}
+                    >
+                      <img
+                        src={process.env.REACT_APP_IMG + info.img_path}
+                        srcSet={process.env.REACT_APP_IMG + info.img_path}
+                        alt={info.img_path}
+                        loading="lazy"
+                        width={"100%"}
+                        height={"100%"}
+                      />
+                    </label>
+
+                    {selectedLabels.includes(info.img_path) ? (
+                      <div className="checkmark-hadchoosed"></div>
+                    ) : (
+                      <></>
+                    )}
+
+                    {info.sent_check === 1 ? (
+                      <div className="checkmark-hadsent"></div>
+                    ) : (
+                      <></>
+                    )}
+                  </ImageListItem>
+
+                  <input
+                    id={`choose-img-${info.img_path}`}
+                    type="checkbox"
+                    value={info.img_path}
+                    style={{
+                      display: "none",
+                    }}
+                    onChange={handleInputClick}
+                  />
+                </>
+              );
+            })}
+          </ImageList>
+
+          {nextImg[vt].loaded < imgList2[vt]?.length && (
+            <Button
+              className="modal-afterfly__load-more-btn"
+              variant="outlined"
+              onClick={() => handleLoadMore(vt)}
+            >
+              Load more
+            </Button>
+          )}
         </>
       );
     });
   };
 
   return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
-      open={openModalAfterFly}
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 500,
-        },
-      }}
-    >
-      <Fade in={openModalAfterFly}>
-        <Box
-          className="modal-afterfly"
-          sx={{
-            bgcolor: "background.paper",
-          }}
-        >
-          <Grid container spacing={0}>
-            <Grid item className="modal-afterfly__header" xs={12}>
-              <FormControlLabel
-                className="modal-afterfly__form-label"
-                control={<Checkbox />}
-                label="Ảnh bất thường"
-                onChange={handleErrorImageBoxChecked}
-              />
+    <Dialog fullWidth maxWidth={"xl"} open={openModalAfterFly}>
+      <DialogTitle className="modal-afterfly__header">
+        <FormControlLabel
+          className="modal-afterfly__form-label"
+          control={<Checkbox />}
+          label="Ảnh bất thường"
+          onChange={handleErrorImageBoxChecked}
+        />
 
-              <div className="modal-afterfly__btn-group">
-                <Button
-                  className="modal-afterfly__submit-btn"
-                  variant="outlined"
-                  onClick={handleSubmitErrorImage}
-                >
-                  SUBMIT
-                </Button>
+        <div className="modal-afterfly__btn-group">
+          <Button
+            className="modal-afterfly__submit-btn"
+            variant="outlined"
+            onClick={handleSubmitErrorImage}
+          >
+            SUBMIT
+          </Button>
 
-                <Button
-                  className="modal-afterfly__close-btn"
-                  color="error"
-                  variant="contained"
-                  onClick={() => setOpenModalAfterFly(false)}
-                >
-                  <CloseIcon fontSize="small" />
-                </Button>
-              </div>
-            </Grid>
-            <Grid item className="modal-afterfly__body" xs={12}>
-              <div className="modal-afterfly__img-list">
-                {getImgData !== "" && renderImageList()}
-              </div>
-            </Grid>
-          </Grid>
-        </Box>
-      </Fade>
-    </Modal>
+          <Button
+            className="modal-afterfly__close-btn"
+            color="error"
+            variant="contained"
+            onClick={() => setOpenModalAfterFly(false)}
+          >
+            <CloseIcon fontSize="small" />
+          </Button>
+        </div>
+      </DialogTitle>
+      <DialogContent className="modal-afterfly__body">
+        <Grid item className="modal-afterfly__img-list" xs={12}>
+          {getImgData !== "" && renderImageList()}
+        </Grid>
+      </DialogContent>
+    </Dialog>
   );
 };
 

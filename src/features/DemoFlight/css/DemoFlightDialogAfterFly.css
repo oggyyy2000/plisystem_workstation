@@ -50,7 +50,7 @@
   transform: translate(-50%, -50%);
   height: 95%;
   width: 91%;
-  border: 2px solid #000;
+  /* border: 2px solid #000; */
   box-shadow: 24;
   padding-right: 0;
 }
@@ -84,15 +84,15 @@
   justify-items: center;
 }
 
-.modal-afterfly__body {
+/* .modal-afterfly__body {
   height: 95.5%;
   border: 1px solid black;
-}
+} */
 
-.modal-afterfly__img-list {
+/* .modal-afterfly__img-list {
   height: 90vh;
   overflow-y: auto;
-}
+} */
 
 .modal-afterfly__img-list-title {
   text-align: center;

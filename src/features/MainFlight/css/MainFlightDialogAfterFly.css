@@ -1,19 +1,9 @@
-/* khung modal after fly */
-.modal-afterfly {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: 95%;
-  width: 91%;
-  border: 2px solid #000;
-  box-shadow: 24;
-  padding-right: 0;
-}
-
 .modal-afterfly__header {
+  height: fit-content;
   display: flex;
   justify-content: space-between;
+  padding: 0px !important;
+  border-bottom: 1px solid black;
 }
 
 .modal-afterfly__form-label {
@@ -41,12 +31,13 @@
 }
 
 .modal-afterfly__body {
-  height: 95.5%;
-  border: 1px solid black;
+  height: 100vh;
+  padding: 0 !important;
+  overflow: hidden;
 }
 
 .modal-afterfly__img-list {
-  height: 90vh;
+  height: 99.9%;
   overflow-y: auto;
   text-align: center;
 }
