@@ -1,25 +1,20 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { WSContext } from "../../components/context/WSContext";
 import axios from "axios";
 
-import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
+  DialogTitle,
   Box,
   InputLabel,
   MenuItem,
   FormControl,
   Select,
   TextField,
-  Tabs,
-  Tab,
-  Typography,
 } from "@mui/material";
 
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
@@ -30,39 +25,6 @@ import MainFlightDefectList from "./MainFlightDefectList";
 import MainFlightInMission from "./MainFlightInMission";
 import MainFlightMap from "./MainFlightMap";
 import MainFlightDialogAfterFly from "./MainFlightDialogAfterFly";
-
-const CustomTabPanel = (props) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-};
-
-CustomTabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-const a11yProps = (index) => {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-};
 
 const MainFlight = () => {
   const [open, setOpen] = useState(true);
@@ -81,7 +43,6 @@ const MainFlight = () => {
 
   //modal addmission variable
   const [hadSubmited, setHadSubmited] = useState(false);
-  const [tab, setTab] = useState(0);
   var dt = new Date();
   var date = `${dt.getFullYear().toString().padStart(4, "0")}-${(
     dt.getMonth() + 1
@@ -193,138 +154,82 @@ const MainFlight = () => {
         </Button>
 
         <Dialog open={open} fullWidth maxWidth={"sm"}>
-          <Tabs
-            value={tab}
-            onChange={handleChangeTabs}
-            aria-label="basic tabs example"
+          <DialogTitle
+            sx={{
+              display: "flex",
+              textAlign: "center",
+              textTransform: "uppercase",
+              borderBottom: "1px solid black",
+              backgroundColor: "#1976d2",
+              color: "white"
+            }}
           >
-            <Tab label="giám sát thiết bị" {...a11yProps(0)} />
-            <Tab label="giám sát hành lang" {...a11yProps(1)} />
-
+            <span>Thông tin giám sát</span>
             <div className="add-mission-dialog__icon">
-              <FlightTakeoffIcon color="primary" fontSize="large" />
+              <FlightTakeoffIcon color="white" fontSize="large" />
             </div>
-          </Tabs>
+          </DialogTitle>
 
-          {tab === 0 && (
-            <CustomTabPanel value={tab} index={0}>
-              <DialogContent>
-                <DialogContentText>
-                  Thông tin:
-                  <Box className="add-mission-dialog__select-date-textfield">
-                    <TextField
-                      label="Ngày quay"
-                      type="date"
-                      value={DateDB}
-                      defaultValue={values.someDate}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      onChange={onChangeDateDB}
-                    />
-                  </Box>
-                  <Box className="add-mission-dialog__select-tuyen-form">
-                    <FormControl fullWidth>
-                      <InputLabel>Tên Tuyến</InputLabel>
-                      <Select
-                        value={tuyen}
-                        label="Tên Tuyến"
-                        onChange={onChangeSelectTuyen}
-                        defaultValue={""}
-                      >
-                        <MenuItem value={"T87"}>Mai Động-Thanh Nhàn</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Box>
-                  <Box className="add-mission-dialog__select-superviseType-form">
-                    <FormControl fullWidth>
-                      <InputLabel>Kiểu giám sát</InputLabel>
-                      <Select
-                        value={superviseType}
-                        label="Kiểu giám sát"
-                        onChange={onChangeSelectSuperviseType}
-                        defaultValue={""}
-                      >
-                        <MenuItem value={"day"}>Dây</MenuItem>
-                        <MenuItem value={"thietbi"}>Thiết bị</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Box>
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => handleClose()} color="primary">
-                  Hủy
-                </Button>
-                {tuyen != null && hadSubmited === false ? (
-                  <Button onClick={handleSubmitInfoBeforeFly} color="primary">
-                    Xác nhận
-                  </Button>
-                ) : (
-                  <Button disabled>
-                    {hadSubmited === false ? "Xác nhận" : "Đang xử lý..."}
-                  </Button>
-                )}
-              </DialogActions>
-            </CustomTabPanel>
-          )}
-          {tab === 1 && (
-            <CustomTabPanel value={tab} index={1}>
-              <DialogContent>
-                <DialogContentText>
-                  Thông tin:
-                  <Box className="add-mission-dialog__select-date-textfield">
-                    <TextField
-                      id="date"
-                      label="Ngày quay"
-                      type="date"
-                      value={DateDB}
-                      defaultValue={values.someDate}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      onChange={onChangeDateDB}
-                    />
-                  </Box>
-                  <Box className="add-mission-dialog__select-tuyen-form">
-                    <FormControl fullWidth>
-                      <InputLabel>Tên Tuyến</InputLabel>
-                      <Select
-                        id="route"
-                        value={tuyen}
-                        label="IDTuyen"
-                        onChange={onChangeSelectTuyen}
-                        defaultValue={""}
-                      >
-                        <MenuItem value={"T87"}>Mai Động-Thanh Nhàn</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Box>
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setOpen(false)} color="primary">
-                  Hủy
-                </Button>
-                {tuyen != null && hadSubmited === false ? (
-                  <Button onClick={handleSubmitInfoBeforeFly} color="primary">
-                    Xác nhận
-                  </Button>
-                ) : (
-                  <Button disabled>
-                    {hadSubmited === false ? "Xác nhận" : "Đang xử lý..."}
-                  </Button>
-                )}
-              </DialogActions>
-            </CustomTabPanel>
-          )}
+          <DialogContent sx={{ padding: "20px 24px !important" }}>
+
+            <Box className="add-mission-dialog__select-date-textfield">
+              <TextField
+                label="Ngày quay"
+                type="date"
+                value={DateDB}
+                defaultValue={values.someDate}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={onChangeDateDB}
+              />
+            </Box>
+            <Box className="add-mission-dialog__select-tuyen-form">
+              <FormControl fullWidth>
+                <InputLabel>Tên Tuyến</InputLabel>
+                <Select
+                  value={tuyen}
+                  label="Tên Tuyến"
+                  onChange={onChangeSelectTuyen}
+                  defaultValue={""}
+                >
+                  <MenuItem value={"T87"}>Mai Động-Thanh Nhàn</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+            <Box className="add-mission-dialog__select-superviseType-form">
+              <FormControl fullWidth>
+                <InputLabel>Kiểu giám sát</InputLabel>
+                <Select
+                  value={superviseType}
+                  label="Kiểu giám sát"
+                  onChange={onChangeSelectSuperviseType}
+                  defaultValue={""}
+                >
+                  <MenuItem value={"day"}>Dây</MenuItem>
+                  <MenuItem value={"thietbi"}>Thiết bị</MenuItem>
+                  <MenuItem value={"hanhlang"}>Hành lang</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </DialogContent>
+          <DialogActions sx={{ padding: "16px 24px" }}>
+            <Button onClick={() => handleClose()} color="primary">
+              Hủy
+            </Button>
+            {tuyen != null && hadSubmited === false ? (
+              <Button onClick={handleSubmitInfoBeforeFly} color="primary">
+                Xác nhận
+              </Button>
+            ) : (
+              <Button disabled>
+                {hadSubmited === false ? "Xác nhận" : "Đang xử lý..."}
+              </Button>
+            )}
+          </DialogActions>
         </Dialog>
       </>
     );
-  };
-
-  const handleChangeTabs = (event, newValue) => {
-    setTab(newValue);
   };
 
   const onChangeDateDB = (e) => {
