@@ -47,11 +47,11 @@ const Navbar = [
     ten_navbar: "Quản lý dữ liệu",
     url: "/FlightManage",
   },
-  {
-    index: 2,
-    ten_navbar: "Hành lang tuyến",
-    url: "/PowerlineCorridor",
-  },
+  // {
+  //   index: 2,
+  //   ten_navbar: "Hành lang tuyến",
+  //   url: "/PowerlineCorridor",
+  // },
   // {
   //   index: 3,
   //   ten_navbar: "Demo",
