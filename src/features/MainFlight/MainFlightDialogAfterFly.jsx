@@ -35,7 +35,7 @@ const errorLabel = [
 const imagePerRow = 6;
 
 const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
-  const [openModalAfterFly, setOpenModalAfterFly] = useState(true);
+  const [openModalAfterFly, setOpenModalAfterFly] = useState(false);
   const [errorImageBoxChecked, setErrorImageBoxChecked] = useState(false);
   const [imageNewLabels, setImageNewLabels] = useState([]);
   const [imgList2, setImgList2] = useState({});
