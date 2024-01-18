@@ -15,6 +15,7 @@ import {
   FormControl,
   Select,
   TextField,
+  Autocomplete,
 } from "@mui/material";
 
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
@@ -25,6 +26,14 @@ import MainFlightDefectList from "./MainFlightDefectList";
 import MainFlightInMission from "./MainFlightInMission";
 import MainFlightMap from "./MainFlightMap";
 import MainFlightDialogAfterFly from "./MainFlightDialogAfterFly";
+
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+};
+
+const csrfToken = getCookie("csrftoken");
 
 const MainFlight = () => {
   const [open, setOpen] = useState(true);
@@ -53,11 +62,11 @@ const MainFlight = () => {
     someDate: date,
   };
   const [DateDB, setDateDB] = useState(date);
-  console.log(DateDB);
-  const [tuyen, setTuyen] = useState();
-  console.log(tuyen);
-  const [superviseType, setSuperviseType] = useState();
-  console.log(superviseType);
+  const [idTuyen, setIdTuyen] = useState("");
+  console.log(idTuyen);
+  const [superviseType, setSuperviseType] = useState("");
+  const [tenTuyen, setTenTuyen] = useState([]);
+  console.log(tenTuyen);
 
   //map variable
   const [zoom, setZoom] = useState(17);
@@ -119,6 +128,20 @@ const MainFlight = () => {
     }
   }, [startFly, streetLine, ws, disconnect]);
 
+  useEffect(() => {
+    const powerlines = process.env.REACT_APP_API_URL + "showpowerlines/";
+
+    axios
+      .get(powerlines)
+      .then((res) => {
+        console.log("data:", res.data);
+        setTenTuyen(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   // ---------- Add Info for mission dialog ----------
 
   const handleClickOpen = () => {
@@ -127,7 +150,7 @@ const MainFlight = () => {
     setStartFly(false);
     setFlightComplete(false);
     setHadSubmited(false);
-    setTuyen("");
+    setIdTuyen("");
     setSuperviseType("");
     setCurrentLocation({});
     setZoom(17);
@@ -161,7 +184,7 @@ const MainFlight = () => {
               textTransform: "uppercase",
               borderBottom: "1px solid black",
               backgroundColor: "#1976d2",
-              color: "white"
+              color: "white",
             }}
           >
             <span>Thông tin giám sát</span>
@@ -170,8 +193,9 @@ const MainFlight = () => {
             </div>
           </DialogTitle>
 
-          <DialogContent sx={{ padding: "20px 24px !important" }}>
-
+          <DialogContent
+            sx={{ padding: "20px 24px !important", overflowY: "hidden" }}
+          >
             <Box className="add-mission-dialog__select-date-textfield">
               <TextField
                 label="Ngày quay"
@@ -185,17 +209,16 @@ const MainFlight = () => {
               />
             </Box>
             <Box className="add-mission-dialog__select-tuyen-form">
-              <FormControl fullWidth>
-                <InputLabel>Tên Tuyến</InputLabel>
-                <Select
-                  value={tuyen}
-                  label="Tên Tuyến"
-                  onChange={onChangeSelectTuyen}
-                  defaultValue={""}
-                >
-                  <MenuItem value={"T87"}>Mai Động-Thanh Nhàn</MenuItem>
-                </Select>
-              </FormControl>
+              <Autocomplete
+                options={tenTuyen}
+                getOptionLabel={(option) => option.powerline_name}
+                onChange={(event, newValue) => {
+                  onChangeSelectTuyen(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Tên Tuyến" />
+                )}
+              />
             </Box>
             <Box className="add-mission-dialog__select-superviseType-form">
               <FormControl fullWidth>
@@ -217,7 +240,7 @@ const MainFlight = () => {
             <Button onClick={() => handleClose()} color="primary">
               Hủy
             </Button>
-            {tuyen != null && hadSubmited === false ? (
+            {idTuyen != null && hadSubmited === false ? (
               <Button onClick={handleSubmitInfoBeforeFly} color="primary">
                 Xác nhận
               </Button>
@@ -237,8 +260,8 @@ const MainFlight = () => {
     setDateDB(e.target.value);
   };
 
-  const onChangeSelectTuyen = (e) => {
-    setTuyen(e.target.value);
+  const onChangeSelectTuyen = (value) => {
+    value != null ? setIdTuyen(value.powerline_id) : setIdTuyen("");
   };
 
   const onChangeSelectSuperviseType = (e) => {
@@ -254,7 +277,7 @@ const MainFlight = () => {
     formData.append(
       "data",
       JSON.stringify({
-        powerline_id: tuyen,
+        powerline_id: idTuyen,
         implementation_date: DateDB,
         supervise_type: superviseType,
       })
@@ -274,6 +297,7 @@ const MainFlight = () => {
       const response = await axios.post(urlPostFlightInfo, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "X-CSRFToken": csrfToken,
         },
       });
       console.log(response.data);
