@@ -54,25 +54,23 @@ const FlightManagePrintReportDialog = ({ implementation_date }) => {
 
   console.log("report data: ", reportData);
 
-  const urlGetReportDataAPI =
-    process.env.REACT_APP_PRINT_REPORT_API_URL + "dotkiemtraimports";
-
   useEffect(() => {
+    const urlGetReportDataAPI =
+      process.env.REACT_APP_PRINT_REPORT_API_URL + "dotkiemtraimports";
+
     axios
       .get(urlGetReportDataAPI)
       .then((res) => {
-        res.data.filter((report) => {
-          if (report.ngay_kiem_tra === implementation_date) {
-            return setReportData(report);
-          } else {
-            return [];
-          }
-        });
+        res.data.filter((report) =>
+          report.ngay_kiem_tra === implementation_date
+            ? setReportData(report)
+            : setReportData({})
+        );
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [openPrintReport, urlGetReportDataAPI, implementation_date]);
+  }, [openPrintReport, implementation_date]);
 
   return (
     <>
@@ -143,8 +141,8 @@ const FlightManagePrintReportDialog = ({ implementation_date }) => {
               className="print-report-dialog__list-error-img-container"
             >
               <div className="print-report-dialog__list-error-img">
-                {openPrintReport ? (
-                  reportData?.chi_tiet_kiem_tra.map((details) => {
+                {openPrintReport && Object.keys(reportData).length > 0 ? (
+                  reportData.chi_tiet_kiem_tra.map((details) => {
                     return (
                       <>
                         <div
@@ -183,7 +181,7 @@ const FlightManagePrintReportDialog = ({ implementation_date }) => {
                     );
                   })
                 ) : (
-                  <></>
+                  <h2>Không có dữ liệu !</h2>
                 )}
               </div>
             </Grid>
