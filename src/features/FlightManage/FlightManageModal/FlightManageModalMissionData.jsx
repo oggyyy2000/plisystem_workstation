@@ -22,6 +22,7 @@ import "../css/FlightManageModalMissionData.css";
 import FlightManageZoomingDialog from "./FlightManageZoomingDialog";
 import FlightManageEditLabelDialog from "./FlightManageEditLabelDialog";
 import FlightManagePrintReportDialog from "./PrintReportDialog/FlightManagePrintReportDialog";
+import FlightManageReportInformation from "./FlightManageReportInformation";
 
 const imagePerRow = 3;
 
@@ -327,6 +328,8 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
             <FlightManagePrintReportDialog
               implementation_date={implementation_date}
             />
+
+            <FlightManageReportInformation />
 
             <Button
               className="modal-mission-data__submit-btn"
