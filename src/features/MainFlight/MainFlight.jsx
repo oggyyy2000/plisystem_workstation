@@ -62,11 +62,16 @@ const MainFlight = () => {
     someDate: date,
   };
   const [DateDB, setDateDB] = useState(date);
+  const [idFormReport, setIdFormReport] = useState("");
+  console.log("idFormReport", idFormReport);
   const [idTuyen, setIdTuyen] = useState("");
-  console.log(idTuyen);
+  console.log("idTuyen", idTuyen);
   const [superviseType, setSuperviseType] = useState("");
+  console.log("superviseType", superviseType);
+  const [UAVname, setUAVname] = useState("");
+  console.log("UAVname", UAVname);
   const [tenTuyen, setTenTuyen] = useState([]);
-  console.log(tenTuyen);
+  console.log("tenTuyen", tenTuyen);
 
   //map variable
   const [zoom, setZoom] = useState(17);
@@ -129,7 +134,7 @@ const MainFlight = () => {
   }, [startFly, streetLine, ws, disconnect]);
 
   useEffect(() => {
-    const powerlines = process.env.REACT_APP_API_URL + "showpowerlines/";
+    const powerlines = process.env.REACT_APP_API_URL + "powerline/";
 
     axios
       .get(powerlines)
@@ -150,7 +155,23 @@ const MainFlight = () => {
     setStartFly(false);
     setFlightComplete(false);
     setHadSubmited(false);
+    setIdFormReport("");
     setIdTuyen("");
+    setUAVname("");
+    setSuperviseType("");
+    setCurrentLocation({});
+    setZoom(17);
+    setDefectInfo([]);
+    setStreetLine([]);
+  };
+
+  const handleRefresh = () => {
+    setStartFly(false);
+    setFlightComplete(false);
+    setHadSubmited(false);
+    setIdFormReport("");
+    setIdTuyen("");
+    setUAVname("");
     setSuperviseType("");
     setCurrentLocation({});
     setZoom(17);
@@ -196,9 +217,17 @@ const MainFlight = () => {
           <DialogContent
             sx={{ padding: "20px 24px !important", overflowY: "hidden" }}
           >
+            <Box className="add-mission-dialog__form-id-textfield">
+              <TextField
+                label="Phiếu kiểm tra"
+                value={idFormReport}
+                defaultValue={""}
+                onChange={onChangeFormId}
+              />
+            </Box>
             <Box className="add-mission-dialog__select-date-textfield">
               <TextField
-                label="Ngày quay"
+                label="Ngày kiểm tra"
                 type="date"
                 value={DateDB}
                 defaultValue={values.someDate}
@@ -220,6 +249,21 @@ const MainFlight = () => {
                 )}
               />
             </Box>
+            <Box className="add-mission-dialog__select-UAV-form">
+              <FormControl fullWidth>
+                <InputLabel>Thiết bị bay</InputLabel>
+                <Select
+                  value={UAVname}
+                  label="Thiết bị bay"
+                  onChange={onChangeSelectUAV}
+                  defaultValue={""}
+                >
+                  <MenuItem value={"Mavic-UAV1"}>Mavic-UAV1</MenuItem>
+                  <MenuItem value={"Mavic-UAV2"}>Mavic-UAV2</MenuItem>
+                  <MenuItem value={"Mavic-UAV3"}>Mavic-UAV3</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
             <Box className="add-mission-dialog__select-superviseType-form">
               <FormControl fullWidth>
                 <InputLabel>Kiểu giám sát</InputLabel>
@@ -237,9 +281,19 @@ const MainFlight = () => {
             </Box>
           </DialogContent>
           <DialogActions sx={{ padding: "16px 24px" }}>
-            <Button onClick={() => handleClose()} color="primary">
-              Hủy
-            </Button>
+            {idFormReport === "" &&
+            idTuyen === "" &&
+            superviseType === "" &&
+            UAVname === "" ? (
+              <Button onClick={() => handleClose()} color="primary">
+                Hủy
+              </Button>
+            ) : (
+              <Button onClick={() => handleRefresh()} color="primary">
+                Chọn lại
+              </Button>
+            )}
+
             {idTuyen != null && hadSubmited === false ? (
               <Button onClick={handleSubmitInfoBeforeFly} color="primary">
                 Xác nhận
@@ -255,6 +309,11 @@ const MainFlight = () => {
     );
   };
 
+  const onChangeFormId = (e) => {
+    e.preventDefault();
+    setIdFormReport(e.target.value);
+  };
+
   const onChangeDateDB = (e) => {
     e.preventDefault();
     setDateDB(e.target.value);
@@ -262,6 +321,10 @@ const MainFlight = () => {
 
   const onChangeSelectTuyen = (value) => {
     value != null ? setIdTuyen(value.powerline_id) : setIdTuyen("");
+  };
+
+  const onChangeSelectUAV = (e) => {
+    setUAVname(e.target.value);
   };
 
   const onChangeSelectSuperviseType = (e) => {

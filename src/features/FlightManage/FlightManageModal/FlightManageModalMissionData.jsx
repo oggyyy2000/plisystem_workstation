@@ -21,7 +21,6 @@ import CropFreeIcon from "@mui/icons-material/CropFree";
 import "../css/FlightManageModalMissionData.css";
 import FlightManageZoomingDialog from "./FlightManageZoomingDialog";
 import FlightManageEditLabelDialog from "./FlightManageEditLabelDialog";
-import FlightManagePrintReportDialog from "./PrintReportDialog/FlightManagePrintReportDialog";
 import FlightManageReportInformation from "./FlightManageReportInformation";
 
 const imagePerRow = 3;
@@ -325,10 +324,6 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
             onChange={(e) => handleErrorImageBoxChecked(e)}
           />
           <div className="modal-mission-data__btn-group">
-            <FlightManagePrintReportDialog
-              implementation_date={implementation_date}
-            />
-
             <FlightManageReportInformation />
 
             <Button

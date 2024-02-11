@@ -17,17 +17,11 @@
   align-items: center;
 }
 
-.add-mission-dialog__select-date-textfield {
-  min-width: 120px;
-  margin-top: 8px;
-}
-
-.add-mission-dialog__select-tuyen-form {
-  margin-top: 8px;
-  min-width: 120px;
-}
-
+.add-mission-dialog__form-id-textfield,
+.add-mission-dialog__select-date-textfield,
+.add-mission-dialog__select-tuyen-form,
+.add-mission-dialog__select-UAV-form,
 .add-mission-dialog__select-superviseType-form {
-  margin-top: 8px;
   min-width: 120px;
+  margin-top: 8px;
 }

@@ -4,11 +4,13 @@ import FlightManage from "./features/FlightManage/FlightManage";
 // import PowerlineCorridor from "./features/PowerlineCorridor/PowerlineCorridor";
 import MainFlight from "./features/MainFlight/MainFlight";
 
+import Login from "./components/Login/Login";
+
 import Page404 from "./components/NavigateErrorTabs/Page404";
 import Redirect404 from "./components/NavigateErrorTabs/Redirect404";
 
 const routes = [
-  { path: "/", element: <MainFlight /> },
+  { path: "/", element: <Login /> },
   { path: "/MainFlight", element: <MainFlight /> },
   // { path: "/DemoFlight", element: <FlightRouteMap /> },
   { path: "/FlightManage", element: <FlightManage /> },
