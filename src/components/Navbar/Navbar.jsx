@@ -1,42 +1,20 @@
-// import PropTypes from "prop-types";
-import React from "react";
-import { useState, useEffect } from "react";
-
-import { Box, Tabs, Tab, AppBar, Typography } from "@mui/material";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
 
 import logo from "../../assets/images/logo.png";
 
-function a11yProps(index) {
-  return {
-    id: `nav-tabmain-${index}`,
-    "aria-controls": `nav-tabmainpanel-${index}`,
-  };
-}
+import styles from "./css/Navbar.module.css";
 
-function LinkTab(props) {
-  return (
-    <>
-      <Tab
-        sx={{
-          color: "white",
-          "&.Mui-selected": {
-            color: "#fff",
-          },
-        }}
-        icon={props.Icon}
-        component={"C"}
-        onClick={() => {
-          props.setValue(props.index);
-          if (props.href !== "visibility") props.navigate(props.href);
-        }}
-        {...props}
-      />
-    </>
-  );
-}
-
-const Navbar = [
+const pages = [
   {
     index: 0,
     ten_navbar: "Bay",
@@ -59,49 +37,23 @@ const Navbar = [
   // },
 ];
 
-export default function MainNavbar() {
-  const [value, setValue] = useState(4);
-  const [prevCurrentPage, setPrevCurrentPage] = useState("");
+const Navbar = () => {
+  const [anchorElNav, setAnchorElNav] = useState(null);
 
-  let navigate = useNavigate();
-  let location = useLocation();
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
 
-  useEffect(() => {
-    var path = window.location.pathname;
-    var item = Navbar.find((x) => x.url === path);
-    if (item) {
-      setValue(item.index);
-      if (prevCurrentPage !== "") {
-        if (prevCurrentPage === "/app/m3d") {
-          window.location.reload();
-        }
-      }
-      setPrevCurrentPage(path);
-    }
-  }, [location, prevCurrentPage]);
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
 
   return (
-    <Box>
-      <div>
-        <AppBar
-          position="static"
-          style={{
-            zIndex: 1,
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <Tabs
-            style={{ width: "96%" }}
-            value={value}
-            variant="scrollable"
-            scrollButtons="auto"
-          >
-            <img
-              src={logo}
-              alt="logo"
-              style={{ width: "50px", height: "50px" }}
-            />
+    <>
+      <AppBar position="static">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <img className={styles.logoNormal} src={logo} alt="logo" />
             <Typography
               variant="h6"
               noWrap
@@ -115,27 +67,94 @@ export default function MainNavbar() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-                lineHeight: "2.6",
               }}
             >
               EPSMARTTECH
             </Typography>
 
-            {Navbar.map((item, index) => (
-              <LinkTab
-                suburl={item.suburl}
-                label={item.ten_navbar}
-                setValue={setValue}
-                index={index}
-                navigate={navigate}
-                href={item.url}
-                icon={item.icon}
-                {...a11yProps(index)}
-              />
-            ))}
-          </Tabs>
-        </AppBar>
-      </div>
-    </Box>
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: "block", md: "none" },
+                }}
+              >
+                {pages.map((page) => (
+                  <MenuItem key={page.index} onClick={handleCloseNavMenu}>
+                    <Button
+                      href={page.url}
+                      sx={{
+                        color: "black",
+                        width: "100%",
+                      }}
+                    >
+                      {page.ten_navbar}
+                    </Button>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+
+            <img className={styles.logoResponsive} src={logo} alt="logo" />
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              href="/MainFlight"
+              sx={{
+                mr: 2,
+                display: { xs: "flex", md: "none" },
+                flexGrow: 1,
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              EPSMARTTECH
+            </Typography>
+
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {pages.map((page) => (
+                <Button
+                  key={page.index}
+                  onClick={handleCloseNavMenu}
+                  href={page.url}
+                  sx={{ ml: 4, color: "white", display: "block" }}
+                >
+                  {page.ten_navbar}
+                </Button>
+              ))}
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </>
   );
-}
+};
+
+export default Navbar;
