@@ -36,8 +36,6 @@
 }
 
 .modal-mission-data__header {
-  display: flex;
-  justify-content: space-between;
   height: fit-content;
   padding: 0px !important;
   border: 1px solid black;
@@ -48,7 +46,7 @@
   height: 33px;
 }
 
-.modal-mission-data__btn-group,
+.modal-mission-data__header,
 .modal-mission-data__submit-btn,
 .modal-mission-data__close-btn {
   display: flex;
@@ -60,7 +58,6 @@
   background-color: #1976d2 !important;
   color: var(--white-color) !important;
   height: 33px;
-  margin-right: 45px !important;
 }
 
 .modal-mission-data__close-btn {

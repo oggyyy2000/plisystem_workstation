@@ -13,17 +13,19 @@ import {
   FormControlLabel,
   Checkbox,
   TextField,
+  DialogActions,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import CropFreeIcon from "@mui/icons-material/CropFree";
+import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 
 import "../css/FlightManageModalMissionData.css";
 import FlightManageZoomingDialog from "./FlightManageZoomingDialog";
 import FlightManageEditLabelDialog from "./FlightManageEditLabelDialog";
 import FlightManageReportInformation from "./FlightManageReportInformation";
 
-const imagePerRow = 3;
+const imagePerRow = 6;
 
 const ModalMissionData = ({ schedule_id, implementation_date }) => {
   // MAIN DIALOG VARIABLE
@@ -105,7 +107,6 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
     labelChanged,
     hadSubmittedError,
     errorImageBoxChecked,
-    selectedLabels,
     open,
     urlGetData,
     getImgData,
@@ -162,10 +163,12 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
 
   // --------- Ham de xu ly pagination --------
   const handleLoadMore = (vt) => {
+    console.log("Before update:", nextImg[vt]);
     setNextImg((prevNextImg) => ({
       ...prevNextImg,
       [vt]: { loaded: prevNextImg[vt].loaded + imagePerRow },
     }));
+    console.log("After update:", nextImg[vt]);
   };
 
   // ------------- Render list error images ---------------
@@ -245,14 +248,19 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
                       />
                     </label>
 
-                    {selectedLabels.includes(info.img_path) ? (
+                    {selectedLabels.includes(info.img_path) &&
+                    info.sent_check === 0 ? (
                       <div className="checkmark-hadchoosed"></div>
                     ) : (
                       <></>
                     )}
 
                     {info.sent_check === 1 ? (
-                      <div className="checkmark-hadsent"></div>
+                      <MarkEmailReadIcon
+                        className="icon-hadsent"
+                        color="info"
+                        fontSize="large"
+                      />
                     ) : (
                       <></>
                     )}
@@ -323,26 +331,14 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
             label="Ảnh bất thường"
             onChange={(e) => handleErrorImageBoxChecked(e)}
           />
-          <div className="modal-mission-data__btn-group">
-            <FlightManageReportInformation />
-
-            <Button
-              className="modal-mission-data__submit-btn"
-              variant="outlined"
-              onClick={handleSubmit}
-            >
-              SUBMIT
-            </Button>
-
-            <Button
-              className="modal-mission-data__close-btn"
-              color="error"
-              variant="contained"
-              onClick={() => setOpen(false)}
-            >
-              <CloseIcon fontSize="small" />
-            </Button>
-          </div>
+          <Button
+            className="modal-mission-data__close-btn"
+            color="error"
+            variant="contained"
+            onClick={() => setOpen(false)}
+          >
+            <CloseIcon fontSize="small" />
+          </Button>
         </DialogTitle>
         <DialogContent className="modal-mission-data__body">
           <Grid container spacing={0} className="modal-mission-data__body">
@@ -354,6 +350,23 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
             </Grid>
           </Grid>
         </DialogContent>
+        <DialogActions
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            border: "1px solid black",
+          }}
+        >
+          <FlightManageReportInformation />
+
+          <Button
+            className="modal-mission-data__submit-btn"
+            variant="outlined"
+            onClick={handleSubmit}
+          >
+            SUBMIT
+          </Button>
+        </DialogActions>
       </Dialog>
     </>
   );

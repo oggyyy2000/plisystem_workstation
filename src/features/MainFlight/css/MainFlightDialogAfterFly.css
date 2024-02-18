@@ -22,7 +22,6 @@
   background-color: #1976d2 !important;
   color: var(--white-color) !important;
   height: 32.5px;
-  margin-right: 45px !important;
 }
 
 .modal-afterfly__close-btn {
@@ -71,4 +70,5 @@
 
 .modal-afterfly__load-more-btn {
   margin-top: 5px !important;
+  margin-bottom: 5px !important;
 }

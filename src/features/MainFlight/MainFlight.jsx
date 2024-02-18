@@ -147,6 +147,10 @@ const MainFlight = () => {
       });
   }, []);
 
+  // useEffect(() => {
+  //   localStorage.removeItem("status");
+  // }, [])
+
   // ---------- Add Info for mission dialog ----------
 
   const handleClickOpen = () => {

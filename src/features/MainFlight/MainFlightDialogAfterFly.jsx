@@ -19,6 +19,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import EditIcon from "@mui/icons-material/Edit";
+import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 
 import "./css/MainFlightDialogAfterFly.css";
 
@@ -51,6 +52,7 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
 
   // pagination
   const [nextImg, setNextImg] = useState({});
+  console.log(nextImg);
 
   const urlPostFlightData = process.env.REACT_APP_API_URL + "flightdatas/";
   const urlGetData =
@@ -358,14 +360,18 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
                       />
                     </label>
 
-                    {selectedLabels.includes(info.img_path) ? (
+                    {selectedLabels.includes(info.img_path) && info.sent_check === 0 ? (
                       <div className="checkmark-hadchoosed"></div>
                     ) : (
                       <></>
                     )}
 
                     {info.sent_check === 1 ? (
-                      <div className="checkmark-hadsent"></div>
+                      <MarkEmailReadIcon
+                        className="icon-hadsent"
+                        color="info"
+                        fontSize="large"
+                      />
                     ) : (
                       <></>
                     )}
@@ -411,14 +417,6 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
 
         <div className="modal-afterfly__btn-group">
           <Button
-            className="modal-afterfly__submit-btn"
-            variant="outlined"
-            onClick={handleSubmitErrorImage}
-          >
-            SUBMIT
-          </Button>
-
-          <Button
             className="modal-afterfly__close-btn"
             color="error"
             variant="contained"
@@ -433,6 +431,21 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
           {getImgData !== "" && renderImageList()}
         </Grid>
       </DialogContent>
+      <DialogActions
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          border: "1px solid black",
+        }}
+      >
+        <Button
+          className="modal-afterfly__submit-btn"
+          variant="outlined"
+          onClick={handleSubmitErrorImage}
+        >
+          SUBMIT
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };

@@ -49,7 +49,7 @@ html {
   border-right: 7px solid #7fff00;
 }
 
-.checkmark-hadchoosed {
+/* .checkmark-hadchoosed {
   position: absolute;
   transform: rotate(45deg);
   height: 50px;
@@ -58,6 +58,25 @@ html {
   margin-left: 50%;
   border-bottom: 7px solid #d2042d;
   border-right: 7px solid #d2042d;
+} */
+
+.checkmark-hadchoosed {
+  position: absolute;
+  transform: rotate(45deg);
+  height: 50px;
+  width: 28px;
+  margin-top: 40%;
+  margin-left: 50%;
+  border-bottom: 7px solid #7fff00;
+  border-right: 7px solid #7fff00;
+}
+
+.icon-hadsent {
+  position: absolute;
+  height: 100px !important;
+  width: 100px !important;
+  margin-top: 30%;
+  margin-left: 41%;
 }
 
 /* Responsive base */
