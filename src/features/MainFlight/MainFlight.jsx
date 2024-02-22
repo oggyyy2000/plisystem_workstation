@@ -1,6 +1,9 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { WSContext } from "../../components/context/WSContext";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+
 import axios from "axios";
 
 import {
@@ -48,8 +51,6 @@ const MainFlight = () => {
   const [DefectInfo, setDefectInfo] = useState([]);
   const [currentLocation, setCurrentLocation] = useState({});
 
-  console.log(currentLocation);
-
   //modal addmission variable
   const [hadSubmited, setHadSubmited] = useState(false);
   var dt = new Date();
@@ -62,11 +63,11 @@ const MainFlight = () => {
     someDate: date,
   };
   const [DateDB, setDateDB] = useState(date);
+  const [idFormReport, setIdFormReport] = useState("");
   const [idTuyen, setIdTuyen] = useState("");
-  console.log(idTuyen);
   const [superviseType, setSuperviseType] = useState("");
+  const [UAVname, setUAVname] = useState("");
   const [tenTuyen, setTenTuyen] = useState([]);
-  console.log(tenTuyen);
 
   //map variable
   const [zoom, setZoom] = useState(17);
@@ -77,6 +78,9 @@ const MainFlight = () => {
   });
 
   const { ws, connect, disconnect } = useContext(WSContext);
+  const [message, setMessage] = useState([]);
+  console.log(message)
+  const [stompClient, setStompClient] = useState(null);
 
   const urlPostFlightInfo =
     process.env.REACT_APP_API_URL + "supervisionstreaming/";
@@ -84,6 +88,10 @@ const MainFlight = () => {
   useEffect(() => {
     connect();
   }, [connect]);
+
+  // useEffect(() => {
+  //   connectStomp();
+  // }, [connectStomp]);
 
   useEffect(() => {
     try {
@@ -96,6 +104,7 @@ const MainFlight = () => {
           setStartFly(false);
           setHadSubmited(false);
           disconnect();
+          stompClient.disconnect();
         }
         console.log("data:", data);
         const gis = data.data.gis;
@@ -121,15 +130,28 @@ const MainFlight = () => {
           if (defectWS.length > 0) {
             setDefectInfo(defectWS);
           }
+
+          // gui ve may chu 
+          const chatMessage = {
+            uav: "UAV.x01",
+            type: "SEND",
+            doc: "T87_2024-02-19_VT1_T87_VT20_T87",
+            longitude: parseFloat(gis.longtitude),
+            latitude: parseFloat(gis.latitude),
+            altitude: parseFloat(gis.altitude),
+            warning: null,
+          };
+      
+          stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         }
       };
     } catch (e) {
       console.log(e);
     }
-  }, [startFly, streetLine, ws, disconnect]);
+  }, [startFly, streetLine, ws, disconnect, stompClient]);
 
   useEffect(() => {
-    const powerlines = process.env.REACT_APP_API_URL + "showpowerlines/";
+    const powerlines = process.env.REACT_APP_API_URL + "powerline/";
 
     axios
       .get(powerlines)
@@ -142,6 +164,23 @@ const MainFlight = () => {
       });
   }, []);
 
+  // useEffect(() => {
+  //   localStorage.removeItem("status");
+  // }, [])
+
+  useEffect(() => {
+    const socket = new SockJS("http://eps.elz.vn:8005/api/a/powerline/ws");
+    const client = Stomp.over(socket);
+    client.connect({}, () => {
+      client.subscribe("/topic/public", (message) => {
+        const receivedMessage = JSON.parse(message.body);
+        setMessage((prevMessage) => [...prevMessage, receivedMessage]);
+      });
+    });
+    setStompClient(client);
+
+  }, []);
+
   // ---------- Add Info for mission dialog ----------
 
   const handleClickOpen = () => {
@@ -150,7 +189,23 @@ const MainFlight = () => {
     setStartFly(false);
     setFlightComplete(false);
     setHadSubmited(false);
+    setIdFormReport("");
     setIdTuyen("");
+    setUAVname("");
+    setSuperviseType("");
+    setCurrentLocation({});
+    setZoom(17);
+    setDefectInfo([]);
+    setStreetLine([]);
+  };
+
+  const handleRefresh = () => {
+    setStartFly(false);
+    setFlightComplete(false);
+    setHadSubmited(false);
+    setIdFormReport("");
+    setIdTuyen("");
+    setUAVname("");
     setSuperviseType("");
     setCurrentLocation({});
     setZoom(17);
@@ -196,9 +251,17 @@ const MainFlight = () => {
           <DialogContent
             sx={{ padding: "20px 24px !important", overflowY: "hidden" }}
           >
+            <Box className="add-mission-dialog__form-id-textfield">
+              <TextField
+                label="Phiếu kiểm tra"
+                value={idFormReport}
+                defaultValue={""}
+                onChange={onChangeFormId}
+              />
+            </Box>
             <Box className="add-mission-dialog__select-date-textfield">
               <TextField
-                label="Ngày quay"
+                label="Ngày kiểm tra"
                 type="date"
                 value={DateDB}
                 defaultValue={values.someDate}
@@ -220,6 +283,21 @@ const MainFlight = () => {
                 )}
               />
             </Box>
+            <Box className="add-mission-dialog__select-UAV-form">
+              <FormControl fullWidth>
+                <InputLabel>Thiết bị bay</InputLabel>
+                <Select
+                  value={UAVname}
+                  label="Thiết bị bay"
+                  onChange={onChangeSelectUAV}
+                  defaultValue={""}
+                >
+                  <MenuItem value={"Mavic-UAV1"}>Mavic-UAV1</MenuItem>
+                  <MenuItem value={"Mavic-UAV2"}>Mavic-UAV2</MenuItem>
+                  <MenuItem value={"Mavic-UAV3"}>Mavic-UAV3</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
             <Box className="add-mission-dialog__select-superviseType-form">
               <FormControl fullWidth>
                 <InputLabel>Kiểu giám sát</InputLabel>
@@ -237,9 +315,19 @@ const MainFlight = () => {
             </Box>
           </DialogContent>
           <DialogActions sx={{ padding: "16px 24px" }}>
-            <Button onClick={() => handleClose()} color="primary">
-              Hủy
-            </Button>
+            {idFormReport === "" &&
+            idTuyen === "" &&
+            superviseType === "" &&
+            UAVname === "" ? (
+              <Button onClick={() => handleClose()} color="primary">
+                Hủy
+              </Button>
+            ) : (
+              <Button onClick={() => handleRefresh()} color="primary">
+                Chọn lại
+              </Button>
+            )}
+
             {idTuyen != null && hadSubmited === false ? (
               <Button onClick={handleSubmitInfoBeforeFly} color="primary">
                 Xác nhận
@@ -255,13 +343,23 @@ const MainFlight = () => {
     );
   };
 
+  const onChangeFormId = (e) => {
+    e.preventDefault();
+    setIdFormReport(e.target.value);
+  };
+
   const onChangeDateDB = (e) => {
     e.preventDefault();
     setDateDB(e.target.value);
   };
 
   const onChangeSelectTuyen = (value) => {
+    console.log(value)
     value != null ? setIdTuyen(value.powerline_id) : setIdTuyen("");
+  };
+
+  const onChangeSelectUAV = (e) => {
+    setUAVname(e.target.value);
   };
 
   const onChangeSelectSuperviseType = (e) => {
@@ -307,11 +405,29 @@ const MainFlight = () => {
     }
   };
 
+  // const sendStompMessage = () => {
+  //   const chatMessage = {
+  //     uav: "UAV.x01",
+  //     type: "SEND",
+  //     doc: "T87_2024-02-19_VT1_T87_VT20_T87",
+  //     longitude: "21.046569",
+  //     latitude: "105.803673",
+  //     altitude: "21",
+  //     warning: null,
+  //   };
+
+  //   stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+  // };
+
   return (
     <>
       <div>
         {/* Modal Addmission*/}
         {AddMissionDialog()}
+
+        {/* <Button variant="outlined" onClick={() => sendStompMessage()}>
+          Send Stomp Message
+        </Button> */}
 
         <MainFlightDefectList
           startfly={startFly}

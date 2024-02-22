@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { VTInfo, MissionId } from "../../redux/selectors";
 
 import errorIcon from "../../assets/images/error-icon.png";
+import markerIcon from "../../assets/images/logo.png";
 import "./css/FlightManageMap.css";
 
 const FlightManageMap = () => {
@@ -21,6 +22,7 @@ const FlightManageMap = () => {
     lng: 105.84322259736739,
   });
   const [missionData, setMissionData] = useState({});
+  console.log(missionData.powerline_coordinates);
   const [GISlist, setGISlist] = useState([]);
   const [nameError, setNameError] = useState();
   const [activeMarker, setActiveMarker] = useState(null);
@@ -45,15 +47,6 @@ const FlightManageMap = () => {
         });
       }
     }
-
-    // Object.values(VTdetail.data).forEach((data) => {
-    //   if (Array.isArray(data)) {
-    //     data.forEach((item) => {
-    //       listGIS.push(item.defect_gis);
-    //       errorName.push(item.defect_name);
-    //     });
-    //   }
-    // });
 
     setGISlist(listGIS);
     setNameError(errorName);
@@ -86,18 +79,24 @@ const FlightManageMap = () => {
     );
   };
 
-  const handleActiveMarker = (marker, item) => {
+  const handleActiveMarker = ({ marker, item }) => {
+    const { latitude, longtitude } = item;
     if (marker === activeMarker) {
       return;
     }
     setActiveMarker(marker);
-    setCenter({ lat: item.latitude, lng: item.longtitude });
+    setCenter({ lat: parseFloat(latitude), lng: parseFloat(longtitude) });
   };
 
   const renderMapwithAMarker = (GISlist, nameError) => {
-    const customIcon = new Icon({
+    const customErrorIcon = new Icon({
       iconUrl: errorIcon,
       iconSize: [30, 30],
+    });
+
+    const customMarkerIcon = new Icon({
+      iconUrl: markerIcon,
+      iconSize: [50, 50],
     });
     return (
       <>
@@ -128,6 +127,42 @@ const FlightManageMap = () => {
                   : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
               }
             />
+            {missionData?.powerline_coordinates?.map((coordinate, index) => {
+              const [latitudeString, longitudeString] = coordinate.split(",");
+              // console.log("latitudeString: ", latitudeString, "longitudeString: ", longitudeString)
+              return (
+                <Marker
+                  key={index}
+                  position={{
+                    lat: parseFloat(latitudeString),
+                    lng: parseFloat(longitudeString),
+                  }}
+                  icon={customMarkerIcon}
+                  onClick={() => {
+                    handleActiveMarker({
+                      index: index,
+                      item: {
+                        latitude: latitudeString,
+                        longtitude: longitudeString,
+                      },
+                    });
+                  }}
+                >
+                  <Popup
+                    position={{
+                      lat: parseFloat(latitudeString),
+                      lng: parseFloat(longitudeString),
+                    }}
+                  >
+                    <Box className="flightmanage-map__popup">
+                      <p>
+                        Tọa độ: {latitudeString} , {longitudeString}
+                      </p>
+                    </Box>
+                  </Popup>
+                </Marker>
+              );
+            })}
             {GISlist.map((item, index) => {
               var latitude = parseFloat(item.latitude);
               var longtitude = parseFloat(item.longtitude);
@@ -136,9 +171,12 @@ const FlightManageMap = () => {
                   <Marker
                     key={index}
                     position={{ lat: latitude, lng: longtitude }}
-                    icon={customIcon}
+                    icon={customErrorIcon}
                     onClick={() => {
-                      handleActiveMarker(index, item);
+                      handleActiveMarker({
+                        index: index,
+                        item: { latitude: latitude, longtitude: longtitude },
+                      });
                     }}
                   >
                     <Popup position={{ lat: latitude, lng: longtitude }}>

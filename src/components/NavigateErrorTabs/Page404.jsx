@@ -13,7 +13,7 @@ export default function Page404() {
           Trang bạn đang tìm kiếm có thể đã bị xóa, đổi tên hoặc tạm thời không
           có sẵn.
         </p>
-        <a href="/Home">Trang Chủ</a>
+        <a href="/MainFlight">Trang Chủ</a>
       </div>
     </div>
   );

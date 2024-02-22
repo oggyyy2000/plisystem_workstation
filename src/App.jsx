@@ -1,18 +1,40 @@
 import React from "react";
-import { useRoutes } from "react-router-dom";
-import MainNavBar from "./components/Navbar/Navbar";
-import routes from "./Routes";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import ActivateNavbar from "./components/customComponents/ActivateNavbar";
+import Navbar from "./components/Navbar/Navbar";
+import { publicRoutes, privateRoutes } from "./routes/routes";
 import WSContextProvider from "./components/context/WSContext";
 
 const App = () => {
-  const tabs = useRoutes(routes); // them va chinh route o file Routes
-
   return (
     <>
-      <WSContextProvider>
-        <MainNavBar />
-        {tabs}
-      </WSContextProvider>
+      <Router>
+        <WSContextProvider>
+          <ActivateNavbar>
+            <Navbar />
+          </ActivateNavbar>
+          <Routes>
+            {publicRoutes.map((publicRoute, index) => {
+              return (
+                <Route
+                  key={index}
+                  path={publicRoute.path}
+                  element={publicRoute.component}
+                />
+              );
+            })}
+            {privateRoutes.map((privateRoute, index) => {
+              return (
+                <Route
+                  key={index}
+                  path={privateRoute.path}
+                  element={privateRoute.component}
+                />
+              );
+            })}
+          </Routes>
+        </WSContextProvider>
+      </Router>
     </>
   );
 };
