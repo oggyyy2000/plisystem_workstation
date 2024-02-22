@@ -1,7 +1,11 @@
 .modal-mission-data__show-modal-btn {
-  background-color: chartreuse !important;
-  color: white !important;
-  width: 50%;
+  /* background-color: chartreuse !important;
+  color: white !important; */
+  border: none;
+}
+
+.modal-mission-data__show-modal-btn:hover {
+  border: none;
 }
 
 .modal-mission-data__list-mission {

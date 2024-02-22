@@ -15,7 +15,13 @@ import {
   Grid,
   ImageList,
   ImageListItem,
+  Box,
+  Tabs,
+  Tab,
+  Typography,
 } from "@mui/material";
+import PropTypes from "prop-types";
+
 import CloseIcon from "@mui/icons-material/Close";
 import CropFreeIcon from "@mui/icons-material/CropFree";
 import EditIcon from "@mui/icons-material/Edit";
@@ -35,6 +41,39 @@ const errorLabel = [
 
 const imagePerRow = 6;
 
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+CustomTabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
 const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
   const [openModalAfterFly, setOpenModalAfterFly] = useState(false);
   const [errorImageBoxChecked, setErrorImageBoxChecked] = useState(false);
@@ -52,7 +91,11 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
 
   // pagination
   const [nextImg, setNextImg] = useState({});
-  console.log(nextImg);
+  // console.log(nextImg.VT5.loaded);
+
+  // split tab
+  const [tab, setTab] = useState(0);
+  const [currentTab, setCurrentTab] = useState(0);
 
   const urlPostFlightData = process.env.REACT_APP_API_URL + "flightdatas/";
   const urlGetData =
@@ -97,6 +140,10 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
     openModalAfterFly,
   ]);
 
+  useEffect(() => {
+    setTab(currentTab);
+  }, [errorImageBoxChecked, currentTab]);
+
   // --------- Ham de xu ly click input va label ---------
   const handleLabelClick = (label) => {
     if (selectedLabels.includes(label)) {
@@ -118,8 +165,9 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
   };
 
   // --------- Ham de loc chi anh bat thuong  ---------
-  const handleErrorImageBoxChecked = (e) => {
+  const handleErrorImageBoxChecked = (e, index) => {
     setErrorImageBoxChecked(e.target.checked);
+    setCurrentTab(index);
   };
 
   // --------- Ham de submit tat ca cac anh nguoi dung chon --------
@@ -298,98 +346,132 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
     }));
   };
 
+  // --------- Ham xu ly chia tab ---------
+  const handleChangeTabs = (event, newValue) => {
+    console.log(newValue);
+    setTab(newValue);
+  };
+
   // ------------- Render list error images Dialog ---------------
   const renderImageList = () => {
-    return Object.keys(imgList2).map((vt) => {
+    return Object.keys(imgList2).map((vt, index) => {
       return (
         <>
-          <div className="line-seperate-items"></div>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Tabs
+              value={tab}
+              onChange={handleChangeTabs}
+              aria-label="basic tabs example"
+            >
+              <Tab label={vt} {...a11yProps(index)} />
 
-          <div className="modal-afterfly__img-list-title">{vt}</div>
+              <div className="modal-afterfly__btn-group">
+                <FormControlLabel
+                  className="modal-afterfly__form-label"
+                  control={<Checkbox />}
+                  label="Ảnh bất thường"
+                  onChange={(e) => handleErrorImageBoxChecked(e, index)}
+                />
+                <Button
+                  className="modal-afterfly__import-btn"
+                  variant="outlined"
+                >
+                  THÊM DỮ LIỆU
+                </Button>
+              </div>
+            </Tabs>
+          </Box>
 
-          <ImageList
-            sx={{
-              position: "relative",
-              overflowY: "hidden",
-            }}
-            cols={3}
-          >
-            {imgList2[vt]?.slice(0, nextImg[vt].loaded)?.map((info, index) => {
-              return (
-                <>
-                  <ImageListItem key={index}>
-                    <div className="modal-afterfly__img-list-items-header">
-                      <TextField
-                        id="outlined-multiline-flexible"
-                        label="Tình trạng"
-                        value={info.label.split("_").join("\n")}
-                        multiline // multiline của TextField MUI đang lỗi
-                        maxRows={1}
-                        style={{ height: "70%", marginTop: "7px" }}
-                        disabled
-                      />
+          {tab === index && (
+            <CustomTabPanel value={tab} index={index}>
+              <ImageList
+                sx={{
+                  position: "relative",
+                  overflowY: "hidden",
+                }}
+                cols={3}
+              >
+                {imgList2[vt]
+                  ?.slice(0, nextImg[vt].loaded)
+                  ?.map((info, index) => {
+                    return (
+                      <>
+                        <ImageListItem key={index}>
+                          <div className="modal-afterfly__img-list-items-header">
+                            <TextField
+                              id="outlined-multiline-flexible"
+                              label="Tình trạng"
+                              value={info.label.split("_").join("\n")}
+                              multiline // multiline của TextField MUI đang lỗi
+                              maxRows={1}
+                              style={{ height: "70%", marginTop: "7px" }}
+                              disabled
+                            />
 
-                      <div>
-                        {/* Zoom Dialog */}
-                        {zoomingDialog(info)}
+                            <div>
+                              {/* Zoom Dialog */}
+                              {zoomingDialog(info)}
 
-                        {/* Edit label Dialog */}
-                        {editLabelDialog(info)}
-                      </div>
-                    </div>
+                              {/* Edit label Dialog */}
+                              {editLabelDialog(info)}
+                            </div>
+                          </div>
 
-                    <label
-                      for={`choose-img-${info.img_path}`}
-                      className={`modal-afterfly__img-list-items-label ${
-                        info.sent_check === 1 ? "hadsubmitted" : ""
-                      } ${
-                        selectedLabels.includes(info.img_path) ||
-                        info.sent_check === 1
-                          ? "choosed"
-                          : ""
-                      }`}
-                      onClick={() => handleLabelClick(info.img_path)}
-                    >
-                      <img
-                        src={process.env.REACT_APP_IMG + info.img_path}
-                        srcSet={process.env.REACT_APP_IMG + info.img_path}
-                        alt={info.img_path}
-                        loading="lazy"
-                        width={"100%"}
-                        height={"100%"}
-                      />
-                    </label>
+                          <label
+                            for={`choose-img-${info.img_path}`}
+                            className={`modal-afterfly__img-list-items-label ${
+                              info.sent_check === 1 ? "hadsubmitted" : ""
+                            } ${
+                              selectedLabels.includes(info.img_path) ||
+                              info.sent_check === 1
+                                ? "choosed"
+                                : ""
+                            }`}
+                            onClick={() => handleLabelClick(info.img_path)}
+                          >
+                            <img
+                              src={process.env.REACT_APP_IMG + info.img_path}
+                              srcSet={process.env.REACT_APP_IMG + info.img_path}
+                              alt={info.img_path}
+                              loading="lazy"
+                              width={"100%"}
+                              height={"100%"}
+                            />
+                          </label>
 
-                    {selectedLabels.includes(info.img_path) && info.sent_check === 0 ? (
-                      <div className="checkmark-hadchoosed"></div>
-                    ) : (
-                      <></>
-                    )}
+                          {selectedLabels.includes(info.img_path) &&
+                          info.sent_check === 0 ? (
+                            <div className="checkmark-hadchoosed"></div>
+                          ) : (
+                            <></>
+                          )}
 
-                    {info.sent_check === 1 ? (
-                      <MarkEmailReadIcon
-                        className="icon-hadsent"
-                        color="info"
-                        fontSize="large"
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </ImageListItem>
+                          {info.sent_check === 1 ? (
+                            <MarkEmailReadIcon
+                              className="icon-hadsent"
+                              color="info"
+                              fontSize="large"
+                            />
+                          ) : (
+                            <></>
+                          )}
+                        </ImageListItem>
 
-                  <input
-                    id={`choose-img-${info.img_path}`}
-                    type="checkbox"
-                    value={info.img_path}
-                    style={{
-                      display: "none",
-                    }}
-                    onChange={handleInputClick}
-                  />
-                </>
-              );
-            })}
-          </ImageList>
+                        <input
+                          id={`choose-img-${info.img_path}`}
+                          type="checkbox"
+                          value={info.img_path}
+                          style={{
+                            display: "none",
+                          }}
+                          onChange={handleInputClick}
+                        />
+                      </>
+                    );
+                  })}
+              </ImageList>
+            </CustomTabPanel>
+          )}
 
           {nextImg[vt].loaded < imgList2[vt]?.length && (
             <Button
@@ -408,23 +490,15 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
   return (
     <Dialog fullWidth maxWidth={"xl"} open={openModalAfterFly}>
       <DialogTitle className="modal-afterfly__header">
-        <FormControlLabel
-          className="modal-afterfly__form-label"
-          control={<Checkbox />}
-          label="Ảnh bất thường"
-          onChange={handleErrorImageBoxChecked}
-        />
-
-        <div className="modal-afterfly__btn-group">
-          <Button
-            className="modal-afterfly__close-btn"
-            color="error"
-            variant="contained"
-            onClick={() => setOpenModalAfterFly(false)}
-          >
-            <CloseIcon fontSize="small" />
-          </Button>
-        </div>
+        <h2 style={{ textAlign: "center" }}>KẾT QUẢ KIỂM TRA</h2>
+        <Button
+          className="modal-afterfly__close-btn"
+          color="error"
+          variant="contained"
+          onClick={() => setOpenModalAfterFly(false)}
+        >
+          <CloseIcon fontSize="small" />
+        </Button>
       </DialogTitle>
       <DialogContent className="modal-afterfly__body">
         <Grid item className="modal-afterfly__img-list" xs={12}>
@@ -443,7 +517,7 @@ const MainFlightDialogAfterFly = ({ flightComplete, getImgData }) => {
           variant="outlined"
           onClick={handleSubmitErrorImage}
         >
-          SUBMIT
+          GỬI
         </Button>
       </DialogActions>
     </Dialog>

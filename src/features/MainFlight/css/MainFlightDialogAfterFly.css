@@ -1,21 +1,30 @@
 .modal-afterfly__header {
   height: fit-content;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0px !important;
   border-bottom: 1px solid black;
-}
-
-.modal-afterfly__form-label {
-  margin: 0;
-  height: 33px;
+  background-color: #1976d2;
+  color: white;
 }
 
 .modal-afterfly__btn-group,
-.modal-afterfly__submit-btn,
-.modal-afterfly__close-btn {
-  display: flex;
-  justify-content: space-between;
+.modal-afterfly__form-label,
+.modal-afterfly__import-btn {
+  display: flex !important;
+  align-items: center;
+}
+
+.modal-afterfly__btn-group {
+  margin-left: auto !important;
+}
+
+.modal-afterfly__import-btn {
+  background-color: #1976d2 !important;
+  color: var(--white-color) !important;
+  margin-left: 30px !important;
+  margin-right: 10px !important;
+  height: 32.5px;
 }
 
 .modal-afterfly__submit-btn {
@@ -25,6 +34,9 @@
 }
 
 .modal-afterfly__close-btn {
+  position: absolute !important;
+  top: 0;
+  right: 0;
   align-items: center;
   justify-items: center;
 }

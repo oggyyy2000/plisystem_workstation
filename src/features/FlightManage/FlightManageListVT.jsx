@@ -111,7 +111,22 @@ const FlightManageListVT = () => {
     );
   };
 
-  return <>{missionData && missionData.supervision_results && renderVT()}</>;
+  return (
+    <>
+      <div className="line-seperate-items"></div>
+
+      <div style={{ fontWeight: "bold", textAlign: "center" }}>
+        {missionData &&
+          missionData.powerline_id}{" "}
+        {missionData &&
+          missionData.powerline_name}
+      </div>
+
+      <div className="list-VT-container">
+        {missionData && missionData.supervision_results && renderVT()}
+      </div>
+    </>
+  );
 };
 
 export default FlightManageListVT;

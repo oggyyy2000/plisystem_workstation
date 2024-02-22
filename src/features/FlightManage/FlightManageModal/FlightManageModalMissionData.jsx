@@ -27,7 +27,7 @@ import FlightManageReportInformation from "./FlightManageReportInformation";
 
 const imagePerRow = 6;
 
-const ModalMissionData = ({ schedule_id, implementation_date }) => {
+const ModalMissionData = ({ schedule_id, powerline_id, powerline_name }) => {
   // MAIN DIALOG VARIABLE
   const [open, setOpen] = useState(false);
   // bien dung de lay data
@@ -318,9 +318,10 @@ const ModalMissionData = ({ schedule_id, implementation_date }) => {
     <>
       <Button
         className="modal-mission-data__show-modal-btn"
+        variant="outlined"
         onClick={() => setOpen(true)}
       >
-        xem dữ liệu
+        <li>{powerline_id} {powerline_name} </li>
       </Button>
 
       <Dialog fullScreen open={open}>
