@@ -2,8 +2,15 @@ import React, { useEffect, useCallback } from "react";
 
 import { Box } from "@mui/material";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { Icon } from "leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+  useMap,
+} from "react-leaflet";
+import L from "leaflet";
 
 import axios from "axios";
 import { useState } from "react";
@@ -21,18 +28,17 @@ const FlightManageMap = () => {
     lat: 21.007556875711494,
     lng: 105.84322259736739,
   });
+  console.log(center);
+
+  const [electricPoleCoordinate, setElectricPoleCoordinate] = useState([]);
   const [missionData, setMissionData] = useState({});
-  console.log(missionData.powerline_coordinates);
+  console.log(missionData);
   const [GISlist, setGISlist] = useState([]);
   const [nameError, setNameError] = useState();
-  const [activeMarker, setActiveMarker] = useState(null);
   const VTdetail = useSelector(VTInfo);
   const missionId = useSelector(MissionId);
 
   const urlhomePageView = process.env.REACT_APP_API_URL + "homepageapiview/";
-  // const urlLocations = process.env.REACT_APP_API_URL + "powerlinelocations";
-
-  // console.log(VTdetail.data);
 
   const getGIS = useCallback(() => {
     const listGIS = [];
@@ -70,6 +76,33 @@ const FlightManageMap = () => {
         });
   }, [missionId, urlhomePageView]);
 
+  useEffect(() => {
+    if (missionData?.powerline_coordinates) {
+      const coordinates = missionData.powerline_coordinates.map(
+        (coordinate) => {
+          const [latitude, longitude] = coordinate.split(",");
+          return {
+            lat: parseFloat(latitude),
+            lng: parseFloat(longitude),
+          };
+        }
+      );
+      setElectricPoleCoordinate(coordinates);
+
+      // If the coordinates array is not empty, set the map center and the center hasn't been set, set the map center
+      if (
+        coordinates.length > 0 &&
+        center.lat === 21.007556875711494 &&
+        center.lng === 105.84322259736739
+      ) {
+        setCenter({
+          lat: coordinates[0].lat,
+          lng: coordinates[0].lng,
+        });
+      }
+    }
+  }, [missionData, center]);
+
   const handleChangeMapType = () => {
     setButtonText((prevButtonText) =>
       prevButtonText === "Vệ tinh" ? "Bản đồ" : "Vệ tinh"
@@ -79,22 +112,20 @@ const FlightManageMap = () => {
     );
   };
 
-  const handleActiveMarker = ({ marker, item }) => {
-    const { latitude, longtitude } = item;
-    if (marker === activeMarker) {
-      return;
-    }
-    setActiveMarker(marker);
-    setCenter({ lat: parseFloat(latitude), lng: parseFloat(longtitude) });
+  const SetCenterMapOnClick = ({ coords }) => {
+    const map = useMap();
+    map.setView(coords, map.getZoom());
+
+    return null;
   };
 
-  const renderMapwithAMarker = (GISlist, nameError) => {
-    const customErrorIcon = new Icon({
+  const renderMapwithAMarker = (GISlist, nameError, center) => {
+    const customErrorIcon = new L.Icon({
       iconUrl: errorIcon,
       iconSize: [30, 30],
     });
 
-    const customMarkerIcon = new Icon({
+    const customMarkerIcon = new L.Icon({
       iconUrl: markerIcon,
       iconSize: [50, 50],
     });
@@ -116,7 +147,7 @@ const FlightManageMap = () => {
           <MapContainer
             center={center}
             zoomControl={false}
-            zoom={13}
+            zoom={16}
             className="flightmanage-map"
           >
             <TileLayer
@@ -129,38 +160,30 @@ const FlightManageMap = () => {
             />
             {missionData?.powerline_coordinates?.map((coordinate, index) => {
               const [latitudeString, longitudeString] = coordinate.split(",");
-              // console.log("latitudeString: ", latitudeString, "longitudeString: ", longitudeString)
               return (
-                <Marker
-                  key={index}
-                  position={{
-                    lat: parseFloat(latitudeString),
-                    lng: parseFloat(longitudeString),
-                  }}
-                  icon={customMarkerIcon}
-                  onClick={() => {
-                    handleActiveMarker({
-                      index: index,
-                      item: {
-                        latitude: latitudeString,
-                        longtitude: longitudeString,
-                      },
-                    });
-                  }}
-                >
-                  <Popup
+                <>
+                  <Marker
+                    key={index}
                     position={{
                       lat: parseFloat(latitudeString),
                       lng: parseFloat(longitudeString),
                     }}
+                    icon={customMarkerIcon}
                   >
-                    <Box className="flightmanage-map__popup">
-                      <p>
-                        Tọa độ: {latitudeString} , {longitudeString}
-                      </p>
-                    </Box>
-                  </Popup>
-                </Marker>
+                    <Popup
+                      position={{
+                        lat: parseFloat(latitudeString),
+                        lng: parseFloat(longitudeString),
+                      }}
+                    >
+                      <Box className="flightmanage-map__popup">
+                        <p>
+                          Tọa độ: {latitudeString} , {longitudeString}
+                        </p>
+                      </Box>
+                    </Popup>
+                  </Marker>
+                </>
               );
             })}
             {GISlist.map((item, index) => {
@@ -172,12 +195,6 @@ const FlightManageMap = () => {
                     key={index}
                     position={{ lat: latitude, lng: longtitude }}
                     icon={customErrorIcon}
-                    onClick={() => {
-                      handleActiveMarker({
-                        index: index,
-                        item: { latitude: latitude, longtitude: longtitude },
-                      });
-                    }}
                   >
                     <Popup position={{ lat: latitude, lng: longtitude }}>
                       <Box className="flightmanage-map__popup">
@@ -191,6 +208,22 @@ const FlightManageMap = () => {
                 </>
               );
             })}
+            {electricPoleCoordinate !== undefined ? (
+              <Polyline
+                pathOptions={{ color: "red" }}
+                positions={electricPoleCoordinate}
+              />
+            ) : (
+              <></>
+            )}
+            {missionData?.powerline_coordinates?.map((coordinate, index) => {
+              const [latitudeString, longitudeString] = coordinate.split(",");
+              return (
+                <>
+                  <SetCenterMapOnClick coords={[latitudeString, longitudeString]}/>
+                </>
+              )
+            })}
           </MapContainer>
         </div>
       </>
@@ -202,7 +235,7 @@ const FlightManageMap = () => {
       {JSON.stringify(VTdetail) !== "{}" &&
         GISlist !== "[]" &&
         nameError !== "[]" &&
-        renderMapwithAMarker(GISlist, nameError)}
+        renderMapwithAMarker(GISlist, nameError, center)}
     </>
   );
 };

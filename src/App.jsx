@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ActivateNavbar from "./components/customComponents/ActivateNavbar";
+// import ActivateNavbar from "./components/customComponents/ActivateNavbar";
 import Navbar from "./components/Navbar/Navbar";
 import { publicRoutes, privateRoutes } from "./routes/routes";
 import WSContextProvider from "./components/context/WSContext";
@@ -10,9 +10,9 @@ const App = () => {
     <>
       <Router>
         <WSContextProvider>
-          <ActivateNavbar>
+          {/* <ActivateNavbar> */}
             <Navbar />
-          </ActivateNavbar>
+          {/* </ActivateNavbar> */}
           <Routes>
             {publicRoutes.map((publicRoute, index) => {
               return (
