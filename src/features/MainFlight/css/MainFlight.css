@@ -1,4 +1,10 @@
 /* Dialog */
+.add-mission-dialog__btn-close{position: absolute !important;
+top: 0;
+right: 0;
+align-items: center;
+justify-items: center;}
+
 .add-mission-dialog__btn-addmission {
   text-align: center;
   text-transform: uppercase;

@@ -17,6 +17,7 @@ const FlightManageListVT = () => {
   const [missionData, setMissionData] = useState();
   const dispatch = useDispatch();
   const missionId = useSelector(MissionId);
+  console.log(missionId)
   const VTdetail = useSelector(VTInfo);
   const urlhomePageView = process.env.REACT_APP_API_URL + "homepageapiview/";
 
@@ -25,10 +26,11 @@ const FlightManageListVT = () => {
       axios
         .get(urlhomePageView)
         .then((res) => {
+          console.log(res.data.results)
           setMissionData(
-            res.data.data.find((id) => id.schedule_id === missionId)
+            res.data.results.find((id) => id.schedule_id === missionId)
           );
-          console.log(res.data.data.find((id) => id.schedule_id === missionId));
+          console.log(res.data.results.find((id) => id.schedule_id === missionId));
         })
         .catch((err) => {
           console.log(err);

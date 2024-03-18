@@ -1,0 +1,123 @@
+{
+  "phieungay": {
+    "hanhlang": {
+      "defect": [
+        "bình thường",
+        "Cây ở gần, cây gãy, cây đổ",
+        "Công trình xây dựng gần hành lang tuyến",
+        "Đất,đá lở"
+      ],
+      "name_e": "corridor",
+      "name_v": "hành lang"
+    },
+
+    "cot": {
+      "defect": [
+        "bình thường",
+        "Cột nghiêng (gãy, đổ, biến dạng, bị rỉ, bị nứt, lỏ bê tông)",
+        "Các vật lạ bám vào cột",
+        "dị vật cột"
+      ],
+      "name_e": "steel_col",
+      "name_v": "cột"
+    },
+
+    "mongcot": {
+      "defect": ["bình thường", "Bê tông móng bị nứt, sạt, lở"],
+      "name_e": "col_foundation",
+      "name_v": "móng cột"
+    },
+
+    "xa_giado": {
+      "defect": [
+        "bình thường",
+        "Xà nghiêng (gãy, đổ, biến dạng, mất thanh, hư hỏng, rỉ"
+      ],
+      "name_e": "structure",
+      "name_v": "xà, giá đỡ"
+    },
+
+    "cachdientt": {
+      "defect": [
+        "bình thường",
+        "cách điện bị vỡ, nứt, mất",
+        "Các bất thường, hư hỏng trên bát cách điện/ chuỗi cách điện",
+        "Các vật lạ bám vào cách điện (sứ cách điện bị bẩn)",
+        "Phóng điện (xuyên thủng, bề mặt)",
+        "Sự cố phụ kiện cách điện"
+      ],
+      "name_e": "insulate",
+      "name_v": "cách điện thủy tinh"
+    },
+
+    "tiepdia": {
+      "defect": ["bình thường"],
+      "name_e": "earthing",
+      "name_v": "tiếp địa"
+    },
+    "dayneo_mongneo": {
+      "defect": ["bình thường"],
+      "name_e": "holding_rope",
+      "name_v": "dây néo , móng cột"
+    },
+
+    "thietbi_chongset": {
+      "defect": ["bình thường"],
+      "name_e": "anti_lightning",
+      "name_v": "thiết bị chống sét"
+    },
+
+    "daydien": {
+      "defect": [
+        "bình thường",
+        "Dây dẫn bị trùng (độ võng bất thường)",
+        "Dây dẫn bị đứt sợi, bị tưa, bị tổn thương",
+        "Dây dẫn bị loang do phóng điện",
+        "Mối nối trên dây dẫn bị đứt",
+        "Vật lạ mắc vào dây dẫn",
+        "Phóng điện từ dây dẫn",
+        "Vặn xoắn dây dẫn"
+      ],
+      "name_e": "electric_wire",
+      "name_v": "dây điện"
+    },
+
+    "tacr": {
+      "defect": [
+        "bình thường",
+        "Tạ chống rung ở trạng thái bình thường",
+        "Tạ chống rung bị sự cố (tuột, vỡ,…)"
+      ],
+      "name_e": "anti_vibration",
+      "name_v": "tạ chống rung"
+    },
+
+    "daycs": {
+      "defect": [
+        "bình thường",
+        "Bị đứt sợi, bị, tưa, bị tổn thương",
+        "Độ võng không bình thường",
+        "Mối nối, dây nối đất chống sét bị tuột",
+        "mắc dị vật"
+      ],
+      "name_e": "lightning_rod",
+      "name_v": "dây chống sét"
+    }
+  },
+  "phieudem": {
+    "phatnhiet": {
+      "defect": ["bình thường", "phát nhiệt mối nối"],
+      "name_e": "radiate_heat",
+      "name_v": "phát nhiệt"
+    },
+    "phongdien": {
+      "defect": [
+        "bình thường",
+        "phóng điện ở đường dây",
+        "phóng điện chuỗi cách điện"
+      ],
+      "name_e": "discharge",
+      "name_v": "phóng điện"
+    }
+  }
+}

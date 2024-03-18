@@ -1,0 +1,14 @@
+.buttonGroupSelectStatus {
+  display: none !important;
+  justify-content: flex-end;
+}
+
+.buttonStatus {
+  border: 1px solid black !important;
+  color: var(--black-color) !important;
+}
+
+.buttonStatus:hover {
+  border: 1px solid black !important;
+  color: var(--black-color) !important;
+}

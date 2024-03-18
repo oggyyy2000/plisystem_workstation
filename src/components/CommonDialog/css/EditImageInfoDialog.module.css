@@ -1,0 +1,9 @@
+.editBtn {
+  max-height: 36px !important;
+  min-width: 10px !important;
+}
+
+.chooseOptions {
+  min-width: 120px;
+  margin-top: 8px;
+}

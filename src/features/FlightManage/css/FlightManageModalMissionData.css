@@ -1,27 +1,21 @@
 .modal-mission-data__show-modal-btn {
-  /* background-color: chartreuse !important;
-  color: white !important; */
-  border: none;
-}
-
-.modal-mission-data__show-modal-btn:hover {
-  border: none;
+  width: fit-content !important;
 }
 
 .modal-mission-data__list-mission {
   border-left: 1px solid black;
   border-right: 1px solid black;
   overflow-y: auto;
-  height: 99.9%;
+  height: 94.5%;
 }
 
 .list-mission-items__container {
   height: 150px;
   display: flex;
   cursor: pointer;
-  font-size: 25px;
-  font-weight: bold;
-  background-image: url("../../../assets/images/folder_icon.png");
+  font-size: 22px;
+  /* font-weight: bold; */
+  background-image: url("../../../assets/images/icon-folder.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 80px 80px;
@@ -41,6 +35,8 @@
 
 .modal-mission-data__header {
   height: fit-content;
+  display: flex;
+  justify-content: space-evenly;
   padding: 0px !important;
   border: 1px solid black;
 }
@@ -50,23 +46,22 @@
   height: 33px;
 }
 
-.modal-mission-data__header,
-.modal-mission-data__submit-btn,
-.modal-mission-data__close-btn {
+.modal-mission-data__submit-btn {
   display: flex;
   justify-content: space-between;
 }
 
-.modal-mission-data__submit-btn,
-.modal-mission-data__print-btn {
+.modal-mission-data__submit-btn {
   background-color: #1976d2 !important;
   color: var(--white-color) !important;
   height: 33px;
 }
 
 .modal-mission-data__close-btn {
-  align-items: center;
-  justify-items: center;
+  height: 38px;
+  position: absolute !important;
+  top: 0;
+  right: 0;
 }
 
 .modal-mission-data__body {
@@ -76,7 +71,7 @@
 }
 
 .modal-mission-data__img-list {
-  height: 99.9%;
+  height: 94.5%;
   overflow-y: auto;
   text-align: center;
 }

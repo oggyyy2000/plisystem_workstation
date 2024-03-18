@@ -1,0 +1,68 @@
+{
+  "phieungay": {
+    "hanhlang": [
+      "bình thường",
+      "Cây ở gần, cây gãy, cây đổ",
+      "Công trình xây dựng gần hành lang tuyến",
+      "Đất, đá lở"
+    ],
+
+    "cot": [
+      "bình thường",
+      "Cột nghiêng (gãy, đổ, biến dạng, bị rỉ, bị nứt, lỏ bê thông)",
+      "Các vật lạ bám vào cột"
+    ],
+
+    "mongcot": [
+    "bình thường",
+     "Bê tông móng bị nứt, sạt, lở"],
+
+    "xa_giado": [
+      "bình thường",
+      "Xà nghiêng (gãy, đổ, biến dạng, mất thanh, hư hỏng, rỉ"
+    ],
+
+    "cachdien": [
+      "bình thường",
+      "Cách điện bị vỡ, nứt, mất",
+      "Các bất thường, hư hỏng trên bát cách điện/ chuỗi cách điện",
+      "Các vật lạ bám vào cách điện (sứ cách điện bị bẩn)",
+      "Phóng điện (xuyên thủng, bề mặt)",
+      "Sự cố phụ kiện cách điện"
+    ],
+    "tiepdia":["bình thường"],
+    "dayneo_mongneo":["bình thường"],
+    "thietbi_chongset":["bình thường"],
+
+    "daydan": [
+      "bình thường",
+      "Dây dẫn bị trùng (độ võng bất thường)",
+      "Dây dẫn bị đứt sợi, bị tưa, bị tổn thương",
+      "Dây dẫn bị loang do phóng điện",
+      "Mối nối trên dây dẫn bị đứt",
+      "Vật lạ mắc vào dây dẫn",
+      "Phóng điện từ dây dẫn",
+      "Vặn xoắn dây dẫn"
+    ],
+
+    "tacr": [
+      "bình thường",
+      "Tạ chống rung ở trạng thái bình thường",
+      "Tạ chống rung bị sự cố (tuột, vỡ,…)"
+    ],
+
+    "daycs": [
+      "bình thường",
+      "Bị đứt sợi, bị, tưa, bị tổn thương",
+      "Độ võng không bình thường",
+      "Mối nối, dây nối đất chống sét bị tuột"
+    ]
+  },
+  "phieudem": {
+    "phatnhiet": ["phát nhiệt mối nối", ""],
+    "phongdien": ["phóng điện ở đường dây", "phóng điện chuỗi cách điện"],
+    "khac":[]
+   
+  }
+
+}

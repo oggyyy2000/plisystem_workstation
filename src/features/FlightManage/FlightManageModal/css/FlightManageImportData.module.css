@@ -1,0 +1,123 @@
+.importBtn {
+  display: flex !important;
+  align-items: center;
+  margin-left: 30px !important;
+  margin-right: 10px !important;
+  height: 32.5px;
+}
+
+.closeBtn {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  align-items: center;
+  justify-items: center;
+}
+
+.container {
+  width: 100%;
+  min-height: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid black;
+}
+
+.container .image {
+  width: 350px;
+  height: 200px;
+  margin-right: 20px;
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.container .image:hover {
+  border: 2px solid red;
+}
+
+.container .image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.container .image span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.delete {
+  z-index: 999;
+  color: red;
+}
+
+.card {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.dragArea {
+  height: 250px;
+  width: 25.3333%;
+  border-radius: 5px;
+  border: 2px dashed #0086fe;
+  color: #0086fe;
+  background: #f4f3f9;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  margin-top: 10px;
+}
+
+.dragArea .dragAreaText {
+  text-align: center;
+}
+
+.card .dragArea .visible {
+  font-size: 18px;
+}
+
+.card .select {
+  height: fit-content;
+  color: #5256ad;
+  margin-left: 5px;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.card .select:hover {
+  opacity: 0.6;
+}
+
+.card .drag-area .on-drop,
+.card .drag-area.dragover .visible {
+  display: none;
+}
+
+.chooseOptionGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 50%;
+}
+
+.checkmarkHadchoosed {
+  position: absolute;
+  transform: rotate(45deg);
+  height: 50px;
+  width: 28px;
+  top: 35%;
+  left: 50%;
+  border-bottom: 7px solid #7fff00;
+  border-right: 7px solid #7fff00;
+}

@@ -19,6 +19,7 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
 
   // lay cam tu uav
   const [devices, setDevices] = useState([]);
+  // console.log(devices)
 
   const handleDevices = useCallback(
     (mediaDevices) =>
@@ -33,46 +34,46 @@ const MainFlightInMission = ({ startfly, currentvt, currentlocation }) => {
   }, [handleDevices, devices]);
 
   const WebcamCapture = () => {
-    return (
-      <>
-        <Webcam className="info-panel__camera" audio={false} />
-      </>
-    );
+    // return (
+    //   <>
+    //     <Webcam className="info-panel__camera" audio={false} />
+    //   </>
+    // );
   };
 
   const cameraZoom = () => {
-    return (
-      <>
-        <Dialog
-          open={openZoomView}
-          onClose={() => setOpenZoomView(false)}
-          sx={{
-            "& .MuiDialog-container": {
-              justifyContent: "center",
-              alignItems: "center",
-            },
-          }}
-          fullWidth
-          maxWidth={"xl"}
-        >
-          <div className="info-panel__camera-zoom-dialog">
-            {/* {devices.find(({ label }) =>
-              label.includes("USB Video (534d:2109)")
-            ) ? ( */}
-            {/* {WebcamCapture()} */}
-            {/* ) : (
-              <div className="info-panel__no-signal">không có tín hiệu</div>
-            )} */}
+    // return (
+    //   <>
+    //     <Dialog
+    //       open={openZoomView}
+    //       onClose={() => setOpenZoomView(false)}
+    //       sx={{
+    //         "& .MuiDialog-container": {
+    //           justifyContent: "center",
+    //           alignItems: "center",
+    //         },
+    //       }}
+    //       fullWidth
+    //       maxWidth={"xl"}
+    //     >
+    //       <div className="info-panel__camera-zoom-dialog">
+    //         {/* {devices.find(({ label }) =>
+    //           label.includes("USB Video (534d:2109)")
+    //         ) ? ( */}
+    //         {/* {WebcamCapture()} */}
+    //         {/* ) : (
+    //           <div className="info-panel__no-signal">không có tín hiệu</div>
+    //         )} */}
 
-            {devices !== "[]" ? (
-              WebcamCapture()
-            ) : (
-              <div className="info-panel__no-signal">không có tín hiệu</div>
-            )}
-          </div>
-        </Dialog>
-      </>
-    );
+    //         {devices !== "[]" ? (
+    //           WebcamCapture()
+    //         ) : (
+    //           <div className="info-panel__no-signal">không có tín hiệu</div>
+    //         )}
+    //       </div>
+    //     </Dialog>
+    //   </>
+    // );
   };
 
   return (

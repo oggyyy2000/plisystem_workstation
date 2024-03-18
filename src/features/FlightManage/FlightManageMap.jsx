@@ -36,20 +36,38 @@ const FlightManageMap = () => {
   const [GISlist, setGISlist] = useState([]);
   const [nameError, setNameError] = useState();
   const VTdetail = useSelector(VTInfo);
+  console.log(JSON.stringify(VTdetail));
   const missionId = useSelector(MissionId);
 
   const urlhomePageView = process.env.REACT_APP_API_URL + "homepageapiview/";
 
   const getGIS = useCallback(() => {
     const listGIS = [];
+    console.log(listGIS);
     const errorName = [];
 
     for (var key in VTdetail.data) {
       if (typeof VTdetail.data[key] !== "string") {
         VTdetail.data[key].forEach((item) => {
           console.log(item);
-          listGIS.push(item.defect_gis);
-          errorName.push(item.defect_name);
+          // Split the string using "_" delimiter
+          const parts = item.image_gis.split("_");
+
+          // Extract values and convert to numbers
+          const latitude = parseFloat(parts[0]);
+          const longtitude = parseFloat(parts[1]);
+
+          // Extract altitude if present (assuming it's the last part)
+          const altitude = parts.length > 2 ? parseFloat(parts[2]) : undefined;
+
+          // Create the object using destructuring assignment
+          const location = {
+            latitude: latitude,
+            longtitude: longtitude,
+            // altitude: {...(altitude !== undefined && { altitude })}, // Add altitude only if it exists
+          };
+          listGIS.push(location);
+          errorName.push(item.image_title);
         });
       }
     }
@@ -68,7 +86,7 @@ const FlightManageMap = () => {
         .get(urlhomePageView)
         .then((res) => {
           setMissionData(
-            res.data.data.find((id) => id.schedule_id === missionId)
+            res.data.results.find((id) => id.schedule_id === missionId)
           );
         })
         .catch((err) => {
@@ -80,10 +98,10 @@ const FlightManageMap = () => {
     if (missionData?.powerline_coordinates) {
       const coordinates = missionData.powerline_coordinates.map(
         (coordinate) => {
-          const [latitude, longitude] = coordinate.split(",");
+          const [latitude, longtitude] = coordinate.split(",");
           return {
             lat: parseFloat(latitude),
-            lng: parseFloat(longitude),
+            lng: parseFloat(longtitude),
           };
         }
       );
@@ -147,7 +165,7 @@ const FlightManageMap = () => {
           <MapContainer
             center={center}
             zoomControl={false}
-            zoom={16}
+            zoom={14}
             className="flightmanage-map"
           >
             <TileLayer
@@ -158,6 +176,7 @@ const FlightManageMap = () => {
                   : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
               }
             />
+            {/* render GIS tat ca cac cot */}
             {missionData?.powerline_coordinates?.map((coordinate, index) => {
               const [latitudeString, longitudeString] = coordinate.split(",");
               return (
@@ -186,28 +205,36 @@ const FlightManageMap = () => {
                 </>
               );
             })}
-            {GISlist.map((item, index) => {
-              var latitude = parseFloat(item.latitude);
-              var longtitude = parseFloat(item.longtitude);
-              return (
-                <>
-                  <Marker
-                    key={index}
-                    position={{ lat: latitude, lng: longtitude }}
-                    icon={customErrorIcon}
-                  >
-                    <Popup position={{ lat: latitude, lng: longtitude }}>
-                      <Box className="flightmanage-map__popup">
-                        <p>Tên lỗi: {nameError}</p>
-                        <p>
-                          Tọa độ: {latitude} , {longtitude}
-                        </p>
-                      </Box>
-                    </Popup>
-                  </Marker>
-                </>
-              );
-            })}
+
+            {/* hien thi cac cot bi loi */}
+            {JSON.stringify(VTdetail) !== "{}" ? (
+              GISlist.map((item, index) => {
+                console.log(item);
+                var latitude = parseFloat(item.latitude);
+                var longtitude = parseFloat(item.longtitude);
+                return (
+                  <>
+                    <Marker
+                      key={index}
+                      position={{ lat: latitude, lng: longtitude }}
+                      icon={customErrorIcon}
+                    >
+                      <Popup position={{ lat: latitude, lng: longtitude }}>
+                        <Box className="flightmanage-map__popup">
+                          <p>Tên lỗi: {nameError}</p>
+                          <p>
+                            Tọa độ: {latitude} , {longtitude}
+                          </p>
+                        </Box>
+                      </Popup>
+                    </Marker>
+                  </>
+                );
+              })
+            ) : (
+              <></>
+            )}
+            {/* duong noi giua cac cot */}
             {electricPoleCoordinate !== undefined ? (
               <Polyline
                 pathOptions={{ color: "red" }}
@@ -216,13 +243,16 @@ const FlightManageMap = () => {
             ) : (
               <></>
             )}
+            {/* set center map theo vi tri cot */}
             {missionData?.powerline_coordinates?.map((coordinate, index) => {
               const [latitudeString, longitudeString] = coordinate.split(",");
               return (
                 <>
-                  <SetCenterMapOnClick coords={[latitudeString, longitudeString]}/>
+                  <SetCenterMapOnClick
+                    coords={[latitudeString, longitudeString]}
+                  />
                 </>
-              )
+              );
             })}
           </MapContainer>
         </div>
@@ -232,8 +262,7 @@ const FlightManageMap = () => {
 
   return (
     <>
-      {JSON.stringify(VTdetail) !== "{}" &&
-        GISlist !== "[]" &&
+      {GISlist !== "[]" &&
         nameError !== "[]" &&
         renderMapwithAMarker(GISlist, nameError, center)}
     </>

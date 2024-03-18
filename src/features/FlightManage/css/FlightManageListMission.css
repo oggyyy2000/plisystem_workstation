@@ -10,17 +10,18 @@
   align-items: center;
 }
 
+.mission-card__container--unchoosed,
+.mission-card__container--choosed {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
 .mission-card__container--unchoosed {
   height: 7%;
-  border-top: 1px solid black;
-  border-left: 1px solid black;
-  border-bottom: 1px solid black;
 }
 
 .mission-card__container--choosed {
   min-height: fit-content;
-  padding-bottom: 10px;
-  border: 3px solid red;
 }
 
 .mission-card__header {
@@ -30,10 +31,15 @@
   justify-content: center;
 }
 
-.mission-card__icon {
+.mission-card__icon-plane {
   border-radius: 50%;
   background-color: #1976d2;
   margin: 5px 10px 5px 0;
+}
+
+.mission-card__icon-drop {
+  display: flex;
+  align-items: center;
 }
 
 .mission-card__title {
@@ -48,4 +54,25 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.mission-card__body span {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mission-card__body--unchoosed {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+/* .mission-card__body--unchoosed:last-child:not(:only-child) {
+  border-bottom: none;
+} */
+
+.mission-card__body--choosed {
+  border: 2px solid red;
 }
