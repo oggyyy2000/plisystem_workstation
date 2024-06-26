@@ -12,22 +12,19 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 
-const FlightManageReportInformation = ({
-  schedule_id,
-  // selectedLabels,
-  // setHadSubmittedError,
-  type_ticket,
-  supervision_status,
-}) => {
+import Loading from "../../../components/LoadingPage/LoadingPage";
+
+const FlightManageReportInformation = ({ schedule_id, supervision_status }) => {
   const [openReportInformationDialog, setOpenReportInformationDialog] =
     useState(false);
   const [ticketField, setTicketField] = useState({});
   console.log(ticketField);
 
-  // const urlPostFlightData = process.env.REACT_APP_API_URL + "flightdatas/";
-
   const [formData, setFormData] = useState({});
   console.log(formData);
+
+  // check variable
+  const [sendClicked, setSendClicked] = useState(false);
 
   const handleTextFieldChange = (key, text) => {
     setFormData((prevData) => ({
@@ -37,6 +34,7 @@ const FlightManageReportInformation = ({
   };
 
   useEffect(() => {
+    setSendClicked(false);
     if (openReportInformationDialog === true) {
       const urlGetObjectSentTicket =
         process.env.REACT_APP_API_URL +
@@ -57,32 +55,11 @@ const FlightManageReportInformation = ({
           console.error(error); // Handle errors
         });
     }
-  }, [schedule_id, openReportInformationDialog]);
-
-  // --------- Ham de submit tat ca cac anh nguoi dung chon --------
-  // const handleSubmitAllImage = () => {
-  //   const formData = new FormData();
-  //   formData.append("schedule_id", schedule_id);
-  //   formData.append("list_imageid", selectedLabels);
-
-  //   console.log(schedule_id);
-
-  //   axios
-  //     .post(urlPostFlightData, formData)
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         alert("Tất cả ảnh đã chọn đã được gửi đi !");
-  //         setHadSubmittedError(true);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-
-  //   setOpenReportInformationDialog(true);
-  // };
+  }, [schedule_id, supervision_status, openReportInformationDialog]);
 
   const handleSubmitAllFieldText = () => {
+    setSendClicked(true);
+
     const postData = {
       schedule_id: schedule_id,
       results: formData,
@@ -92,27 +69,43 @@ const FlightManageReportInformation = ({
 
     const urlPostAllFieldText =
       process.env.REACT_APP_API_URL + "sentticketdata/";
-    axios
-      .post(urlPostAllFieldText, postData, {
-        "Content-Type": "application/json",
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const confirmed = window.confirm("Bạn chắc chắn muốn gửi ?");
+    if (confirmed) {
+      axios
+        .post(urlPostAllFieldText, postData, {
+          "Content-Type": "application/json",
+        })
+        .then((response) => {
+          console.log(response.data);
+          setSendClicked(false);
+          alert("Gửi thông tin báo cáo thành công !");
+          setOpenReportInformationDialog(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          alert(
+            // "Gửi thông tin báo cáo không thành công. Không có phản hồi từ server !"
+            error.response.data.error_description
+          );
+          setSendClicked(false);
+        });
+    } else {
+      // Handle cancel scenario
+      console.log("Cancelled.");
+    }
   };
 
   const renderData = () => {
     return Object.keys(ticketField).map((key) => {
       const object = ticketField[key];
+      console.log(object)
       return (
         <div key={key}>
           <p>{object.title}</p>
           <TextField
             label={"Type here... "}
-            defaultValue={object.text ? object.text : ""}
+            multiline
+            defaultValue={object.text ? object.text.slice(1) : ""}
             fullWidth
             onChange={(e) => handleTextFieldChange(key, e.target.value)}
           />
@@ -173,9 +166,11 @@ const FlightManageReportInformation = ({
             variant="contained"
             onClick={() => handleSubmitAllFieldText()}
           >
-            SUBMIT
+            Gửi thông tin báo cáo
           </Button>
         </DialogActions>
+
+        {sendClicked === true ? <Loading /> : <></>}
       </Dialog>
     </>
   );

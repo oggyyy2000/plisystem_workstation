@@ -34,7 +34,6 @@ const FlightManageMap = () => {
   const [missionData, setMissionData] = useState({});
   console.log(missionData);
   const [GISlist, setGISlist] = useState([]);
-  const [nameError, setNameError] = useState();
   const VTdetail = useSelector(VTInfo);
   console.log(JSON.stringify(VTdetail));
   const missionId = useSelector(MissionId);
@@ -44,7 +43,6 @@ const FlightManageMap = () => {
   const getGIS = useCallback(() => {
     const listGIS = [];
     console.log(listGIS);
-    const errorName = [];
 
     for (var key in VTdetail.data) {
       if (typeof VTdetail.data[key] !== "string") {
@@ -53,27 +51,28 @@ const FlightManageMap = () => {
           // Split the string using "_" delimiter
           const parts = item.image_gis.split("_");
 
+          const errorname = item.image_title
+
           // Extract values and convert to numbers
           const latitude = parseFloat(parts[0]);
           const longtitude = parseFloat(parts[1]);
 
           // Extract altitude if present (assuming it's the last part)
-          const altitude = parts.length > 2 ? parseFloat(parts[2]) : undefined;
+          // const altitude = parts.length > 2 ? parseFloat(parts[2]) : undefined;
 
           // Create the object using destructuring assignment
           const location = {
             latitude: latitude,
             longtitude: longtitude,
+            errorname: errorname
             // altitude: {...(altitude !== undefined && { altitude })}, // Add altitude only if it exists
           };
           listGIS.push(location);
-          errorName.push(item.image_title);
         });
       }
     }
 
     setGISlist(listGIS);
-    setNameError(errorName);
   }, [VTdetail.data]);
 
   useEffect(() => {
@@ -86,7 +85,7 @@ const FlightManageMap = () => {
         .get(urlhomePageView)
         .then((res) => {
           setMissionData(
-            res.data.results.find((id) => id.schedule_id === missionId)
+            res.data.find((id) => id.schedule_id === missionId)
           );
         })
         .catch((err) => {
@@ -137,7 +136,7 @@ const FlightManageMap = () => {
     return null;
   };
 
-  const renderMapwithAMarker = (GISlist, nameError, center) => {
+  const renderMapwithAMarker = (GISlist, center) => {
     const customErrorIcon = new L.Icon({
       iconUrl: errorIcon,
       iconSize: [30, 30],
@@ -221,7 +220,7 @@ const FlightManageMap = () => {
                     >
                       <Popup position={{ lat: latitude, lng: longtitude }}>
                         <Box className="flightmanage-map__popup">
-                          <p>Tên lỗi: {nameError}</p>
+                          <p>Tên lỗi: {item.errorname}</p>
                           <p>
                             Tọa độ: {latitude} , {longtitude}
                           </p>
@@ -263,8 +262,8 @@ const FlightManageMap = () => {
   return (
     <>
       {GISlist !== "[]" &&
-        nameError !== "[]" &&
-        renderMapwithAMarker(GISlist, nameError, center)}
+        
+        renderMapwithAMarker(GISlist, center)}
     </>
   );
 };

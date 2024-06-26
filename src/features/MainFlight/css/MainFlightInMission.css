@@ -11,8 +11,13 @@
 /* body */
 .info-panel__btn {
   position: absolute;
-  z-index: 2;
+  z-index: 1;
   /* transition: 0.5s ease-in; */
+}
+
+.info-panel__btn-zoomed {
+  position: absolute;
+  z-index: 1;
 }
 
 .info-panel__btn button {
@@ -36,7 +41,7 @@
   position: absolute;
   z-index: 1;
   width: 409px;
-  height: 44vh;
+  height: 456px;
   background-color: white;
   bottom: 0;
   right: 0;
@@ -52,7 +57,7 @@
 
 .info-panel__tableinfo {
   width: 100%;
-  height: 13.4vh;
+  height: 150px;
 }
 
 .info-panel__tableinfo table {
@@ -68,8 +73,14 @@
 }
 
 .info-panel__cameraview {
-  height: fit-content;
-  width: 100%;
+  width: 409px;
+  height: 306px;
+  position: relative;
+}
+
+.info-panel__cameraview-zoomed {
+  width: 1280px;
+  height: 720px;
   position: relative;
 }
 
@@ -82,9 +93,24 @@
   height: 40px;
   width: 40px;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-  /* background: rgba(0, 0, 0, 0.1); */
   background: white;
   overflow: hidden;
+}
+
+.info-panel__zoom-btn-zoomed {
+  position: absolute;
+  z-index: 4;
+  border: 0px;
+  padding: 0px;
+  text-transform: none;
+  height: 40px;
+  width: 40px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+  background: white;
+  overflow: hidden;
+  /* position: fixed; */
+  bottom: calc(680px + 150px + 387px);
+  right: calc(1240px + 1089px);
 }
 
 .info-panel__zoom-btn button {
@@ -99,6 +125,15 @@
   object-fit: fill;
 }
 
+.info-panel__camera-zoom-dialog {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  position: absolute;
+  bottom: calc(17% + 264px + 150px);
+  right: calc(17% + 871px);
+}
+
 .mainflight-rgb-title {
   position: absolute;
   right: 0;
@@ -108,8 +143,21 @@
   color: red;
 }
 
-.info-panel__camera-zoom-dialog {
+/* .info-panel__camera-zoom-dialog {
   width: 100%;
   height: 100%;
   overflow-y: hidden;
+} */
+
+.info-panel__detect-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.info-panel__detect-box-zoomed {
+  position: absolute;
+  bottom: calc(17% + 264px + 150px);
+  right: calc(17% + 871px);
+  z-index: 2;
 }

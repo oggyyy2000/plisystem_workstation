@@ -19,3 +19,10 @@
   position: absolute;
   z-index: 0;
 }
+
+.dot-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #000;
+}

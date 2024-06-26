@@ -2,6 +2,7 @@
   "name": "plisystem_maytram_deploy",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -12,8 +13,14 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@uidotdev/usehooks": "^2.4.1",
     "axios": "^1.6.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
     "leaflet": "^1.9.4",
+    "path": "^0.12.7",
+    "path-browserify": "^1.0.1",
+    "querystring": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
@@ -27,6 +34,9 @@
     "redux-devtools-extension": "^2.13.9",
     "sockjs": "^0.3.24",
     "sockjs-client": "^1.6.1",
+    "stream-browserify": "^3.0.0",
+    "url": "^0.11.3",
+    "util": "^0.12.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -47,6 +57,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.0"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
+    "serve": "^14.2.1"
   }
 }

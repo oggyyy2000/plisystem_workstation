@@ -9,13 +9,22 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import { Tooltip, Avatar } from "@mui/material";
+import {
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Input,
+} from "@mui/material";
 
 import logo from "../../assets/images/logo.png";
-import workStationLogo from "../../assets/images/workstation.png";
+import CloseIcon from "@mui/icons-material/Close";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 import styles from "./css/Navbar.module.css";
 import axios from "axios";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 const pages = [
   {
@@ -41,19 +50,24 @@ const pages = [
 ];
 
 const Navbar = () => {
+  const [openUserAccountSetting, setOpenUserAccountSetting] = useState(false);
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
   const [userPass, setUserPass] = useState({});
-  console.log(userPass);
+  const [thermalWarning, setThermalWarning] = useState(0); // Initial state for thermalWarning
+  const [thermalDifference, setThermalDifference] = useState(0); // Initial state for thermalDifference
+  console.log("thermalWarning: ", thermalWarning);
+  console.log("thermalDifference: ", thermalDifference);
 
   useEffect(() => {
     const getUserPass = async () => {
       const urlGetUserPass =
-        process.env.REACT_APP_API_URL + "userpassworkstation/";
+        process.env.REACT_APP_API_URL + "settingworkstation/";
 
       const responseData = await axios.get(urlGetUserPass);
 
       setUserPass(responseData.data);
+      setThermalWarning(responseData.data.thermal_warning);
+      setThermalDifference(responseData.data.thermal_difference);
     };
     getUserPass();
   }, []);
@@ -62,16 +76,44 @@ const Navbar = () => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleInputTemperatureAdjust = (event) => {
+    const { name, value } = event.target; // Destructure name and value from event object
+
+    // Update the corresponding state variable based on the input name
+    if (name === "thermalWarning") {
+      setThermalWarning(value);
+    } else if (name === "thermalDifference") {
+      setThermalDifference(value);
+    } else {
+      // Handle unexpected input names (optional)
+      console.warn("Unexpected input name:", name);
+    }
+  };
+
+  const handleUpdateTemperature = () => {
+    const urlPostAdjustTemperature =
+      process.env.REACT_APP_API_URL + "settingworkstation/";
+    const formData = new FormData();
+    formData.append("thermal_warning", thermalWarning);
+    formData.append("thermal_difference", thermalDifference);
+    axios
+      .post(urlPostAdjustTemperature, formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          alert("Cập nhật nhiệt độ thành công !");
+        }
+      })
+      .catch((error) => {
+        alert(error);
+      });
   };
 
   return (
@@ -84,7 +126,6 @@ const Navbar = () => {
               variant="h6"
               noWrap
               component="a"
-              href="/MainFlight"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -130,15 +171,13 @@ const Navbar = () => {
               >
                 {pages.map((page) => (
                   <MenuItem key={page.index} onClick={handleCloseNavMenu}>
-                    <Button
-                      href={page.url}
-                      sx={{
-                        color: "black",
-                        width: "100%",
-                      }}
+                    <Link
+                      // className={styles.navigateItem}
+                      key={page.index}
+                      to={page.url}
                     >
                       {page.ten_navbar}
-                    </Button>
+                    </Link>
                   </MenuItem>
                 ))}
               </Menu>
@@ -149,7 +188,6 @@ const Navbar = () => {
               variant="h5"
               noWrap
               component="a"
-              href="/MainFlight"
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -166,50 +204,119 @@ const Navbar = () => {
 
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
-                <Button
+                <Link
+                  className={styles.navigateItem}
                   key={page.index}
-                  onClick={handleCloseNavMenu}
-                  href={page.url}
-                  sx={{ ml: 4, color: "white", display: "block" }}
+                  to={page.url}
                 >
                   {page.ten_navbar}
-                </Button>
+                </Link>
               ))}
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Xem thông tin tài khoản">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
-                  <Avatar alt="Workstation Account" src="" />
+                <IconButton
+                  onClick={() => setOpenUserAccountSetting(true)}
+                  sx={{ p: 1 }}
+                >
+                  <ManageAccountsIcon
+                    alt="Workstation Account Setting"
+                    fontSize="large"
+                    style={{ color: "white" }}
+                  />
                 </IconButton>
               </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {Object.keys(userPass).map((account) => (
-                  <MenuItem>
+              <Dialog open={openUserAccountSetting} fullWidth maxWidth={"sm"}>
+                <DialogTitle
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    backgroundColor: "#1976d2",
+                    color: "white",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Cài đặt
+                  <Button
+                    className={styles.userAccountSettingCancelBtn}
+                    color="error"
+                    variant="contained"
+                    onClick={() => setOpenUserAccountSetting(false)}
+                  >
+                    <CloseIcon fontSize="small" />
+                  </Button>
+                </DialogTitle>
+                <DialogContent>
+                  <div style={{ padding: "20px" }}>
+                    <span>
+                      <b>Tài khoản máy: </b>
+                    </span>
+
                     <Typography textAlign="center">
-                      <b>
-                        {account === "user_authen" ? "Tài khoản" : "Mật khẩu"}:
-                      </b>{" "}
-                      {userPass[account]}
+                      <b>Tài khoản: </b>
+                      {userPass.user_authen}
                     </Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+
+                    <Typography textAlign="center">
+                      <b>Mật khẩu: </b>
+                      {userPass.pass_authen}
+                    </Typography>
+                  </div>
+
+                  <div style={{ padding: "20px" }}>
+                    <span>
+                      <b>Cảnh báo nhiệt: </b>
+                    </span>
+
+                    <div style={{ textAlign: "center" }}>
+                      <span>Nhiệt độ bắt đầu cảnh báo</span>
+                      <Input
+                        value={thermalWarning}
+                        size="small"
+                        onChange={handleInputTemperatureAdjust}
+                        inputProps={{
+                          step: 1,
+                          min: 0,
+                          max: 1000,
+                          type: "number",
+                          "aria-labelledby": "input-slider",
+                          name: "thermalWarning", // Add a unique name for identification
+                        }}
+                        style={{ width: "40px", marginLeft: "10px" }}
+                      />
+                    </div>
+
+                    <div style={{ textAlign: "center" }}>
+                      <span>Nhiệt độ chênh lệch cảnh báo</span>
+                      <Input
+                        value={thermalDifference}
+                        size="small"
+                        onChange={handleInputTemperatureAdjust}
+                        inputProps={{
+                          step: 1,
+                          min: 0,
+                          max: 1000,
+                          type: "number",
+                          "aria-labelledby": "input-slider",
+                          name: "thermalDifference", // Add a unique name for identification
+                        }}
+                        style={{ width: "40px", marginLeft: "10px" }}
+                      />
+                    </div>
+                  </div>
+                </DialogContent>
+                <DialogActions
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Button variant="contained" onClick={handleUpdateTemperature}>
+                    Cập nhật
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Box>
           </Toolbar>
         </Container>

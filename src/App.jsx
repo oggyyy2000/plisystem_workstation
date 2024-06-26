@@ -1,40 +1,47 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-// import ActivateNavbar from "./components/customComponents/ActivateNavbar";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import { publicRoutes, privateRoutes } from "./routes/routes";
 import WSContextProvider from "./components/context/WSContext";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 const App = () => {
+  const theme = createTheme({
+    typography: {
+      fontFamily: ["Roboto"],
+    },
+  });
   return (
     <>
-      <Router>
+      <ThemeProvider theme={theme}>
         <WSContextProvider>
-          {/* <ActivateNavbar> */}
+          <HashRouter>
             <Navbar />
-          {/* </ActivateNavbar> */}
-          <Routes>
-            {publicRoutes.map((publicRoute, index) => {
-              return (
-                <Route
-                  key={index}
-                  path={publicRoute.path}
-                  element={publicRoute.component}
-                />
-              );
-            })}
-            {privateRoutes.map((privateRoute, index) => {
-              return (
-                <Route
-                  key={index}
-                  path={privateRoute.path}
-                  element={privateRoute.component}
-                />
-              );
-            })}
-          </Routes>
+            {/* <BrowserRouter> */}
+            <Routes>
+              {publicRoutes.map((publicRoute, index) => {
+                return (
+                  <Route
+                    key={index}
+                    path={publicRoute.path}
+                    element={publicRoute.component}
+                  />
+                );
+              })}
+              {privateRoutes.map((privateRoute, index) => {
+                return (
+                  <Route
+                    key={index}
+                    path={privateRoute.path}
+                    element={privateRoute.component}
+                  />
+                );
+              })}
+            </Routes>
+            {/* </BrowserRouter> */}
+          </HashRouter>
         </WSContextProvider>
-      </Router>
+      </ThemeProvider>
     </>
   );
 };

@@ -16,6 +16,7 @@ import { Box } from "@mui/material";
 import DroneIcon from "../../assets/images/drone2.png";
 import ErrorIcon from "../../assets/images/error-icon.png";
 import markerIcon from "../../assets/images/mdi--powerline.svg";
+import blueDot from "../../assets/images/blue_dot.png"
 
 import "./css/MainFlightMap.css";
 import axios from "axios";
@@ -27,7 +28,10 @@ const MainFlightMap = ({
   defectInfo,
   streetLine,
   powerlineId,
+  startFly
 }) => {
+  console.log(startFly)
+
   //map variable
   const [typeMap, setTypeMap] = useState("roadmap");
   const [buttonText, setButtonText] = useState("Bản đồ");
@@ -71,8 +75,15 @@ const MainFlightMap = ({
         console.log(error);
       }
     };
-    if (powerlineId !== "") getCoordinatesPole();
-  }, [powerlineId]);
+    if (powerlineId !== "" && startFly === true) getCoordinatesPole();
+  }, [powerlineId, startFly]);
+
+  useEffect(() => {
+    if(!startFly) {
+      setPoleCoordinates({});
+      setPolyline([]);
+    }
+  }, [startFly])
 
   // useEffect(() => {
   //   const coordinatesPolyline =
@@ -183,6 +194,31 @@ const MainFlightMap = ({
     }
   };
 
+  const renderPolyline = () => {
+    const customIcon = new L.Icon({
+      iconUrl: blueDot,
+      iconSize: [5, 5],
+    });
+    if (streetLine.length > 0) {
+      return (
+        <>
+          {streetLine.map((gis1, index) => {
+            return (
+              <>
+                <Marker
+                  key={index}
+                  position={gis1}
+                  icon={customIcon}
+                  animation={1}
+                ></Marker>
+              </>
+            );
+          })}
+        </>
+      );
+    }
+  }
+
   const renderMapWithMarker = () => {
     const customIcon = new L.Icon({
       iconUrl: DroneIcon,
@@ -211,37 +247,10 @@ const MainFlightMap = ({
                   : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
               }
             />
-            {/* render all pole  */}
+            {/* render tat ca cot */}
             {renderMarkerPole()}
-            {/* {poleCoordinates.length > 0 && poleCoordinates.map((pole, index) => {
-              const [latitudeString, longitudeString] =
-                pole.coordinates.split(",");
-              return (
-                <>
-                  <Marker
-                    key={index}
-                    position={{
-                      lat: parseFloat(latitudeString),
-                      lng: parseFloat(longitudeString),
-                    }}
-                    icon={customMarkerIcon}
-                  >
-                    <Popup
-                      position={{
-                        lat: parseFloat(latitudeString),
-                        lng: parseFloat(longitudeString),
-                      }}
-                    >
-                      <Box className="flightmanage-map__popup">
-                        <p>
-                          Tọa độ: {latitudeString} , {longitudeString}
-                        </p>
-                      </Box>
-                    </Popup>
-                  </Marker>
-                </>
-              );
-            })} */}
+
+              {/* render marker may bay bay theo lo trinh */}
             {currentLocation.latitude && currentLocation.longtitude !== "" ? (
               <Marker
                 key={1}
@@ -250,12 +259,15 @@ const MainFlightMap = ({
                   lng: parseFloat(currentLocation.longtitude),
                 }}
                 icon={customIcon}
-                // animation={1}
               ></Marker>
             ) : (
               <></>
             )}
+
+            {/* render loi */}
             {renderMarkerError(defectInfo)}
+
+            {/* set center map theo may bay */}
             {currentLocation.latitude && currentLocation.longtitude !== "" ? (
               <SetCenterMapOnClick
                 coords={[currentLocation.latitude, currentLocation.longtitude]}
@@ -263,9 +275,9 @@ const MainFlightMap = ({
             ) : (
               <></>
             )}
-            {streetLine && (
-              <Polyline pathOptions={{ color: "red" }} positions={streetLine} />
-            )}
+
+            {/* render duong di may bay  */}
+            {streetLine && streetLine.length > 0 && renderPolyline()}
           </MapContainer>
         </div>
       </>

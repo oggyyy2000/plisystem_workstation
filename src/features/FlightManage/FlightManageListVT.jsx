@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import itemIcon from "../../assets/images/logo.png";
@@ -26,11 +27,11 @@ const FlightManageListVT = () => {
       axios
         .get(urlhomePageView)
         .then((res) => {
-          console.log(res.data.results)
+          console.log(res.data)
           setMissionData(
-            res.data.results.find((id) => id.schedule_id === missionId)
+            res.data.find((id) => id.schedule_id === missionId)
           );
-          console.log(res.data.results.find((id) => id.schedule_id === missionId));
+          console.log(res.data.find((id) => id.schedule_id === missionId));
         })
         .catch((err) => {
           console.log(err);

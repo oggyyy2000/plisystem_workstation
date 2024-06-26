@@ -1,9 +1,11 @@
 /* Dialog */
-.add-mission-dialog__btn-close{position: absolute !important;
-top: 0;
-right: 0;
-align-items: center;
-justify-items: center;}
+.add-mission-dialog__btn-close {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  align-items: center;
+  justify-items: center;
+}
 
 .add-mission-dialog__btn-addmission {
   text-align: center;
@@ -11,7 +13,7 @@ justify-items: center;}
   width: 85px;
   margin-left: 16px !important;
   margin-top: 60px !important;
-  z-index: 1;
+  z-index: 3;
   position: absolute !important;
   color: white;
 }

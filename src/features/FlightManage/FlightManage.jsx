@@ -26,12 +26,12 @@ const FlightManage = () => {
           <Grid
             item
             lg={2}
-            xl={1.5}
+            xl={1.7}
             className="flight-manage__list-mission-container"
           >
             <FlightManageListMission />
           </Grid>
-          <Grid item lg={8} xl={8.7} className="flight-manage__map-container">
+          <Grid item lg={8} xl={8.5} className="flight-manage__map-container">
             <FlightManageMap />
           </Grid>
           <Grid

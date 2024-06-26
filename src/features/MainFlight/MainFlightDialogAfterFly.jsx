@@ -9,7 +9,6 @@ import {
   DialogActions,
   DialogContent,
   TextField,
-  Backdrop,
   FormControlLabel,
   Checkbox,
   Grid,
@@ -19,28 +18,17 @@ import {
   Tabs,
   Tab,
   Typography,
+  Pagination,
 } from "@mui/material";
 import PropTypes from "prop-types";
 
 import CloseIcon from "@mui/icons-material/Close";
 import CropFreeIcon from "@mui/icons-material/CropFree";
-import EditIcon from "@mui/icons-material/Edit";
 import MarkEmailReadIcon from "@mui/icons-material/MarkEmailRead";
 
 import "./css/MainFlightDialogAfterFly.css";
 import EditImageInfoDialog from "../../components/CommonDialog/EditImageInfoDialog";
-
-const errorLabel = [
-  "binhthuong",
-  "cachdientt-vobat",
-  "cachdienslc-rachtan",
-  "daydien-tuasoi",
-  "macdivat",
-  "mongcot-satlo",
-  "troita",
-];
-
-const imagePerRow = 6;
+import LoadingPage from "../../components/LoadingPage/LoadingPage.jsx";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -81,14 +69,16 @@ const MainFlightDialogAfterFly = ({
   docNo,
   typeTicket,
 }) => {
-  console.log("getMissionAndScheduleId: ", getMissionAndScheduleId)
+  console.log("getMissionAndScheduleId: ", getMissionAndScheduleId);
   const [openModalAfterFly, setOpenModalAfterFly] = useState(false);
   const [errorImageBoxChecked, setErrorImageBoxChecked] = useState(false);
-  const [imageNewLabels, setImageNewLabels] = useState([]);
   const [imgList2, setImgList2] = useState({});
+  // const [imgList2TotalElement, setImgList2TotalElement] = useState(0);
+  // console.log("imgList2TotalElement: ", imgList2TotalElement)
+  const [allImageIds, setAllImageIds] = useState([]);
+  var flattenedImageIdsArray = [].concat.apply([], allImageIds);
+  // const [imgList2TotalElement, setImgList2TotalElement] = useState(0);
   const [openZoomingImg, setOpenZoomingImg] = useState("");
-  const [editLabelSelectedValue, setEditLabelSelectedValue] = useState([]);
-  const [openEditLabel, setOpenEditLabel] = useState("");
   const [selectedLabels, setSelectedLabels] = useState([]);
 
   //check variable change
@@ -96,14 +86,30 @@ const MainFlightDialogAfterFly = ({
   const [checked, setChecked] = useState([]);
   const [hadSubmittedError, setHadSubmittedError] = useState(false);
   const [labelChanged, setLabelChanged] = useState(false);
+  const [sendClicked, setSendClicked] = useState(false);
+  const [chooseAllImg, setChooseAllImg] = useState(false);
+  const [imgList2Set, setImgList2Set] = useState(false); // Flag for imgList2 data received
 
   // pagination
-  const [nextImg, setNextImg] = useState({});
-  // console.log(nextImg.VT5.loaded);
+  const [page, setPage] = useState(1); // Current page
+  const imagesPerPage = 12; // Number of images per page
+
+  // Calculate total number of pages
+  const [currentTabName, setCurrentTabName] = useState("");
+  // console.log("currentTabName: ", Object.keys(imgList2)[0]);
+  const totalPages =
+    currentTabName !== "" && Object.keys(imgList2).length > 0
+      ? Math.ceil(
+          // Use optional chaining to safely access imgList2[currentTabName].length
+          imgList2?.[currentTabName]?.length / imagesPerPage
+        )
+      : 0;
 
   // split tab
   const [tab, setTab] = useState(0);
-  // const [currentTab, setCurrentTab] = useState(0);
+
+  // get suggest option for edit label
+  const [suggestOptionEditLabel, setSuggestOptionEditLabel] = useState({});
 
   const urlPostFlightData = process.env.REACT_APP_API_URL + "flightdatas/";
   const urlGetData =
@@ -111,11 +117,24 @@ const MainFlightDialogAfterFly = ({
     "supervisiondetails/?mission_id=" +
     getMissionAndScheduleId.mission_id +
     `&img_state=${errorImageBoxChecked === true ? "defect" : "all"}`;
-  console.log(urlGetData);
-  const urlPostNewImageLabel =
-    process.env.REACT_APP_API_URL + "supervisiondetails/";
 
-  console.log(getMissionAndScheduleId);
+  console.log("imgList2: ", imgList2);
+
+  useEffect(() => {
+    const getSuggestOptionEditLabel = async () => {
+      try {
+        const urlGetPoleCoordinate =
+          process.env.REACT_APP_API_URL + "objectdefect/";
+        const responseData = await axios.get(urlGetPoleCoordinate);
+        console.log(responseData.data);
+        setSuggestOptionEditLabel(responseData.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getSuggestOptionEditLabel();
+  }, []);
+
   useEffect(() => {
     setOpenModalAfterFly(flightComplete);
   }, [flightComplete]);
@@ -123,21 +142,30 @@ const MainFlightDialogAfterFly = ({
   useEffect(() => {
     setLabelChanged(false);
     setChange(false);
-    setImageNewLabels([]);
     setHadSubmittedError(false);
+    setSendClicked(false);
+    setImgList2Set(false);
 
-    if (openModalAfterFly) {
+    if (openModalAfterFly && !imgList2Set) {
       axios
         .get(urlGetData)
         .then((res) => {
-          console.log("data:", res.data);
+          // console.log("data:", res.data);
           setImgList2(res.data);
-          // setNextImg(
-          //   Object.keys(res.data).reduce((acc, galleryKey) => {
-          //     acc[galleryKey] = { loaded: imagePerRow };
-          //     return acc;
-          //   }, {})
-          // );
+          setCurrentTabName(Object.keys(res.data)[0]);
+          setImgList2Set(true); // Mark imgList2 data received
+          setImgList2Set(false); 
+          // let totalElements = 0;
+
+          // // Loop through each top-level key
+          // for (const location in res.data) {
+          //   // Get the array of images for the current location
+          //   const images = res.data[location];
+
+          //   // Add the length of the array to the total count
+          //   totalElements += images.length;
+          // }
+          // setImgList2TotalElement(totalElements);
         })
         .catch((err) => {
           console.log(err);
@@ -146,15 +174,63 @@ const MainFlightDialogAfterFly = ({
   }, [
     change,
     hadSubmittedError,
-    errorImageBoxChecked,
     urlGetData,
     openModalAfterFly,
-    labelChanged
+    labelChanged,
+    imgList2Set,
   ]);
 
   useEffect(() => {
-    setTab(0);
-  }, [errorImageBoxChecked]);
+    if (errorImageBoxChecked) {
+      axios
+        .get(urlGetData)
+        .then((res) => {
+          console.log(res);
+          setImgList2(res.data);
+          // setErrorImageList(res.data)
+          setPage(1);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      axios
+        .get(urlGetData)
+        .then((res) => {
+          console.log(res);
+          setImgList2(res.data);
+          setAllImageIds(
+            Object.keys(res.data).map((vt) =>
+              res.data[vt]
+                .filter((image) => image.sent_status !== "sent")
+                .map((image) => image.image_id)
+            ) // Extract all image IDs
+          );
+          setPage(1);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [errorImageBoxChecked, urlGetData]);
+
+  useEffect(() => {
+    if (chooseAllImg === true && selectedLabels.length === 0) {
+      setChooseAllImg(false);
+    } else if (
+      chooseAllImg === false &&
+      flattenedImageIdsArray.length > 0 &&
+      selectedLabels.length === flattenedImageIdsArray.length
+    ) {
+      setChooseAllImg(true);
+    } else if (
+      selectedLabels.length > 0 &&
+      flattenedImageIdsArray.length > 0 &&
+      selectedLabels.length < flattenedImageIdsArray.length
+    ) {
+      setChooseAllImg(false);
+    }
+  }, [chooseAllImg, selectedLabels.length, flattenedImageIdsArray.length]);
 
   // --------- Ham de xu ly click input va label ---------
   const handleLabelClick = (label) => {
@@ -177,14 +253,27 @@ const MainFlightDialogAfterFly = ({
   };
 
   // --------- Ham de loc chi anh bat thuong  ---------
-  const handleErrorImageBoxChecked = (e, index) => {
-    setErrorImageBoxChecked(e.target.checked);
-    // setCurrentTab(index);
+  const handleErrorImageBoxChecked = (e) => {
+    if (Object.keys(imgList2).length > 0) {
+      setErrorImageBoxChecked(e.target.checked);
+    }
+  };
+
+  // --------- Ham de chon tat ca anh ---------
+  const handleSelectAll = (e) => {
+    setChooseAllImg(e.target.checked);
+
+    if (selectedLabels.length > 0) {
+      setSelectedLabels([]);
+    } else {
+      setSelectedLabels(flattenedImageIdsArray); // Update state with all IDs
+    }
   };
 
   // --------- Ham de submit tat ca cac anh nguoi dung chon --------
   const handleSubmitErrorImage = () => {
     setHadSubmittedError(false);
+    setSendClicked(true);
 
     const formData = new FormData();
     formData.append("schedule_id", getMissionAndScheduleId.schedule_id);
@@ -195,16 +284,19 @@ const MainFlightDialogAfterFly = ({
       .then((response) => {
         if (response.status === 200) {
           alert("Tất cả ảnh đã chọn đã được gửi đi !");
+          setSendClicked(false);
           setHadSubmittedError(true);
+          setSelectedLabels([]);
         }
       })
       .catch((error) => {
         console.error(error);
+        alert(error.response.data.error_description);
+        setSendClicked(false);
       });
   };
 
   // ------------ Zooming Dialog ------------
-
   const zoomingDialog = (info) => {
     return (
       <>
@@ -243,128 +335,23 @@ const MainFlightDialogAfterFly = ({
     );
   };
 
-  // ------------- Edit Label Dialog---------------
-
-  // const handleCheckboxChooseNewLabel = (e) => {
-  //   const { value, checked } = e.target;
-
-  //   if (checked) {
-  //     setImageNewLabels([...imageNewLabels, value]);
-  //   } else {
-  //     setImageNewLabels(imageNewLabels.filter((label) => label !== value));
-  //   }
-
-  //   if (value === "binhthuong" || imageNewLabels === "binhthuong") {
-  //     if (editLabelSelectedValue.includes(value)) {
-  //       setImageNewLabels([]);
-  //       setEditLabelSelectedValue([]);
-  //     } else {
-  //       setImageNewLabels([value]);
-  //       setEditLabelSelectedValue([value]);
-  //     }
-  //   } else {
-  //     setEditLabelSelectedValue([value]);
-  //   }
-
-  //   console.log(imageNewLabels);
-  // };
-
-  // const isDisabled = (value) => {
-  //   return (
-  //     (editLabelSelectedValue.includes("binhthuong") ||
-  //       imageNewLabels.includes("binhthuong")) &&
-  //     value !== "binhthuong"
-  //   );
-  // };
-
-  // const handleSubmitEditLabel = (imageLink) => {
-  //   const imageLabel = {
-  //     img_path: imageLink,
-  //     new_label: imageNewLabels.join("_"),
-  //   };
-
-  //   axios
-  //     .post(urlPostNewImageLabel, imageLabel)
-  //     .then((response) => {
-  //       console.log(response);
-  //       if (response.data === "Change Success") {
-  //         alert("Thay đổi nhãn thành công!");
-  //         setChange(true);
-  //         setOpenEditLabel(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
-
-  // const editLabelDialog = (info) => {
-  //   return (
-  //     <>
-  //       <Button
-  //         className="modal-afterfly__edit-btn"
-  //         variant="contained"
-  //         onClick={() => {
-  //           setOpenEditLabel(info.img_path);
-  //           setImageNewLabels([...info.label.split("_")]);
-  //         }}
-  //         disabled={info.sent_check === 1}
-  //       >
-  //         <EditIcon />
-  //       </Button>
-  //       <Dialog
-  //         fullWidth
-  //         maxWidth="xs"
-  //         open={openEditLabel === info.img_path ? true : false}
-  //         slots={{ backdrop: Backdrop }}
-  //         slotProps={{
-  //           backdrop: {
-  //             sx: {
-  //               backgroundColor: "rgba(0, 0, 0, 0.5)",
-  //             },
-  //           },
-  //         }}
-  //       >
-  //         <DialogTitle>Cập nhật nhãn bất thường</DialogTitle>
-  //         <DialogContent dividers>
-  //           {errorLabel.map((label) => (
-  //             <label key={label} style={{ fontSize: "20px" }}>
-  //               <input
-  //                 type="checkbox"
-  //                 value={label}
-  //                 checked={imageNewLabels.includes(label)}
-  //                 onChange={(e) => handleCheckboxChooseNewLabel(e)}
-  //                 disabled={isDisabled(label)}
-  //               />
-  //               {label} <br />
-  //             </label>
-  //           ))}
-  //         </DialogContent>
-  //         <DialogActions>
-  //           <Button autoFocus onClick={() => setOpenEditLabel(false)}>
-  //             Hủy
-  //           </Button>
-  //           <Button onClick={() => handleSubmitEditLabel(info.img_path)}>
-  //             Xác nhận
-  //           </Button>
-  //         </DialogActions>
-  //       </Dialog>
-  //     </>
-  //   );
-  // };
-
-  // --------- Ham de xu ly pagination --------
-  // const handleLoadMore = (vt) => {
-  //   setNextImg((prevNextImg) => ({
-  //     ...prevNextImg,
-  //     [vt]: { loaded: prevNextImg[vt].loaded + imagePerRow },
-  //   }));
-  // };
-
-  // --------- Ham xu ly chia tab ---------
+  // --------- Ham xu ly chia tabs ---------
   const handleChangeTabs = (event, newValue) => {
     console.log(newValue);
-    setTab(newValue);
+    if (newValue !== undefined) {
+      setTab(newValue);
+    }
+  };
+
+  // --------- Ham xu ly click tab khac nhau ---------
+  const handleTabClick = (vt) => {
+    setCurrentTabName(vt);
+    setPage(1);
+  };
+
+  // --------- Ham de xu ly chuyen trang pagination --------
+  const handlePageChange = (event, newPage) => {
+    setPage(newPage);
   };
 
   // ------------- Render list error images Dialog ---------------
@@ -382,7 +369,7 @@ const MainFlightDialogAfterFly = ({
                 cols={3}
               >
                 {imgList2[vt]
-                  // ?.slice(0, nextImg[vt].loaded)
+                  .slice((page - 1) * imagesPerPage, page * imagesPerPage) // --------- xu ly pagination --------
                   ?.map((info, index) => {
                     return (
                       <>
@@ -407,6 +394,7 @@ const MainFlightDialogAfterFly = ({
                                 info={info}
                                 setLabelChanged={setLabelChanged}
                                 type_ticket={typeTicket}
+                                suggestOptionEditLabel={suggestOptionEditLabel}
                               />
                             </div>
                           </div>
@@ -433,21 +421,21 @@ const MainFlightDialogAfterFly = ({
                               width={"100%"}
                               height={"100%"}
                             />
+
+                            {info.sent_status === "sent" ? (
+                              <MarkEmailReadIcon
+                                className="icon-hadsent"
+                                color="info"
+                                fontSize="large"
+                              />
+                            ) : (
+                              <></>
+                            )}
                           </label>
 
                           {selectedLabels.includes(info.image_id) &&
                           info.sent_status === "not_sent" ? (
                             <div className="checkmark-hadchoosed"></div>
-                          ) : (
-                            <></>
-                          )}
-
-                          {info.sent_status === "sent" ? (
-                            <MarkEmailReadIcon
-                              className="icon-hadsent"
-                              color="info"
-                              fontSize="large"
-                            />
                           ) : (
                             <></>
                           )}
@@ -466,6 +454,16 @@ const MainFlightDialogAfterFly = ({
                     );
                   })}
               </ImageList>
+
+              {/* --------- Ham de xu ly pagination -------- */}
+              <Pagination
+                variant="outlined"
+                shape="rounded"
+                count={totalPages}
+                page={page}
+                onChange={handlePageChange}
+                sx={{ display: "flex", justifyContent: "center", mt: 2 }}
+              />
             </CustomTabPanel>
           )}
         </>
@@ -496,13 +494,29 @@ const MainFlightDialogAfterFly = ({
                 aria-label="basic tabs example"
               >
                 {Object.keys(imgList2).map((vt, index) => (
-                  <Tab key={index} label={vt} {...a11yProps(index)} />
+                  <Tab
+                    key={index}
+                    label={vt}
+                    onClick={() => handleTabClick(vt)}
+                    {...a11yProps(index)}
+                  />
                 ))}
 
                 <div className="modal-afterfly__btn-group">
                   <FormControlLabel
+                    className="modal-mission-data__form-label"
+                    control={
+                      <Checkbox
+                        checked={chooseAllImg}
+                        onChange={handleSelectAll}
+                      />
+                    }
+                    label={"Chọn tất cả ảnh"}
+                  />
+
+                  <FormControlLabel
                     className="modal-afterfly__form-label"
-                    control={<Checkbox />}
+                    control={<Checkbox checked={errorImageBoxChecked} />}
                     label="Ảnh bất thường"
                     onChange={(e) => handleErrorImageBoxChecked(e)}
                   />
@@ -524,12 +538,15 @@ const MainFlightDialogAfterFly = ({
       >
         <Button
           className="modal-afterfly__submit-btn"
+          disabled={selectedLabels.length > 0 ? false : true}
           variant="outlined"
           onClick={handleSubmitErrorImage}
         >
           GỬI
         </Button>
       </DialogActions>
+
+      {sendClicked === true ? <LoadingPage /> : <></>}
     </Dialog>
   );
 };

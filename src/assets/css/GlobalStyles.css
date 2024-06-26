@@ -1,7 +1,10 @@
 :root {
-  --font-text: "Roboto", sans-serif;
+  --font-text: "Roboto";
   --white-color: #fff;
   --black-color: #000;
+  --screen-width-resolution: 1920px;
+  --screen-height-resolution: 1080px;
+  --navbar-height: 65px
 }
 
 * {
@@ -74,8 +77,9 @@ html {
   position: absolute;
   height: 100px !important;
   width: 100px !important;
-  margin-top: 30%;
-  margin-left: 41%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Responsive base */
@@ -98,6 +102,14 @@ html {
 /* MUI style */
 .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop {
   z-index: 0;
+}
+
+.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled {
+  -webkit-text-fill-color: black !important;
+}
+
+.css-1lbintu-MuiFormLabel-root-MuiInputLabel-root.Mui-disabled {
+  color: black !important;
 }
 
 /* React-slick */

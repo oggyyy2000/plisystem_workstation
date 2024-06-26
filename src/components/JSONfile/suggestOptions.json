@@ -13,16 +13,14 @@
       "Các vật lạ bám vào cột"
     ],
 
-    "mongcot": [
-    "bình thường",
-     "Bê tông móng bị nứt, sạt, lở"],
+    "mongcot": ["bình thường", "Bê tông móng bị nứt, sạt, lở"],
 
     "xa_giado": [
       "bình thường",
       "Xà nghiêng (gãy, đổ, biến dạng, mất thanh, hư hỏng, rỉ"
     ],
 
-    "cachdien": [
+    "cachdientt": [
       "bình thường",
       "Cách điện bị vỡ, nứt, mất",
       "Các bất thường, hư hỏng trên bát cách điện/ chuỗi cách điện",
@@ -30,11 +28,11 @@
       "Phóng điện (xuyên thủng, bề mặt)",
       "Sự cố phụ kiện cách điện"
     ],
-    "tiepdia":["bình thường"],
-    "dayneo_mongneo":["bình thường"],
-    "thietbi_chongset":["bình thường"],
+    "tiepdia": ["bình thường"],
+    "dayneo_mongneo": ["bình thường"],
+    "thietbi_chongset": ["bình thường"],
 
-    "daydan": [
+    "daydien": [
       "bình thường",
       "Dây dẫn bị trùng (độ võng bất thường)",
       "Dây dẫn bị đứt sợi, bị tưa, bị tổn thương",
@@ -61,8 +59,6 @@
   "phieudem": {
     "phatnhiet": ["phát nhiệt mối nối", ""],
     "phongdien": ["phóng điện ở đường dây", "phóng điện chuỗi cách điện"],
-    "khac":[]
-   
+    "khac": []
   }
-
 }

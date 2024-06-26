@@ -34,10 +34,6 @@ const FlightManageListTB = () => {
           // console.log(typeof VTdetail.data[nameTB]);
           const translatedNameTB = translateToVietnamese(nameTB);
           const hasData = VTdetail.data[nameTB].length > 0;
-          // var error = false;
-          // if (VTdetail.data[nameTB].length > 0) {
-          //   error = true;
-          // }
           if (typeof VTdetail.data[nameTB] !== "string") {
             return (
               <>

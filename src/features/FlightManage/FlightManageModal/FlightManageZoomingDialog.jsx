@@ -2,7 +2,7 @@ import React from "react";
 
 import Dialog from "@mui/material/Dialog";
 
-import "../css/FlightManageZoomingDialog.css";
+import "./css/FlightManageZoomingDialog.css";
 
 const FlightManageZoomingDialog = ({
   info,

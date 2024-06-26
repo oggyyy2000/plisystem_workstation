@@ -3,6 +3,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { WSContext } from "../../components/context/WSContext";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+// import { useDebounce } from "@uidotdev/usehooks";
 
 import axios from "axios";
 
@@ -51,23 +52,33 @@ const MainFlight = () => {
   const [startFly, setStartFly] = useState(false);
   const [currentVT, setCurrentVT] = useState("");
   const [DefectInfo, setDefectInfo] = useState([]);
+  // const [defectName, setDefectName]= useState(null)
   const [currentLocation, setCurrentLocation] = useState({});
   const [choosedIdTuyen, setChoosedIdTuyen] = useState("");
+  const [defectBoxCoordinate, setDefectBoxCoordinate] = useState([]);
+  const [minMaxThermal, setMinMaxThermal] = useState({})
 
   //check change variable
   const [hadSubmited, setHadSubmited] = useState(false);
   const [hadSubmitedNewTicket, setHadSubmitedNewTicket] = useState(false);
   const [hasInternet, setHasInternet] = useState(false);
-  const isOnlineRef = useRef(null);
+  const isOnlineRef = useRef(true);
+  const [errorCharactersNewTicketDocNo, setErrorCharactersNewTicketDocNo] =
+    useState(false);
+  const [errorCharactersNewTicketUAVName, setErrorCharactersNewTicketUAVName] =
+    useState(false);
+  const checkDataStatus = useRef(false);
 
   // jobticket
   const [jobTicketData, setJobTicketData] = useState(null);
   console.log(jobTicketData);
 
   const [DateDB, setDateDB] = useState([]);
+  console.log("DateDB: ", DateDB);
   const [idFormReport, setIdFormReport] = useState("");
   const [superviseTypeOptions, setSuperviseTypeOptions] = useState([]);
   const [superviseType, setSuperviseType] = useState("");
+  console.log(superviseType)
 
   const selectedTicket = jobTicketData
     ? jobTicketData.data_ticket.find(
@@ -97,12 +108,17 @@ const MainFlight = () => {
   const [newTicketUAVName, setNewTicketUAVName] = useState("");
 
   //map variable
+  const [notifyMessage, setNotifyMessage] = useState({});
   const [zoom, setZoom] = useState(17);
   const [streetLine, setStreetLine] = useState([]);
   const [center, setCenter] = useState({
     lat: 21.002890438729345,
     lng: 105.86171273377768,
   });
+  // const [poleCoordinates, setPoleCoordinates] = useState({});
+  // console.log(poleCoordinates);
+  // const [polyline, setPolyline] = useState([]);
+  // console.log(polyline);
 
   const { ws, connect, disconnect } = useContext(WSContext);
   const [message, setMessage] = useState([]);
@@ -112,85 +128,48 @@ const MainFlight = () => {
   const urlPostFlightInfo =
     process.env.REACT_APP_API_URL + "supervisionstreaming/";
 
-  // const urlCheckInternetConnection =
-  //   process.env.REACT_APP_API_URL + "checkinternet/";
-
   useEffect(() => {
     connect();
   }, [connect]);
 
-  // useEffect(() => {
-  //   // can de y them !!
-  //   const checkInternet = async () => {
-  //     try {
-  //       const urlCheckInternetConnection =
-  //         process.env.REACT_APP_API_URL + "checkinternet/";
-  //       const postResponse = await axios.get(urlCheckInternetConnection);
-  //       if (postResponse.status === 200) {
-  //         setHasInternet(true);
-  //       }
-  //     } catch (error) {
-  //       // Handle errors
-  //       setHasInternet(false);
-  //       alert("Thiết bị không có kết nối internet !");
-  //     }
-  //   };
-  //   checkInternet();
-  // }, []);
-
   useEffect(() => {
-    const isOnline = navigator.onLine;
-    console.log("isOnline: ", isOnline);
-
-    if (navigator.onLine) {
+    const handleOnline = () => {
       setHasInternet(true);
-      isOnlineRef.current = true;
-      // alert("Có kết nối internet");
-    } else {
+      if (!isOnlineRef.current) {
+        // Check if alert hasn't been shown yet
+        alert("Có kết nối internet");
+        isOnlineRef.current = true;
+      }
+    };
+
+    const handleOffline = () => {
       setHasInternet(false);
-      isOnlineRef.current = false;
-      // alert("Không có kết nối internet");
+      if (isOnlineRef.current) {
+        // Check if alert was shown previously
+        alert("Không có kết nối internet");
+        isOnlineRef.current = false;
+      }
+    };
+
+    // Add event listeners
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    // Check initial connection state and trigger appropriate function
+    if (navigator.onLine) {
+      handleOnline();
+    } else {
+      handleOffline();
     }
-  }, []);
 
-  // useEffect(() => {
-  //   const handleOnline = () => {
-  //     setHasInternet(true);
-  //     if (!isOnlineRef.current) { // Check if alert hasn't been shown yet
-  //       alert("Có kết nối internet");
-  //       isOnlineRef.current = true;
-  //     }
-  //   };
-
-  //   const handleOffline = () => {
-  //     setHasInternet(false);
-  //     if (isOnlineRef.current) { // Check if alert was shown previously
-  //       alert("Không có kết nối internet");
-  //       isOnlineRef.current = false;
-  //     }
-  //   };
-
-  //   // Add event listeners
-  //   window.addEventListener('online', handleOnline);
-  //   window.addEventListener('offline', handleOffline);
-
-  //   // Check initial connection state and trigger appropriate function
-  //   if (navigator.onLine) {
-  //     handleOnline();
-  //   } else {
-  //     handleOffline();
-  //   }
-
-  //   return () => {
-  //     window.removeEventListener('online', handleOnline);
-  //     window.removeEventListener('offline', handleOffline);
-  //   };
-  // }, []); // Empty dependency array ensures useEffect runs only once
-
-  
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []); // Empty dependency array ensures useEffect runs only once
 
   useEffect(() => {
-    if (hasInternet === true) {
+    if (hasInternet === true && checkDataStatus.current === false) {
       const postJobTicket = async () => {
         // Adjust the URL based on your actual API endpoint
         const postJobTicket = process.env.REACT_APP_API_URL + "jobticket/";
@@ -202,7 +181,27 @@ const MainFlight = () => {
         console.log("POST Response:", postResponse.data);
 
         // If response.data contains updated data, continue with GET request
-        if (postResponse.data === "Updated data") {
+        if (postResponse.data === "update success") {
+          checkDataStatus.current = true;
+          // const getJobTicket =
+          //   process.env.REACT_APP_API_URL +
+          //   `${DateDB.length > 0 ? `jobticket/?date=${DateDB}` : `jobticket/`}`;
+          // console.log(getJobTicket);
+          // const getResponse = await axios.get(getJobTicket);
+
+          // // Handle the GET response and update state if needed
+          // console.log("GET Response:", getResponse.data);
+          // setJobTicketData(getResponse.data);
+        }
+      };
+
+      // Call the function on component mount
+      postJobTicket();
+    }
+
+    if (hasInternet === true && checkDataStatus.current === true) {
+      try {
+        const getJobTicketWithInternetAlreadyPost = async () => {
           const getJobTicket =
             process.env.REACT_APP_API_URL +
             `${DateDB.length > 0 ? `jobticket/?date=${DateDB}` : `jobticket/`}`;
@@ -212,11 +211,12 @@ const MainFlight = () => {
           // Handle the GET response and update state if needed
           console.log("GET Response:", getResponse.data);
           setJobTicketData(getResponse.data);
-        }
-      };
+        };
 
-      // Call the function on component mount
-      postJobTicket();
+        getJobTicketWithInternetAlreadyPost();
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     if (hasInternet === false) {
@@ -249,7 +249,7 @@ const MainFlight = () => {
   //         const getResponse = await axios.get(getCheckDeviceConnect);
 
   //         // Handle the GET response and update state if needed
-  //         // console.log("GET Response:", getResponse.data);
+  //         console.log("GET Response:", getResponse.data);
   //         if (getResponse.status === 200) {
   //           const formData = new FormData();
 
@@ -284,65 +284,30 @@ const MainFlight = () => {
   //   selectedTicket,
   //   DateDB,
   //   superviseType,
-  //   hadSubmitedNewTicket,
   // ]);
 
-  useEffect(() => {
-    if (hadSubmited === true || hadSubmitedNewTicket === true) {
-      const checkSupportModel = async () => {
-        try {
-          const UrlCheckSupportModel =
-            process.env.REACT_APP_API_URL +
-            `checkmodelsupport/?powerline_id=${selectedTicket.powerline_id_id}&supervise_type=${superviseType}`;
-
-          const getResponse = await axios.get(UrlCheckSupportModel);
-
-          if (getResponse.status === 200) {
-            console.log("ok");
-          }
-        } catch (error) {
-          alert("model not found");
-          handleRefresh();
-        }
-      };
-
-      checkSupportModel();
-    }
-  }, [selectedTicket, hadSubmited, superviseType, hadSubmitedNewTicket]);
-
   // useEffect(() => {
-  //   const postJobTicket = async () => {
-  //     try {
-  //       // Adjust the URL based on your actual API endpoint
-  //       const postJobTicket = process.env.REACT_APP_API_URL + "jobticket/";
-
-  //       // Perform the POST request without sending any content
-  //       const postResponse = await axios.post(postJobTicket);
-
-  //       // Handle the response if needed
-  //       console.log("POST Response:", postResponse.data);
-
-  //       // If response.data contains updated data, continue with GET request
-  //       if (postResponse.data === "Updated data") {
-  //         const getJobTicket =
+  //   if (hadSubmited === true || hadSubmitedNewTicket === true) {
+  //     const checkSupportModel = async () => {
+  //       try {
+  //         const UrlCheckSupportModel =
   //           process.env.REACT_APP_API_URL +
-  //           `${DateDB.length > 0 ? `jobticket/?date=${DateDB}` : `jobticket/`}`;
-  //         console.log(getJobTicket);
-  //         const getResponse = await axios.get(getJobTicket);
+  //           `checkmodelsupport/?powerline_id=${selectedTicket.powerline_id_id}&supervise_type=${superviseType}`;
 
-  //         // Handle the GET response and update state if needed
-  //         console.log("GET Response:", getResponse.data);
-  //         setJobTicketData(getResponse.data);
+  //         const getResponse = await axios.get(UrlCheckSupportModel);
+
+  //         if (getResponse.status === 200) {
+  //           console.log("ok");
+  //         }
+  //       } catch (error) {
+  //         alert("model not found");
+  //         handleRefresh();
   //       }
-  //     } catch (error) {
-  //       // Handle errors
-  //       console.error("Error posting or getting job ticket:", error);
-  //     }
-  //   };
+  //     };
 
-  //   // Call the function on component mount
-  //   postJobTicket();
-  // }, [DateDB]); // Empty dependency array to run the effect only on mount
+  //     checkSupportModel();
+  //   }
+  // }, [selectedTicket, hadSubmited, superviseType, hadSubmitedNewTicket]);
 
   useEffect(() => {
     const powerlines = process.env.REACT_APP_API_URL + "powerline/";
@@ -369,7 +334,35 @@ const MainFlight = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [idFormReport]);
+
+  // useEffect(() => {
+  //   const getCoordinatesPole = async () => {
+  //     try {
+  //       const urlGetPoleCoordinate =
+  //         process.env.REACT_APP_API_URL +
+  //         "powerlinelocation/?powerline_id=" +
+  //         choosedIdTuyen;
+  //       const responseData = await axios.get(urlGetPoleCoordinate);
+  //       setPoleCoordinates(responseData.data);
+  //       console.log(responseData.data);
+  //       const coordinatesPolyline =
+  //         responseData.data &&
+  //         responseData.data.map((data) => {
+  //           console.log("data: ", data);
+  //           const [latitude, longtitude] = data.coordinates.split(",");
+  //           return {
+  //             lat: parseFloat(latitude),
+  //             lng: parseFloat(longtitude),
+  //           };
+  //         });
+  //       setPolyline(coordinatesPolyline);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   if (powerlineId !== "") getCoordinatesPole();
+  // }, [powerlineId]);
 
   useEffect(() => {
     try {
@@ -382,14 +375,21 @@ const MainFlight = () => {
           setFlightComplete(true);
           setStartFly(false);
           setHadSubmited(false);
+          setHadSubmitedNewTicket(false);
           disconnect();
           stompClient.disconnect();
         }
         console.log("data:", data);
         const gis = data.data.gis;
         const defectWS = data.data.defects;
+        const defectBox = data.data.defect_boxes;
+        const minMaxThermal = data.data.frame_thermal; 
+        setDefectBoxCoordinate(defectBox)
+        setMinMaxThermal(minMaxThermal);
+
         const VT = data.data.location;
         setCurrentVT(VT);
+        const docNoID = data.data.docNo_id;
 
         if (gis !== undefined) {
           setStartFly(true);
@@ -409,36 +409,60 @@ const MainFlight = () => {
           let defectName;
           if (defectWS.length > 0) {
             setDefectInfo(defectWS);
-            // Use forEach loop to overwrite defectName with each defect name
-            defectWS.forEach((info) => {
-              defectName = info.defect_name;
-            });
+            defectName = defectWS[defectWS.length - 1].defect_name;
           }
-          console.log(defectName);
 
           // gui ve may chu
-          // const chatMessage = {
-          //   uav: selectedTicket.flycam,
-          //   type: selectedTicket.type,
-          //   messageType: "SEND",
-          //   doc: selectedTicket.docNo,
-          //   longitude: parseFloat(gis.longtitude),
-          //   latitude: parseFloat(gis.latitude),
-          //   altitude: parseFloat(gis.altitude),
-          //   warning: defectName,
-          // };
+          const chatMessage = {
+            docId: docNoID, //TODO
+            locationName: VT,
+            uav: selectedTicket.flycam,
+            // type: selectedTicket.type,
+            messageType: "SEND",
+            // doc: selectedTicket.docNo,
+            longitude: parseFloat(gis.longtitude),
+            latitude: parseFloat(gis.latitude),
+            altitude: parseFloat(gis.altitude),
+            warning:
+              !notifyMessage[VT] ||
+              !notifyMessage[VT].find((nm) => nm === defectName)
+                ? defectName
+                : null,
+          };
 
-          // stompClient.send(
-          //   "/app/chat.sendMessage",
-          //   {},
-          //   JSON.stringify(chatMessage)
-          // );
+          if (defectName) {
+            if (!notifyMessage[VT]) {
+              setNotifyMessage({
+                ...notifyMessage,
+                [VT]: [defectName],
+              });
+            } else if (!notifyMessage[VT].find((nm) => nm === defectName)) {
+              setNotifyMessage({
+                ...notifyMessage,
+                [VT]: [...notifyMessage[VT], defectName],
+              });
+            }
+          }
+
+          stompClient.send(
+            "/app/chat.sendMessage",
+            {},
+            JSON.stringify(chatMessage)
+          );
         }
       };
     } catch (e) {
       console.log(e);
     }
-  }, [startFly, streetLine, ws, disconnect, stompClient, selectedTicket]);
+  }, [
+    startFly,
+    streetLine,
+    ws,
+    disconnect,
+    stompClient,
+    selectedTicket,
+    notifyMessage,
+  ]);
 
   useEffect(() => {
     const socket = new SockJS("http://eps.elz.vn:8005/api/a/powerline/ws");
@@ -481,6 +505,15 @@ const MainFlight = () => {
     setZoom(17);
     setDefectInfo([]);
     setStreetLine([]);
+  };
+
+  const handleRefreshNewTicket = () => {
+    setNewTicketDocNo("");
+    setNewTicketType("");
+    setNewTicketIdTuyen("");
+    setNewTicketMethodInspect("");
+    setNewTicketFlyType("");
+    setNewTicketUAVName("");
   };
 
   const handleClose = () => {
@@ -542,7 +575,13 @@ const MainFlight = () => {
             </Box>
             <Box className="add-mission-dialog__form-id-textfield">
               <FormControl
-                disabled={DateDB.length > 0 ? false : true}
+                disabled={
+                  jobTicketData &&
+                  jobTicketData.data_ticket &&
+                  DateDB.length > 0
+                    ? false
+                    : true
+                }
                 fullWidth
               >
                 <InputLabel>Phiếu kiểm tra</InputLabel>
@@ -646,11 +685,19 @@ const MainFlight = () => {
 
             <div>
               {DateDB.length === 0 && superviseType === "" ? (
-                <Button onClick={() => handleClose()} color="primary">
+                <Button
+                  disabled={hadSubmited === true ? true : false}
+                  onClick={() => handleClose()}
+                  color="primary"
+                >
                   Hủy
                 </Button>
               ) : (
-                <Button onClick={() => handleRefresh()} color="primary">
+                <Button
+                  disabled={hadSubmited === true ? true : false}
+                  onClick={() => handleRefresh()}
+                  color="primary"
+                >
                   Chọn lại
                 </Button>
               )}
@@ -674,7 +721,11 @@ const MainFlight = () => {
   const createNewTicket = () => {
     return (
       <>
-        <Button color="primary" onClick={() => setOpenCreateNewTicket(true)}>
+        <Button
+          disabled={hadSubmited === true ? true : false}
+          color="primary"
+          onClick={() => setOpenCreateNewTicket(true)}
+        >
           Tạo phiếu mới
         </Button>
 
@@ -723,10 +774,12 @@ const MainFlight = () => {
                 fullWidth
                 label="Tên phiếu kiểm tra"
                 value={newTicketDocNo}
+                error={errorCharactersNewTicketDocNo.characters}
+                helperText={errorCharactersNewTicketDocNo.characters}
                 InputLabelProps={{
                   shrink: true,
                 }}
-                onChange={(e) => setNewTicketDocNo(e.target.value)}
+                onChange={(e) => handleInputNewTicketDocNo(e)}
               />
             </Box>
 
@@ -781,7 +834,9 @@ const MainFlight = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                onChange={(e) => setNewTicketUAVName(e.target.value)}
+                error={errorCharactersNewTicketUAVName.characters}
+                helperText={errorCharactersNewTicketUAVName.characters}
+                onChange={(e) => handleInputNewTicketUAVName(e)}
               />
             </Box>
             <Box className="add-mission-dialog__select-superviseType-form">
@@ -822,16 +877,74 @@ const MainFlight = () => {
             >
               Gửi
             </Button>
-            {/* <Button
-              variant="contained"
-              onClick={() => setOpenCreateNewTicket(false)}
-            >
-              Hủy
-            </Button> */}
           </DialogActions>
         </Dialog>
       </>
     );
+  };
+
+  const handleInputNewTicketDocNo = (e) => {
+    const inputValue = e.target.value;
+    setNewTicketDocNo(inputValue);
+    const errors = {};
+
+    // Kiểm tra độ dài
+    if (inputValue.length < 1) {
+      errors.characters = "Nhập ít nhất 2 ký tự";
+    }
+
+    // Kiểm tra ký tự đặc biệt
+    const regexSpecialChar = /[^a-zA-Z0-9-_ ]/g;
+    if (regexSpecialChar.test(inputValue)) {
+      errors.characters =
+        "Giá trị nhập vào không hợp lệ. Vui lòng nhập chuỗi chỉ chứa chữ cái, chữ số, dấu _ và -.";
+    }
+
+    // Kiểm tra khoảng trắng
+    if (!/\S/.test(inputValue)) {
+      errors.characters = "Không được nhập chỉ khoảng trắng";
+    }
+
+    // Set lỗi
+    if (Object.keys(errors).length > 0) {
+      setErrorCharactersNewTicketDocNo(errors);
+      return;
+    }
+
+    // Nhập hợp lệ
+    setErrorCharactersNewTicketDocNo(false);
+  };
+
+  const handleInputNewTicketUAVName = (e) => {
+    const inputValue = e.target.value;
+    setNewTicketUAVName(inputValue);
+    const errors = {};
+
+    // Kiểm tra độ dài
+    if (inputValue.length < 1) {
+      errors.characters = "Nhập ít nhất 2 ký tự";
+    }
+
+    // Kiểm tra ký tự đặc biệt
+    const regexSpecialChar = /[^a-zA-Z0-9-_ ]/g;
+    if (regexSpecialChar.test(inputValue)) {
+      errors.characters =
+        "Giá trị nhập vào không hợp lệ. Vui lòng nhập chuỗi chỉ chứa chữ cái, chữ số, dấu _ và -.";
+    }
+
+    // Kiểm tra khoảng trắng
+    if (!/\S/.test(inputValue)) {
+      errors.characters = "Không được nhập chỉ khoảng trắng";
+    }
+
+    // Set lỗi
+    if (Object.keys(errors).length > 0) {
+      setErrorCharactersNewTicketUAVName(errors);
+      return;
+    }
+
+    // Nhập hợp lệ
+    setErrorCharactersNewTicketUAVName(false);
   };
 
   const onChangeFormId = (e) => {
@@ -848,71 +961,77 @@ const MainFlight = () => {
     setSuperviseType(e.target.value);
   };
 
-  const handleSubmitInfoBeforeFly = (e) => {
+  const handleSubmitInfoBeforeFly = async (e) => {
     e.preventDefault();
-
-    // try {
-    //   const checkDeviceConnect = async () => {
-    //     const getCheckDeviceConnect =
-    //       process.env.REACT_APP_API_URL + "checkdevice/";
-    //     const getResponse = await axios.get(getCheckDeviceConnect);
-
-    //     // Handle the GET response and update state if needed
-    //     // console.log("GET Response:", getResponse.data);
-    //     if(getResponse.status === 503) {
-    //       alert(getResponse.data)
-    //     }
-    //   };
-
-    //   checkDeviceConnect();
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
     setHadSubmited(true);
 
-    const formData = new FormData();
+    try {
+      const getCheckDeviceConnect =
+        process.env.REACT_APP_API_URL + "checkdevice/";
+      const getResponse = await axios.get(getCheckDeviceConnect);
 
-    if (selectedTicket) {
-      formData.append(
-        "data",
-        JSON.stringify({
-          docNo: selectedTicket.docNo,
-          type: selectedTicket.type,
-          implementation_date: DateDB,
-          powerline_id: selectedTicket.powerline_id_id,
-          flycam: selectedTicket.flycam,
-          methodInspect: selectedTicket.methodInspect,
-          supervise_type: superviseType,
-        })
-      );
+      // Handle the GET response and update state if needed
+      console.log("GET Response:", getResponse.data);
+      if (getResponse.status === 200) {
+        const formData = new FormData();
+
+        if (selectedTicket) {
+          formData.append(
+            "data",
+            JSON.stringify({
+              docNo: selectedTicket.docNo,
+              type: selectedTicket.type,
+              implementation_date: DateDB,
+              powerline_id: selectedTicket.powerline_id_id,
+              flycam: selectedTicket.flycam,
+              methodInspect: selectedTicket.methodInspect,
+              supervise_type: superviseType,
+            })
+          );
+        }
+        console.log("existticket: ", formData);
+
+        sendPostRequest(formData);
+      }
+    } catch (error) {
+      alert(error.response.data);
+      handleRefresh();
     }
-    console.log("existticket: ", formData);
-
-    sendPostRequest(formData);
   };
 
-  const handleSubmitInfoOfCreateNewTicket = (e) => {
+  const handleSubmitInfoOfCreateNewTicket = async (e) => {
     e.preventDefault();
-    setHadSubmitedNewTicket(true);
 
-    const formData = new FormData();
+    try {
+      const getCheckDeviceConnect =
+        process.env.REACT_APP_API_URL + "checkdevice/";
+      const getResponse = await axios.get(getCheckDeviceConnect);
 
-    formData.append(
-      "data",
-      JSON.stringify({
-        docNo: newTicketDocNo,
-        type: newTicketType,
-        implementation_date: newTicketDate,
-        powerline_id: newTicketIdTuyen,
-        flycam: newTicketUAVName,
-        methodInspect: newTicketMethodInspect,
-        supervise_type: newTicketFlyType,
-      })
-    );
-    console.log("newticket: ", formData);
+      // Handle the GET response and update state if needed
+      console.log("GET Response:", getResponse.data);
+      if (getResponse.status === 200) {
+        const formData = new FormData();
 
-    sendPostRequest(formData);
+        formData.append(
+          "data",
+          JSON.stringify({
+            docNo: newTicketDocNo,
+            type: newTicketType,
+            implementation_date: newTicketDate,
+            powerline_id: newTicketIdTuyen,
+            flycam: newTicketUAVName,
+            methodInspect: newTicketMethodInspect,
+            supervise_type: newTicketFlyType,
+          })
+        );
+        console.log("newticket: ", formData);
+
+        sendPostRequest(formData);
+      }
+    } catch (error) {
+      alert(error.response.data);
+      handleRefreshNewTicket();
+    }
   };
 
   const sendInfo = (data) => {
@@ -972,6 +1091,9 @@ const MainFlight = () => {
           startfly={startFly}
           currentvt={currentVT}
           currentlocation={currentLocation}
+          superviseType={superviseType}
+          defectBoxCoordinate={defectBoxCoordinate}
+          minMaxThermal={minMaxThermal}
         />
 
         <MainFlightMap
@@ -981,6 +1103,7 @@ const MainFlight = () => {
           defectInfo={DefectInfo}
           streetLine={streetLine}
           powerlineId={choosedIdTuyen}
+          startFly={startFly}
         />
 
         <MainFlightDialogAfterFly
@@ -990,7 +1113,7 @@ const MainFlight = () => {
           typeTicket={selectedTicket ? selectedTicket.type : ""}
         />
 
-        {!startFly && !open && hadSubmited ? (
+        {!startFly && !open && (hadSubmited || hadSubmitedNewTicket) ? (
           <Loading startFly={startFly} />
         ) : (
           <></>

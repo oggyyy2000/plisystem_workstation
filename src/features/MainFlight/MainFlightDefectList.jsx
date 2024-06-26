@@ -36,41 +36,45 @@ const MainFlightDefectList = ({ startfly, currentvt, defectInfo }) => {
 
   const handleDefectItem = (defectInfo, currentvt) => {
     if (defectInfo.length > 0) {
+      console.log(defectInfo);
       return (
         <>
           {/* {showImageError(hadDefect.info, hadDefect.index)} */}
 
-          {defectInfo.map((gis1, index) => {
-            console.log(gis1);
-            return (
-              <>
-                <div
-                  className="defect-items-card"
-                  onClick={() =>
-                    Object.keys(hadDefect).length !== 0
-                      ? setHadDefect({})
-                      : setHadDefect({
-                          info: gis1.defect_image[0],
-                          index: index,
-                        })
-                  }
-                >
-                  <div className="defect-items-card__header">
-                    <h1>Defect</h1>
+          {defectInfo
+            .slice()
+            .reverse()
+            .map((gis1, index) => {
+              console.log(gis1);
+              return (
+                <>
+                  <div
+                    className="defect-items-card"
+                    onClick={() =>
+                      Object.keys(hadDefect).length !== 0
+                        ? setHadDefect({})
+                        : setHadDefect({
+                            info: gis1.defect_image[0],
+                            index: index,
+                          })
+                    }
+                  >
+                    <div className="defect-items-card__header">
+                      <h1>Defect</h1>
+                    </div>
+                    <div class="defect-items-card__body">
+                      <p>{gis1.defect_name}</p>
+                      <p>VI TRI: {gis1.location_defect}</p>
+                      <p>
+                        KD,VD: {parseFloat(gis1.defect_gis.latitude)},{" "}
+                        {parseFloat(gis1.defect_gis.longtitude)}
+                      </p>
+                      <p>ĐỘ CAO: {parseFloat(gis1.defect_gis.altitude)}</p>
+                    </div>
                   </div>
-                  <div class="defect-items-card__body">
-                    <p>{gis1.defect_name}</p>
-                    <p>VI TRI: {currentvt}</p>
-                    <p>
-                      KD,VD: {parseFloat(gis1.defect_gis.latitude)},{" "}
-                      {parseFloat(gis1.defect_gis.longtitude)}
-                    </p>
-                    <p>ĐỘ CAO: {parseFloat(gis1.defect_gis.altitude)}</p>
-                  </div>
-                </div>
-              </>
-            );
-          })}
+                </>
+              );
+            })}
         </>
       );
     }

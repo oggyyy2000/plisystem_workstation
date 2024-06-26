@@ -18,60 +18,43 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 import styles from "./css/FlightManageImportData.module.css";
-import suggestOptions from "../../../components/JSONfile/suggestOptions.json";
 
-const translateToVietnamese = (englishTerm) => {
-  // Implement your translation logic here, using a dictionary, API, or other means
-  // For example, you could use a lookup table or an external translation service
-  const translations = {
-    hanhlang: "Hành lang",
-    cot: "Cột điện",
-    mongcot: "Móng cột",
-    xa_giado: "Xà-Giá đỡ",
-    cachdien: "Cách điện",
-    tiepdia: "Tiếp địa",
-    dayneo_mongneo: "Dây néo - Móng néo",
-    thietbi_chongset: "Thiết bị chống sét",
-    daydan: "Dây dẫn",
-    tacr: "Tạ chống rung",
-    daycs: "Dây chống sét",
-    phatnhiet: "Phát nhiệt",
-    phongdien: "Phóng điện",
-    khac: "Khác",
-  };
-  return translations[englishTerm] || englishTerm; // Fallback to original term if not found
-};
+import EditIcon from "@mui/icons-material/Edit";
+
+import Loading from "../../../components/LoadingPage/LoadingPage";
 
 const FlightManageImportData = ({
   powerline_id,
   type_ticket,
   setTab,
   schedule_id,
-  setHadImportNewData
+  setHadImportNewData,
+  suggestOptions,
 }) => {
   const [openImportDataDialog, setOpenImportDataDialog] = useState(false);
   const [poleId, setPoleId] = useState([]);
-  console.log(poleId);
-  // const [objectName, setObjectName] = useState("");
-  // console.log(objectName);
 
   const [imagesFiles, setImagesFiles] = useState([]);
-  console.log(imagesFiles);
   // 👇 files is not an array, but it's iterable, spread to get an array of files
-  const files = imagesFiles ? [...imagesFiles] : [];
-  console.log(files);
+  // const files = imagesFiles ? [...imagesFiles] : [];
+  // console.log(files);
   const [imagesInfo, setImagesInfo] = useState([]);
-  console.log(imagesInfo);
+  // console.log(imagesInfo);
 
   const [selectedImg, setSelectedImg] = useState(null); //TODO
-  console.log(selectedImg);
+  // console.log(selectedImg);
+  const [selectedImgIndex, setSelectedImgIndex] = useState(null);
 
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
 
-  console.log(suggestOptions);
+  // check variable change
+  const [hasDeleteImg, setHasDeleteImg] = useState(false);
+  const [sendClicked, setSendClicked] = useState(false);
 
   useEffect(() => {
+    setSendClicked(false);
+
     const poleLocations =
       process.env.REACT_APP_API_URL +
       `${
@@ -94,6 +77,33 @@ const FlightManageImportData = ({
   useEffect(() => {
     setTab(0);
   }, [setTab, imagesInfo]);
+
+  useEffect(() => {
+    if (hasDeleteImg === true) {
+      setSelectedImg(null);
+      setHasDeleteImg(false);
+    }
+  }, [hasDeleteImg]);
+
+  // translate to Vietnamese function
+  const transformDataToDictionary = (data) => {
+    const translations = {};
+
+    for (const category in data) {
+      const subCategory = data[category];
+      for (const key in subCategory) {
+        const term = subCategory[key];
+        translations[key] = term.name_v;
+      }
+    }
+
+    return translations;
+  };
+
+  const translateToVietnamese = (englishTerm) => {
+    const translations = transformDataToDictionary(suggestOptions);
+    return translations[englishTerm] || englishTerm; // Fallback to original term if not found
+  };
 
   const selectFiles = () => {
     fileInputRef.current.click();
@@ -155,7 +165,11 @@ const FlightManageImportData = ({
 
   const handleDeleteImages = (index) => {
     setImagesInfo((prevImages) => prevImages.filter((_, i) => i !== index));
-    setSelectedImg(null);
+    const prevFiles = imagesFiles ? [...imagesFiles] : [];
+    const filesAfterDelete = prevFiles.filter((_, i) => i !== index);
+    setImagesFiles(filesAfterDelete);
+    setHasDeleteImg(true);
+    // setSelectedImg({});
   };
 
   const handleDragOver = (event) => {
@@ -288,6 +302,8 @@ const FlightManageImportData = ({
   const handleSubmitImages = async (event) => {
     event.preventDefault(); // Prevent default form submission
 
+    setSendClicked(true);
+
     const formData = new FormData();
     formData.append("schedule_id", schedule_id);
 
@@ -339,11 +355,16 @@ const FlightManageImportData = ({
         console.log(res.data);
         if (res.data === "image saved successfully.") {
           alert("Tất cả ảnh vừa thêm đã được lưu !");
+          setSendClicked(false);
           setHadImportNewData(true);
           handleCloseImportDialog();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        alert("Thêm dữ liệu không thành công. Hãy điền đầy đủ thông tin ảnh !");
+        setSendClicked(false);
+      });
   };
 
   const handlePoleIdOptions = () => {
@@ -418,7 +439,7 @@ const FlightManageImportData = ({
                 ? false
                 : true
             }
-            options={Object.keys(suggestOptions.phieungay)}
+            options={Object.keys(suggestOptions.D)}
             value={
               selectedImg && selectedImg[selectedImg.dataShowImg.name].label
                 ? selectedImg[selectedImg.dataShowImg.name].label
@@ -434,6 +455,7 @@ const FlightManageImportData = ({
             renderInput={(params) => (
               <TextField
                 {...params}
+                required
                 value={params.value}
                 label={"Tên đối tượng"}
               />
@@ -451,7 +473,7 @@ const FlightManageImportData = ({
                 ? false
                 : true
             }
-            options={Object.keys(suggestOptions.phieudem)}
+            options={Object.keys(suggestOptions.N)}
             value={
               selectedImg && selectedImg[selectedImg.dataShowImg.name].label
                 ? selectedImg[selectedImg.dataShowImg.name].label
@@ -467,6 +489,7 @@ const FlightManageImportData = ({
             renderInput={(params) => (
               <TextField
                 {...params}
+                required
                 value={params.value}
                 label={"Tên đối tượng"}
               />
@@ -490,9 +513,9 @@ const FlightManageImportData = ({
             }
             options={
               selectedImg && selectedImg[selectedImg.dataShowImg.name].label
-                ? suggestOptions.phieungay[
+                ? suggestOptions.D[
                     selectedImg[selectedImg.dataShowImg.name].label
-                  ]
+                  ].defect
                 : ""
             }
             getOptionLabel={(option) => {
@@ -509,6 +532,7 @@ const FlightManageImportData = ({
             renderInput={(params) => (
               <TextField
                 {...params}
+                required
                 value={params.value}
                 label={"Mô tả thiết bị"}
               />
@@ -528,9 +552,9 @@ const FlightManageImportData = ({
             }
             options={
               selectedImg && selectedImg[selectedImg.dataShowImg.name].label
-                ? suggestOptions.phieudem[
+                ? suggestOptions.N[
                     selectedImg[selectedImg.dataShowImg.name].label
-                  ]
+                  ].defect
                 : ""
             }
             value={
@@ -547,6 +571,7 @@ const FlightManageImportData = ({
             renderInput={(params) => (
               <TextField
                 {...params}
+                required
                 value={params.value}
                 label={"Mô tả thiết bị"}
               />
@@ -576,9 +601,10 @@ const FlightManageImportData = ({
   //   );
   // };
 
-  const handleImgClick = (imgInfo) => {
+  const handleImgClick = (imgInfo, index) => {
     // console.log(imgInfo);
     setSelectedImg(imgInfo);
+    setSelectedImgIndex(index);
   };
 
   const handleCloseImportDialog = () => {
@@ -617,26 +643,43 @@ const FlightManageImportData = ({
                     <div
                       className={styles.image}
                       key={index}
-                      onClick={() => handleImgClick(img)}
+                      onClick={() => handleImgClick(img, index)}
                     >
-                      <span
-                        className={styles.delete}
-                        onClick={() => handleDeleteImages(index)}
-                      >
-                        &times;
-                      </span>
-                      <img
-                        className={
-                          img[img.dataShowImg.name].location !== null &&
-                          img[img.dataShowImg.name].label !== null &&
-                          img[img.dataShowImg.name].title !== null
-                            ? // img[img.dataShowImg.name].status !== null
-                              "choosed"
-                            : ""
-                        }
-                        src={img.dataShowImg.url}
-                        alt={img.dataShowImg.name}
-                      />
+                      
+                        <span
+                          className={styles.delete}
+                          onClick={() => handleDeleteImages(index)}
+                        >
+                          &times;
+                        </span>
+                        <img
+                          className={
+                            (img[img.dataShowImg.name].location !== null &&
+                              img[img.dataShowImg.name].label !== null &&
+                              img[img.dataShowImg.name].title !== null) ||
+                            selectedImgIndex === index
+                              ? // img[img.dataShowImg.name].status !== null
+                                "choosed"
+                              : ""
+                          }
+                          src={img.dataShowImg.url}
+                          alt={img.dataShowImg.name}
+                        />
+
+                        {/* add when click on image to edit */}
+                        {selectedImgIndex === index ? (
+                          <EditIcon
+                            fontSize="large"
+                            style={{
+                              position: "absolute",
+                              left: "50%",
+                              top: "45%",
+                            }}
+                          />
+                        ) : (
+                          <></>
+                        )}
+
 
                       {img[img.dataShowImg.name].location !== null &&
                       img[img.dataShowImg.name].label !== null &&
@@ -684,6 +727,7 @@ const FlightManageImportData = ({
               <input
                 name="file"
                 type="file"
+                accept="image/*"
                 className="file"
                 multiple
                 ref={fileInputRef}
@@ -727,19 +771,17 @@ const FlightManageImportData = ({
           }}
         >
           <Button
-            disabled={imagesInfo.forEach((item) =>
-              item[item.dataShowImg.name].location !== null &&
-              item[item.dataShowImg.name].label !== null &&
-              item[item.dataShowImg.name].title !== null
-                ? false
-                : true
-            )}
+            disabled={
+              imagesFiles.length > 0 && imagesInfo.length > 0 ? false : true
+            }
             onClick={handleSubmitImages}
             variant="contained"
           >
             Gửi
           </Button>
         </DialogActions>
+
+        {sendClicked === true ? <Loading /> : <></>}
       </Dialog>
     </>
   );
