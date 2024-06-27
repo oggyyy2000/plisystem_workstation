@@ -1,6 +1,6 @@
 {
-  "name": "plisystem_maytram_deploy",
-  "version": "0.1.0",
+  "name": "plisystem_workstation_deploy",
+  "version": "1.0.0",
   "private": true,
   "homepage": ".",
   "dependencies": {
