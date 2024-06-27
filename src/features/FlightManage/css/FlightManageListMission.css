@@ -37,6 +37,10 @@
   margin: 5px 10px 5px 0;
 }
 
+.mission-card__icon-plane-done {
+  background-color: #228B22;
+}
+
 .mission-card__icon-drop {
   display: flex;
   align-items: center;

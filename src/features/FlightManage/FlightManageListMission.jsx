@@ -84,8 +84,16 @@ const FlightManageListMission = () => {
               }
             >
               <div className="mission-card__header">
-                <div className="mission-card__icon-plane">
-                  <FlightRoundedIcon fontSize="large" />
+                <div
+                  className={`mission-card__icon-plane ${organizedData[
+                    date
+                  ].map((powerline) =>
+                    powerline.supervision_status === "done"
+                      ? "mission-card__icon-plane-done"
+                      : ""
+                  )}`}
+                >
+                  <FlightRoundedIcon fontSize="large" sx={{ color: "white" }} />
                 </div>
                 <div className="mission-card__title">{date}</div>
                 <div className="mission-card__icon-drop">
@@ -118,10 +126,10 @@ const FlightManageListMission = () => {
                   >
                     &sdot; {powerline.powerline_id_id} --{" "}
                     {powerline.powerline_name} <br />
-                    {powerline.type === "D" ? "(ngày)" : "(đêm)"}
                   </span>
-                  
-                  <span>
+
+                  <span >
+                    {powerline.type === "D" ? "(ngày)" : "(đêm)"}
                     {powerline.supervision_status === "done" ? (
                       <CheckCircleIcon
                         color="success"

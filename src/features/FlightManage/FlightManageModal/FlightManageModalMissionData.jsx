@@ -199,7 +199,7 @@ const ModalMissionData = ({
           setImgList2(res.data);
           setCurrentTabName(Object.keys(res.data)[0]);
           setImgList2Set(true); // Mark imgList2 data received
-          setImgList2Set(false); 
+          setImgList2Set(false);
           // let totalElements = 0;
 
           // // Loop through each top-level key
@@ -306,6 +306,7 @@ const ModalMissionData = ({
                 </div>
 
                 <Button
+                  disabled={chooseMissionIndex === null}
                   style={{ position: "absolute", bottom: 0, right: 0 }}
                   onClick={() => {
                     handleCopyImgFolder();
