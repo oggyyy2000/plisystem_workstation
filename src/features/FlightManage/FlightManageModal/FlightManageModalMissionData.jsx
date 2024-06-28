@@ -191,7 +191,7 @@ const ModalMissionData = ({
     setHadImportNewData(false);
     setSendClicked(false);
 
-    if (open && getMissionId !== "" && !imgList2Set) {
+    if (open && getMissionId && !imgList2Set) {
       axios
         .get(urlGetData)
         .then((res) => {
@@ -229,7 +229,7 @@ const ModalMissionData = ({
   ]);
 
   useEffect(() => {
-    if (errorImageBoxChecked) {
+    if (errorImageBoxChecked && getMissionId) {
       axios
         .get(urlGetData)
         .then((res) => {
@@ -241,7 +241,7 @@ const ModalMissionData = ({
         .catch((err) => {
           console.log(err);
         });
-    } else {
+    } else if (!errorImageBoxChecked && getMissionId) {
       axios
         .get(urlGetData)
         .then((res) => {
@@ -260,7 +260,7 @@ const ModalMissionData = ({
           console.log(err);
         });
     }
-  }, [errorImageBoxChecked, urlGetData]);
+  }, [errorImageBoxChecked, urlGetData, getMissionId]);
 
   useEffect(() => {
     if (chooseAllImg === true && selectedLabels.length === 0) {

@@ -29,13 +29,14 @@ const FlightManageMap = () => {
     lng: 105.84322259736739,
   });
   console.log(center);
+  const [zoom, setZoom] = useState(14);
 
   const [electricPoleCoordinate, setElectricPoleCoordinate] = useState([]);
   const [missionData, setMissionData] = useState({});
-  console.log(missionData);
+  console.log("missionData: ", missionData);
   const [GISlist, setGISlist] = useState([]);
   const VTdetail = useSelector(VTInfo);
-  console.log(JSON.stringify(VTdetail));
+  console.log("VTdetail: ", VTdetail);
   const missionId = useSelector(MissionId);
 
   const urlhomePageView = process.env.REACT_APP_API_URL + "homepageapiview/";
@@ -51,7 +52,7 @@ const FlightManageMap = () => {
           // Split the string using "_" delimiter
           const parts = item.image_gis.split("_");
 
-          const errorname = item.image_title
+          const errorname = item.image_title;
 
           // Extract values and convert to numbers
           const latitude = parseFloat(parts[0]);
@@ -64,7 +65,7 @@ const FlightManageMap = () => {
           const location = {
             latitude: latitude,
             longtitude: longtitude,
-            errorname: errorname
+            errorname: errorname,
             // altitude: {...(altitude !== undefined && { altitude })}, // Add altitude only if it exists
           };
           listGIS.push(location);
@@ -84,9 +85,7 @@ const FlightManageMap = () => {
       axios
         .get(urlhomePageView)
         .then((res) => {
-          setMissionData(
-            res.data.find((id) => id.schedule_id === missionId)
-          );
+          setMissionData(res.data.find((id) => id.schedule_id === missionId));
         })
         .catch((err) => {
           console.log(err);
@@ -130,8 +129,9 @@ const FlightManageMap = () => {
   };
 
   const SetCenterMapOnClick = ({ coords }) => {
+    setZoom(20);
     const map = useMap();
-    map.setView(coords, map.getZoom());
+    map.setView(coords, zoom);
 
     return null;
   };
@@ -164,7 +164,7 @@ const FlightManageMap = () => {
           <MapContainer
             center={center}
             zoomControl={false}
-            zoom={14}
+            zoom={zoom}
             className="flightmanage-map"
           >
             <TileLayer
@@ -227,6 +227,8 @@ const FlightManageMap = () => {
                         </Box>
                       </Popup>
                     </Marker>
+
+                    <SetCenterMapOnClick coords={[latitude, longtitude]} />
                   </>
                 );
               })
@@ -243,7 +245,7 @@ const FlightManageMap = () => {
               <></>
             )}
             {/* set center map theo vi tri cot */}
-            {missionData?.powerline_coordinates?.map((coordinate, index) => {
+            {/* {missionData?.powerline_coordinates?.map((coordinate, index) => {
               const [latitudeString, longitudeString] = coordinate.split(",");
               return (
                 <>
@@ -252,20 +254,14 @@ const FlightManageMap = () => {
                   />
                 </>
               );
-            })}
+            })} */}
           </MapContainer>
         </div>
       </>
     );
   };
 
-  return (
-    <>
-      {GISlist !== "[]" &&
-        
-        renderMapwithAMarker(GISlist, center)}
-    </>
-  );
+  return <>{GISlist !== "[]" && renderMapwithAMarker(GISlist, center)}</>;
 };
 
 export default FlightManageMap;

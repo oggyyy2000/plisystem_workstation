@@ -732,7 +732,7 @@ const MainFlight = () => {
         <Dialog
           open={openCreateNewTicket}
           fullWidth
-          maxWidth={"md"}
+          maxWidth={"sm"}
           onClose={() => setOpenCreateNewTicket(false)}
         >
           <DialogTitle

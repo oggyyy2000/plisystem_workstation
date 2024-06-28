@@ -254,12 +254,12 @@ const Navbar = () => {
                     </span>
 
                     <Typography textAlign="center">
-                      <b>Tài khoản: </b>
+                      <b>wscode: </b>
                       {userPass.user_authen}
                     </Typography>
 
                     <Typography textAlign="center">
-                      <b>Mật khẩu: </b>
+                      <b>wsskey: </b>
                       {userPass.pass_authen}
                     </Typography>
                   </div>

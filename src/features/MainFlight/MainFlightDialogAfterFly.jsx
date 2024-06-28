@@ -146,7 +146,11 @@ const MainFlightDialogAfterFly = ({
     setSendClicked(false);
     setImgList2Set(false);
 
-    if (openModalAfterFly && !imgList2Set) {
+    if (
+      openModalAfterFly &&
+      getMissionAndScheduleId.mission_id &&
+      !imgList2Set
+    ) {
       axios
         .get(urlGetData)
         .then((res) => {
@@ -154,7 +158,7 @@ const MainFlightDialogAfterFly = ({
           setImgList2(res.data);
           setCurrentTabName(Object.keys(res.data)[0]);
           setImgList2Set(true); // Mark imgList2 data received
-          setImgList2Set(false); 
+          setImgList2Set(false);
           // let totalElements = 0;
 
           // // Loop through each top-level key
@@ -178,10 +182,11 @@ const MainFlightDialogAfterFly = ({
     openModalAfterFly,
     labelChanged,
     imgList2Set,
+    getMissionAndScheduleId.mission_id,
   ]);
 
   useEffect(() => {
-    if (errorImageBoxChecked) {
+    if (errorImageBoxChecked && getMissionAndScheduleId.mission_id) {
       axios
         .get(urlGetData)
         .then((res) => {
@@ -193,7 +198,7 @@ const MainFlightDialogAfterFly = ({
         .catch((err) => {
           console.log(err);
         });
-    } else {
+    } else if (!errorImageBoxChecked && getMissionAndScheduleId.mission_id) {
       axios
         .get(urlGetData)
         .then((res) => {
@@ -212,7 +217,7 @@ const MainFlightDialogAfterFly = ({
           console.log(err);
         });
     }
-  }, [errorImageBoxChecked, urlGetData]);
+  }, [errorImageBoxChecked, urlGetData, getMissionAndScheduleId.mission_id]);
 
   useEffect(() => {
     if (chooseAllImg === true && selectedLabels.length === 0) {
