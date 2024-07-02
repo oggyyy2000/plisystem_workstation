@@ -1,14 +1,13 @@
-.buttonGroupSelectStatus {
-  display: none !important;
-  justify-content: flex-end;
-}
-
-.buttonStatus {
-  border: 1px solid black !important;
-  color: var(--black-color) !important;
-}
-
-.buttonStatus:hover {
-  border: 1px solid black !important;
-  color: var(--black-color) !important;
+.buttonClose {
+  height: 25px;
+  position: absolute !important;
+  top: 4px;
+  right: 10px;
+  padding: 0 13px !important;
+  min-width: 10px !important;
+  width: 20px !important;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-items: center;
 }

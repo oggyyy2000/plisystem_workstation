@@ -60,10 +60,17 @@
 }
 
 .modal-mission-data__close-btn {
-  height: 32px;
+  height: 25px;
   position: absolute !important;
-  top: 0;
-  right: 0;
+  top: 4px;
+  right: 10px;
+  padding: 0 13px !important;
+  min-width: 10px !important;
+  width: 20px !important;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-items: center;
 }
 
 .modal-mission-data__body {
@@ -73,9 +80,16 @@
 }
 
 .modal-mission-data__img-list {
-  height: 94.5%;
+  height: calc(100% - 50px);
   overflow-y: auto;
   text-align: center;
+}
+
+.modal-mission-data__img-list-items-container {
+  position: relative;
+  overflow-y: hidden !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 4px;
 }
 
 .modal-mission-data__img-list-title {
@@ -100,4 +114,22 @@
 
 .modal-mission-data__load-more-btn {
   margin-top: 5px !important;
+}
+
+@media (max-width: 760px)  {
+  .modal-mission-data__img-list-items-container {
+    position: relative;
+    overflow-y: hidden !important;
+    grid-template-columns: repeat(1, 1fr) !important;
+    gap: 4px;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1279px) {
+  .modal-mission-data__img-list-items-container {
+    position: relative;
+    overflow-y: hidden !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 4px;
+  }
 }

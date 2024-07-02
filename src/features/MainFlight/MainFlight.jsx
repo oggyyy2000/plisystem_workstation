@@ -3,7 +3,6 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { WSContext } from "../../components/context/WSContext";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-// import { useDebounce } from "@uidotdev/usehooks";
 
 import axios from "axios";
 
@@ -56,7 +55,7 @@ const MainFlight = () => {
   const [currentLocation, setCurrentLocation] = useState({});
   const [choosedIdTuyen, setChoosedIdTuyen] = useState("");
   const [defectBoxCoordinate, setDefectBoxCoordinate] = useState([]);
-  const [minMaxThermal, setMinMaxThermal] = useState({})
+  const [minMaxThermal, setMinMaxThermal] = useState({});
 
   //check change variable
   const [hadSubmited, setHadSubmited] = useState(false);
@@ -78,7 +77,7 @@ const MainFlight = () => {
   const [idFormReport, setIdFormReport] = useState("");
   const [superviseTypeOptions, setSuperviseTypeOptions] = useState([]);
   const [superviseType, setSuperviseType] = useState("");
-  console.log(superviseType)
+  console.log(superviseType);
 
   const selectedTicket = jobTicketData
     ? jobTicketData.data_ticket.find(
@@ -383,8 +382,8 @@ const MainFlight = () => {
         const gis = data.data.gis;
         const defectWS = data.data.defects;
         const defectBox = data.data.defect_boxes;
-        const minMaxThermal = data.data.frame_thermal; 
-        setDefectBoxCoordinate(defectBox)
+        const minMaxThermal = data.data.frame_thermal;
+        setDefectBoxCoordinate(defectBox);
         setMinMaxThermal(minMaxThermal);
 
         const VT = data.data.location;
@@ -552,7 +551,7 @@ const MainFlight = () => {
           </DialogTitle>
 
           <DialogContent
-            sx={{ padding: "20px 24px !important", overflowY: "hidden" }}
+            sx={{ padding: "20px 24px !important", overflowY: "auto" }}
           >
             <Box className="add-mission-dialog__select-date-textfield">
               <FormControl fullWidth>
@@ -733,6 +732,7 @@ const MainFlight = () => {
           open={openCreateNewTicket}
           fullWidth
           maxWidth={"sm"}
+          hideBackdrop
           onClose={() => setOpenCreateNewTicket(false)}
         >
           <DialogTitle

@@ -1,16 +1,22 @@
 /* Dialog */
 .add-mission-dialog__btn-close {
   position: absolute !important;
-  top: 0;
-  right: 0;
+  top: 15px;
+  right: 10px;
+  padding: 3px 13px !important;
+  min-width: 10px !important;
+  width: 25px !important;
+  border-radius: 50% !important;
+  display: flex;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
 }
 
 .add-mission-dialog__btn-addmission {
   text-align: center;
   text-transform: uppercase;
   width: 85px;
+  height: 36px;
   margin-left: 16px !important;
   margin-top: 60px !important;
   z-index: 3;

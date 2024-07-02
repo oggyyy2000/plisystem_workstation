@@ -367,11 +367,12 @@ const MainFlightDialogAfterFly = ({
           {tab === index && (
             <CustomTabPanel value={tab} index={index}>
               <ImageList
-                sx={{
-                  position: "relative",
-                  overflowY: "hidden",
-                }}
-                cols={3}
+                className="modal-afterfly__img-list-items-container"
+                // sx={{
+                //   position: "relative",
+                //   overflowY: "hidden",
+                // }}
+                // cols={3}
               >
                 {imgList2[vt]
                   .slice((page - 1) * imagesPerPage, page * imagesPerPage) // --------- xu ly pagination --------

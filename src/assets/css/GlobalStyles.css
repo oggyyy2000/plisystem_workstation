@@ -4,7 +4,7 @@
   --black-color: #000;
   --screen-width-resolution: 1920px;
   --screen-height-resolution: 1080px;
-  --navbar-height: 65px
+  --navbar-height: 65px;
 }
 
 * {
@@ -82,22 +82,7 @@ html {
   transform: translate(-50%, -50%);
 }
 
-/* Responsive base */
-
-.grid {
-  width: 1200px;
-  max-width: 100%;
-  margin: 0 auto;
-}
-
-.grid__ful-width {
-  width: 100%;
-}
-
-.grid__row {
-  display: flex;
-  flex-wrap: wrap;
-}
+/* Responsive */
 
 /* MUI style */
 .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop {

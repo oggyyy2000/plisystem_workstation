@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
-import { Fade } from "@mui/material";
 import Icon from "../../assets/images/expand-icon.png";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
@@ -182,12 +181,20 @@ const MainFlightInMission = ({
           console.log(info);
           if (info && info.boxe) {
             const [x, y, width, height] = info.boxe;
-            if (openZoomView) {
+            if (openZoomView && window.innerWidth > 1500) {
               return drawRect(
                 (x - width / 2) * 2,
                 (y - height / 2) * 1.40625,
                 width * 2,
                 height * 1.40625,
+                info.label + "°C"
+              );
+            } else if (openZoomView && window.innerWidth < 1500) {
+              return drawRect(
+                x - width / 2,
+                (y - height / 2) * 0.9375,
+                width,
+                height * 0.9375,
                 info.label + "°C"
               );
             } else {
@@ -207,8 +214,15 @@ const MainFlightInMission = ({
           console.log(info);
           if (info) {
             const [x, y, width, height] = info;
-            if (openZoomView) {
+            if (openZoomView && window.innerWidth > 1500) {
               return drawRect(x - width / 2, y - height / 2, width, height);
+            } else if (openZoomView && window.innerWidth < 1500) {
+              return drawRect(
+                (x - width / 2) * 0.5,
+                (y - height / 2) * 0.6667,
+                width * 0.5,
+                height * 0.6667
+              );
             } else {
               return drawRect(
                 (x - width / 2) * 0.31953125,
@@ -236,8 +250,8 @@ const MainFlightInMission = ({
               ? "info-panel__detect-box-zoomed"
               : "info-panel__detect-box"
           }`}
-          width={openZoomView === true ? 1280 : 409}
-          height={openZoomView === true ? 720 : 306}
+          width={openZoomView ? (window.innerWidth > 1500 ? 1280 : 640) : 409}
+          height={openZoomView ? (window.innerWidth > 1500 ? 720 : 480) : 306}
           // style={{ position: "absolute", top: 0, right: 0 }}
         ></canvas>
 
@@ -273,68 +287,66 @@ const MainFlightInMission = ({
           )}
         </button>
       </div>
-      <Fade in={openInMissionPanel} timeout={1200}>
-        <div
-          className={`info-panel__container ${
-            openInMissionPanel
-              ? "info-panel__container--open"
-              : "info-panel__container--close"
-          }`}
-        >
-          <div className="info-panel__tableinfo">
-            <table>
+
+      <div
+        className={`info-panel__container ${
+          openInMissionPanel
+            ? "info-panel__container--open"
+            : "info-panel__container--close"
+        }`}
+      >
+        <div className="info-panel__tableinfo">
+          <table>
+            <tr>
+              <td>VTHT: {currentvt}</td>
+              <td>
+                <span>Kiểu giám sát: {superviseType}</span>
+                <br />
+                <span>
+                  Kinh độ: {parseFloat(currentlocation.longtitude)}{" "}
+                </span>{" "}
+                <br />
+                <span>Vĩ độ: {parseFloat(currentlocation.latitude)} </span>{" "}
+                <br />
+                <span>Độ cao: {parseFloat(currentlocation.altitude)} </span>
+              </td>
+            </tr>
+            {superviseType === "nhiệt" ? (
               <tr>
-                <td>VTHT: {currentvt}</td>
                 <td>
-                  <span>Kiểu giám sát: {superviseType}</span>
-                  <br />
-                  <span>
-                    Kinh độ: {parseFloat(currentlocation.longtitude)}{" "}
-                  </span>{" "}
-                  <br />
-                  <span>
-                    Vĩ độ: {parseFloat(currentlocation.latitude)}{" "}
-                  </span>{" "}
-                  <br />
-                  <span>Độ cao: {parseFloat(currentlocation.altitude)} </span>
+                  Nhiệt độ thấp nhất: {minMaxThermal ? minMaxThermal.T_min : ""}{" "}
+                  °C
+                </td>
+                <td>
+                  Nhiệt độ cao nhất: {minMaxThermal ? minMaxThermal.T_max : ""}{" "}
+                  °C
                 </td>
               </tr>
-              {superviseType === "nhiệt" ? (
-                <tr>
-                  <td>
-                    Nhiệt độ thấp nhất:{" "}
-                    {minMaxThermal ? minMaxThermal.T_min : ""} °C
-                  </td>
-                  <td>
-                    Nhiệt độ cao nhất:{" "}
-                    {minMaxThermal ? minMaxThermal.T_max : ""} °C
-                  </td>
-                </tr>
-              ) : (
-                <></>
-              )}
-            </table>
-          </div>
+            ) : (
+              <></>
+            )}
+          </table>
+        </div>
+        <div
+          className={`${
+            openZoomView === true
+              ? "info-panel__cameraview-zoomed"
+              : "info-panel__cameraview"
+          }`}
+        >
           <div
             className={`${
               openZoomView === true
-                ? "info-panel__cameraview-zoomed"
-                : "info-panel__cameraview"
+                ? "info-panel__zoom-btn-zoomed"
+                : "info-panel__zoom-btn"
             }`}
           >
-            <div
-              className={`${
-                openZoomView === true
-                  ? "info-panel__zoom-btn-zoomed"
-                  : "info-panel__zoom-btn"
-              }`}
-            >
-              <button onClick={() => setOpenZoomView(!openZoomView)}>
-                <img src={Icon} alt="Icon" height={"100%"} width={"100%"} />
-              </button>
-            </div>
+            <button onClick={() => setOpenZoomView(!openZoomView)}>
+              <img src={Icon} alt="Icon" height={"100%"} width={"100%"} />
+            </button>
+          </div>
 
-            {/* {devices.find(({ label }) =>
+          {/* {devices.find(({ label }) =>
               label.includes("USB Video (534d:2109)")
             ) ? (
               WebcamCapture()
@@ -342,14 +354,13 @@ const MainFlightInMission = ({
               <div className="info-panel__no-signal">không có tín hiệu</div>
             )} */}
 
-            {devices !== "[]" ? (
-              WebcamCapture()
-            ) : (
-              <div className="info-panel__no-signal">không có tín hiệu</div>
-            )}
-          </div>
+          {devices !== "[]" ? (
+            WebcamCapture()
+          ) : (
+            <div className="info-panel__no-signal">không có tín hiệu</div>
+          )}
         </div>
-      </Fade>
+      </div>
     </>
   );
 };

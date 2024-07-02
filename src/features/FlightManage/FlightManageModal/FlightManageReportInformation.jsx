@@ -13,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 
 import Loading from "../../../components/LoadingPage/LoadingPage";
+import styles from "./css/FlightManageReportInformation.module.css";
 
 const FlightManageReportInformation = ({ schedule_id, supervision_status }) => {
   const [openReportInformationDialog, setOpenReportInformationDialog] =
@@ -98,7 +99,7 @@ const FlightManageReportInformation = ({ schedule_id, supervision_status }) => {
   const renderData = () => {
     return Object.keys(ticketField).map((key) => {
       const object = ticketField[key];
-      console.log(object)
+      console.log(object);
       return (
         <div key={key}>
           <p>{object.title}</p>
@@ -144,12 +145,7 @@ const FlightManageReportInformation = ({ schedule_id, supervision_status }) => {
           NỘI DUNG KIỂM TRA <br /> (Lưu ý mỗi ngày bay chỉ được gửi 1 lần duy
           nhất)
           <Button
-            sx={{
-              height: "38px",
-              position: "absolute !important",
-              top: 0,
-              right: 0,
-            }}
+            className={styles.buttonClose}
             color="error"
             variant="contained"
             onClick={() => setOpenReportInformationDialog(false)}

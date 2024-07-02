@@ -77,6 +77,21 @@ const MainFlightDefectList = ({ startfly, currentvt, defectInfo }) => {
             })}
         </>
       );
+    } else {
+      return (
+        <span
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            fontWeight: "bold",
+            textTransform: "uppercase",
+          }}
+        >
+          Chưa có lỗi nào được phát hiện !
+        </span>
+      );
     }
   };
 

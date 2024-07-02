@@ -22,9 +22,6 @@
   overflow-y: auto;
 }
 
-.flight-manage__list-VT-container {
-}
-
 .flight-manage__list-TB-container {
   display: flex;
   flex-wrap: wrap;

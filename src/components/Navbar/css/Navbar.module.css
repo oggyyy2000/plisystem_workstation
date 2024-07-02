@@ -5,10 +5,17 @@
 }
 
 .userAccountSettingCancelBtn {
-  height: 32px;
+  height: 25px;
   position: absolute !important;
-  top: 0;
-  right: 0;
+  top: 5px;
+  right: 5px;
+  padding: 0 13px !important;
+  min-width: 10px !important;
+  width: 20px !important;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-items: center;
 }
 
 .navigateItem {
