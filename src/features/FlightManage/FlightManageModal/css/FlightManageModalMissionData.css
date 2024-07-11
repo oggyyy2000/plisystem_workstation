@@ -37,6 +37,7 @@
 .modal-mission-data__header {
   height: fit-content;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   padding: 0px !important;
   border-bottom: 1px solid black;

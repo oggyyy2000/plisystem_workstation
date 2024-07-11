@@ -16,6 +16,7 @@ import Loading from "../../../components/LoadingPage/LoadingPage";
 import styles from "./css/FlightManageReportInformation.module.css";
 
 const FlightManageReportInformation = ({ schedule_id, supervision_status }) => {
+  console.log("supervision_status: ", supervision_status);
   const [openReportInformationDialog, setOpenReportInformationDialog] =
     useState(false);
   const [ticketField, setTicketField] = useState({});
@@ -92,6 +93,7 @@ const FlightManageReportInformation = ({ schedule_id, supervision_status }) => {
         });
     } else {
       // Handle cancel scenario
+      setSendClicked(false);
       console.log("Cancelled.");
     }
   };
@@ -119,6 +121,7 @@ const FlightManageReportInformation = ({ schedule_id, supervision_status }) => {
     <>
       <Button
         className="modal-mission-data__print-btn"
+        disabled={supervision_status === "not_done" ? false : true}
         variant="contained"
         color="success"
         sx={{

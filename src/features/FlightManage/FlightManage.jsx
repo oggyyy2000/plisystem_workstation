@@ -16,7 +16,7 @@ const FlightManage = () => {
           display: {
             xl: "grid",
             lg: "grid",
-            md: "none",
+            md: "grid",
             sm: "none",
             xs: "none",
           },
@@ -26,22 +26,28 @@ const FlightManage = () => {
           container
           spacing={0}
           sx={{
-            height: { xl: "calc(100vh - 64px)", lg: "calc(100vh - 64px)" },
+            height: {
+              xl: "calc(100vh - 64px)",
+              lg: "calc(100vh - 64px)",
+              md: "calc(100vh - 64px)",
+            },
           }}
         >
           <Grid
             item
-            lg={2}
-            xl={1.7}
+            md={3}
+            lg={2.5}
+            xl={2}
             className="flight-manage__list-mission-container"
           >
             <FlightManageListMission />
           </Grid>
-          <Grid item lg={8} xl={8.5} className="flight-manage__map-container">
+          <Grid item md={5.5} lg={7.5} xl={8.2} className="flight-manage__map-container">
             <FlightManageMap />
           </Grid>
           <Grid
             container
+            md={3.5}
             lg={2}
             xl={1.8}
             sx={{
@@ -66,7 +72,7 @@ const FlightManage = () => {
           display: {
             xs: "grid",
             sm: "grid",
-            md: "grid",
+            md: "none",
             lg: "none",
             xl: "none",
           },
@@ -77,7 +83,6 @@ const FlightManage = () => {
           spacing={0}
           sx={{
             height: {
-              md: "calc(100vh - 64px)",
               sm: "calc(100vh - 64px)",
               xs: "calc(100vh - 64px)",
             },
@@ -87,31 +92,28 @@ const FlightManage = () => {
             item
             xs={12}
             sm={12}
-            md={12}
             className="flight-manage__map-container"
           >
             <FlightManageMap />
           </Grid>
           <Grid
             item
-            xs={3}
+            xs={5}
             sm={4.5}
-            md={3}
             className="flight-manage__list-mission-container"
-            sx={{ height: "calc(100vh - 64px - 35%)" }}
+            sx={{ height: "calc(100vh - 64px - 29vh)" }}
           >
             <FlightManageListMission />
           </Grid>
 
           <Grid
             container
-            xs={9}
+            xs={7}
             sm={7.5}
-            md={9}
             sx={{
               display: "grid",
               gridTemplateRows: "1fr 1.5fr",
-              height: "calc(100vh - 64px - 35%)",
+              height: "calc(100vh - 64px - 29vh)",
             }}
           >
             <Grid item xs={12} className="flight-manage__list-VT-container">

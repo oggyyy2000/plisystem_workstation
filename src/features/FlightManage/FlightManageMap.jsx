@@ -149,7 +149,7 @@ const FlightManageMap = () => {
     return (
       <>
         <button
-          className={`flightmanage-map__btn-change-maptype`}
+          className="flightmanage-map__btn-change-maptype"
           value={"Vệ tinh"}
           onClick={handleChangeMapType}
         >

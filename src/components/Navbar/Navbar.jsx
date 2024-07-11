@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
+
 import {
+  AppBar,
+  Box,
+  Toolbar,
   Tooltip,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Button,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -25,6 +26,8 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import styles from "./css/Navbar.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom"; // Import Link for navigation
+import { FlyMissionStart } from "../../redux/selectors";
+import { useSelector } from "react-redux";
 
 const pages = [
   {
@@ -37,11 +40,11 @@ const pages = [
     ten_navbar: "Quản lý dữ liệu",
     url: "/FlightManage",
   },
-  // {
-  //   index: 2,
-  //   ten_navbar: "Hành lang tuyến",
-  //   url: "/PowerlineCorridor",
-  // },
+  {
+    index: 2,
+    ten_navbar: "Quản lý tuyến",
+    url: "/PowerlineRouteManage",
+  },
   // {
   //   index: 3,
   //   ten_navbar: "Demo",
@@ -57,6 +60,7 @@ const Navbar = () => {
   const [thermalDifference, setThermalDifference] = useState(0); // Initial state for thermalDifference
   console.log("thermalWarning: ", thermalWarning);
   console.log("thermalDifference: ", thermalDifference);
+  const flyMissionStart = useSelector(FlyMissionStart);
 
   useEffect(() => {
     const getUserPass = async () => {
@@ -170,15 +174,20 @@ const Navbar = () => {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page.index} onClick={handleCloseNavMenu}>
-                    <Link
-                      // className={styles.navigateItem}
-                      key={page.index}
-                      to={page.url}
-                    >
-                      {page.ten_navbar}
-                    </Link>
-                  </MenuItem>
+                  // <MenuItem key={page.index} onClick={handleCloseNavMenu}>
+                  <Link
+                  className={`${styles.hamNavItem} ${
+                    flyMissionStart 
+                      ? page.ten_navbar !== "Bay" ? styles.disableLink : styles.disableLinkWithoutOpacity
+                      : ""
+                  }`}
+                    onClick={handleCloseNavMenu}
+                    key={page.index}
+                    to={page.url}
+                  >
+                    {page.ten_navbar}
+                  </Link>
+                  // </MenuItem>
                 ))}
               </Menu>
             </Box>
@@ -205,7 +214,11 @@ const Navbar = () => {
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Link
-                  className={styles.navigateItem}
+                  className={`${styles.navigateItem} ${
+                    flyMissionStart 
+                      ? page.ten_navbar !== "Bay" ? styles.disableLink : styles.disableLinkWithoutOpacity
+                      : ""
+                  }`}
                   key={page.index}
                   to={page.url}
                 >

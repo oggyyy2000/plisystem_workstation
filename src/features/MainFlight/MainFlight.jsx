@@ -6,6 +6,9 @@ import Stomp from "stompjs";
 
 import axios from "axios";
 
+import { useDispatch } from "react-redux";
+import * as actions from "../../redux/types";
+
 import {
   Button,
   Dialog,
@@ -123,6 +126,7 @@ const MainFlight = () => {
   const [message, setMessage] = useState([]);
   console.log(message);
   const [stompClient, setStompClient] = useState(null);
+  const dispatch = useDispatch();
 
   const urlPostFlightInfo =
     process.env.REACT_APP_API_URL + "supervisionstreaming/";
@@ -373,6 +377,7 @@ const MainFlight = () => {
           setGetMissionAndScheduleId(data.data);
           setFlightComplete(true);
           setStartFly(false);
+          dispatch({ type: actions.FlyMissionStart, data: false });
           setHadSubmited(false);
           setHadSubmitedNewTicket(false);
           disconnect();
@@ -392,6 +397,7 @@ const MainFlight = () => {
 
         if (gis !== undefined) {
           setStartFly(true);
+          dispatch({ type: actions.FlyMissionStart, data: true });
           console.log("WS", gis);
           setCurrentLocation(gis);
           setCenter({
@@ -461,6 +467,7 @@ const MainFlight = () => {
     stompClient,
     selectedTicket,
     notifyMessage,
+    dispatch
   ]);
 
   useEffect(() => {
@@ -482,6 +489,7 @@ const MainFlight = () => {
     connect();
     setOpen(true);
     setStartFly(false);
+    dispatch({ type: actions.FlyMissionStart, data: false });
     setFlightComplete(false);
     setHadSubmited(false);
     setDateDB([]);
@@ -495,6 +503,7 @@ const MainFlight = () => {
 
   const handleRefresh = () => {
     setStartFly(false);
+    dispatch({ type: actions.FlyMissionStart, data: false });
     setFlightComplete(false);
     setHadSubmited(false);
     setDateDB([]);

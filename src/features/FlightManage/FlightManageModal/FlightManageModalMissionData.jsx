@@ -650,10 +650,26 @@ const ModalMissionData = ({
               </Box>
             </Grid>
 
-            <Grid item className="modal-mission-data__list-mission" xs={2}>
+            <Grid
+              item
+              className="modal-mission-data__list-mission"
+              xl={2}
+              lg={2.5}
+              md={2.5}
+              sm={2.5}
+              xs={4}
+            >
               {renderListMission(timeFlyStart)}
             </Grid>
-            <Grid item xs={10} className="modal-mission-data__img-list">
+            <Grid
+              item
+              xl={10}
+              lg={9.5}
+              md={9.5}
+              sm={9.5}
+              xs={8}
+              className="modal-mission-data__img-list"
+            >
               {renderImageList()}
             </Grid>
           </Grid>

@@ -25,6 +25,8 @@ const MainFlightInMission = ({
   const [rectInfos, setRectInfos] = useState([]);
   // console.log("rectInfos: ", rectInfos);
   const canvasRef = useRef(null);
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
 
   useEffect(() => {
     setOpenInMissionPanel(startfly);
@@ -181,7 +183,11 @@ const MainFlightInMission = ({
           console.log(info);
           if (info && info.boxe) {
             const [x, y, width, height] = info.boxe;
-            if (openZoomView && window.innerWidth > 1500) {
+            if (
+              openZoomView &&
+              window.innerWidth > 1500 &&
+              window.innerHeight > 843
+            ) {
               return drawRect(
                 (x - width / 2) * 2,
                 (y - height / 2) * 1.40625,
@@ -189,7 +195,11 @@ const MainFlightInMission = ({
                 height * 1.40625,
                 info.label + "°C"
               );
-            } else if (openZoomView && window.innerWidth < 1500) {
+            } else if (
+              openZoomView &&
+              ((window.innerWidth < 1500 && window.innerHeight < 843) ||
+                (window.innerWidth < 1500 && window.innerHeight > 843))
+            ) {
               return drawRect(
                 x - width / 2,
                 (y - height / 2) * 0.9375,
@@ -214,9 +224,17 @@ const MainFlightInMission = ({
           console.log(info);
           if (info) {
             const [x, y, width, height] = info;
-            if (openZoomView && window.innerWidth > 1500) {
+            if (
+              openZoomView &&
+              window.innerWidth > 1500 &&
+              window.innerHeight > 843
+            ) {
               return drawRect(x - width / 2, y - height / 2, width, height);
-            } else if (openZoomView && window.innerWidth < 1500) {
+            } else if (
+              openZoomView &&
+              ((window.innerWidth < 1500 && window.innerHeight < 843) ||
+                (window.innerWidth < 1500 && window.innerHeight > 843))
+            ) {
               return drawRect(
                 (x - width / 2) * 0.5,
                 (y - height / 2) * 0.6667,
@@ -235,7 +253,7 @@ const MainFlightInMission = ({
         });
       }
     }
-  }, [rectInfos, openZoomView, superviseType]);
+  }, [rectInfos, openZoomView, superviseType, windowWidth, windowHeight]);
 
   // * Tỷ lệ chiều rộng: 409/1280​≈0.31953125
   // * Tỷ lệ chiều cao: 306/720≈0.425
@@ -250,9 +268,20 @@ const MainFlightInMission = ({
               ? "info-panel__detect-box-zoomed"
               : "info-panel__detect-box"
           }`}
-          width={openZoomView ? (window.innerWidth > 1500 ? 1280 : 640) : 409}
-          height={openZoomView ? (window.innerWidth > 1500 ? 720 : 480) : 306}
-          // style={{ position: "absolute", top: 0, right: 0 }}
+          width={
+            openZoomView
+              ? window.innerWidth > 1500 && window.innerHeight > 843
+                ? 1280
+                : 640
+              : 409
+          }
+          height={
+            openZoomView
+              ? window.innerWidth > 1500 && window.innerHeight > 843
+                ? 720
+                : 480
+              : 306
+          }
         ></canvas>
 
         <Webcam
@@ -345,14 +374,6 @@ const MainFlightInMission = ({
               <img src={Icon} alt="Icon" height={"100%"} width={"100%"} />
             </button>
           </div>
-
-          {/* {devices.find(({ label }) =>
-              label.includes("USB Video (534d:2109)")
-            ) ? (
-              WebcamCapture()
-            ) : (
-              <div className="info-panel__no-signal">không có tín hiệu</div>
-            )} */}
 
           {devices !== "[]" ? (
             WebcamCapture()
