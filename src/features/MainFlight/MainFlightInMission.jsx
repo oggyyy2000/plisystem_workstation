@@ -198,7 +198,8 @@ const MainFlightInMission = ({
             } else if (
               openZoomView &&
               ((window.innerWidth < 1500 && window.innerHeight < 843) ||
-                (window.innerWidth < 1500 && window.innerHeight > 843))
+                (window.innerWidth < 1500 && window.innerHeight > 843) ||
+                (window.innerWidth > 1500 && window.innerHeight < 843))
             ) {
               return drawRect(
                 x - width / 2,
@@ -233,7 +234,8 @@ const MainFlightInMission = ({
             } else if (
               openZoomView &&
               ((window.innerWidth < 1500 && window.innerHeight < 843) ||
-                (window.innerWidth < 1500 && window.innerHeight > 843))
+                (window.innerWidth < 1500 && window.innerHeight > 843) ||
+                (window.innerWidth > 1500 && window.innerHeight < 843))
             ) {
               return drawRect(
                 (x - width / 2) * 0.5,

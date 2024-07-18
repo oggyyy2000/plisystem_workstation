@@ -467,7 +467,7 @@ const MainFlight = () => {
     stompClient,
     selectedTicket,
     notifyMessage,
-    dispatch
+    dispatch,
   ]);
 
   useEffect(() => {

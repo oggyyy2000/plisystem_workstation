@@ -321,6 +321,7 @@ const MainFlightDialogAfterFly = ({
               justifyContent: "center",
               alignItems: "center",
             },
+            overflow: "hidden",
           }}
           fullWidth
           maxWidth="lg"

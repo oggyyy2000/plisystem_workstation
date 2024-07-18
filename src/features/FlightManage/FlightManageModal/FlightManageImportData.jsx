@@ -111,7 +111,7 @@ const FlightManageImportData = ({
 
   const handleFileSelectOnChange = async (e) => {
     const files = e.target.files;
-    setImagesFiles(e.target.files);
+    setImagesFiles([...imagesFiles, ...e.target.files]);
 
     // Ensure file selection exists and prevent unnecessary loops
     if (files.length === 0) return;
@@ -188,7 +188,7 @@ const FlightManageImportData = ({
     setIsDragging(false);
     const files = event.dataTransfer.files;
 
-    setImagesFiles(event.dataTransfer.files);
+    setImagesFiles([...imagesFiles, ...event.dataTransfer.files]);
 
     // Ensure file selection exists and prevent unnecessary loops
     if (files.length === 0) return;
@@ -645,41 +645,39 @@ const FlightManageImportData = ({
                       key={index}
                       onClick={() => handleImgClick(img, index)}
                     >
-                      
-                        <span
-                          className={styles.delete}
-                          onClick={() => handleDeleteImages(index)}
-                        >
-                          &times;
-                        </span>
-                        <img
-                          className={
-                            (img[img.dataShowImg.name].location !== null &&
-                              img[img.dataShowImg.name].label !== null &&
-                              img[img.dataShowImg.name].title !== null) ||
-                            selectedImgIndex === index
-                              ? // img[img.dataShowImg.name].status !== null
-                                "choosed"
-                              : ""
-                          }
-                          src={img.dataShowImg.url}
-                          alt={img.dataShowImg.name}
+                      <span
+                        className={styles.delete}
+                        onClick={() => handleDeleteImages(index)}
+                      >
+                        &times;
+                      </span>
+                      <img
+                        className={
+                          (img[img.dataShowImg.name].location !== null &&
+                            img[img.dataShowImg.name].label !== null &&
+                            img[img.dataShowImg.name].title !== null) ||
+                          selectedImgIndex === index
+                            ? // img[img.dataShowImg.name].status !== null
+                              "choosed"
+                            : ""
+                        }
+                        src={img.dataShowImg.url}
+                        alt={img.dataShowImg.name}
+                      />
+
+                      {/* add when click on image to edit */}
+                      {selectedImgIndex === index ? (
+                        <EditIcon
+                          fontSize="large"
+                          style={{
+                            position: "absolute",
+                            left: "50%",
+                            top: "45%",
+                          }}
                         />
-
-                        {/* add when click on image to edit */}
-                        {selectedImgIndex === index ? (
-                          <EditIcon
-                            fontSize="large"
-                            style={{
-                              position: "absolute",
-                              left: "50%",
-                              top: "45%",
-                            }}
-                          />
-                        ) : (
-                          <></>
-                        )}
-
+                      ) : (
+                        <></>
+                      )}
 
                       {img[img.dataShowImg.name].location !== null &&
                       img[img.dataShowImg.name].label !== null &&

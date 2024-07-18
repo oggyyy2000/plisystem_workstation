@@ -19,6 +19,7 @@ const FlightManageZoomingDialog = ({
             justifyContent: "center",
             alignItems: "center",
           },
+          overflow: "hidden",
         }}
         fullWidth
         maxWidth={"lg"}
