@@ -7,6 +7,7 @@ import {
   TileLayer,
   Marker,
   Popup,
+  Tooltip,
   Polyline,
   useMap,
 } from "react-leaflet";
@@ -18,7 +19,7 @@ import { useSelector } from "react-redux";
 import { VTInfo, MissionId } from "../../redux/selectors";
 
 import errorIcon from "../../assets/images/error-icon.png";
-import markerIcon from "../../assets/images/logo.png";
+import markerIcon from "../../assets/images/powerpole_logo.png";
 import "./css/FlightManageMap.css";
 
 const FlightManageMap = () => {
@@ -94,15 +95,35 @@ const FlightManageMap = () => {
 
   useEffect(() => {
     if (missionData?.powerline_coordinates) {
-      const coordinates = missionData.powerline_coordinates.map(
-        (coordinate) => {
-          const [latitude, longtitude] = coordinate.split(",");
-          return {
-            lat: parseFloat(latitude),
-            lng: parseFloat(longtitude),
-          };
-        }
-      );
+      const coordinates = missionData?.powerline_coordinates
+        .map((info) => {
+          const [latitude, longtitude] = info.coordinates
+            .split(",")
+            .map((coord) => parseFloat(coord.trim()));
+          const [prevLat, prevLng] = info.prev_coordinates
+            .split(",")
+            .map((coord) => parseFloat(coord.trim()));
+
+          if (
+            isNaN(latitude) ||
+            isNaN(longtitude) ||
+            isNaN(prevLat) ||
+            isNaN(prevLng)
+          ) {
+            console.error(
+              "Invalid coordinates",
+              info.coordinates,
+              info.prev_coordinates
+            );
+            return null;
+          }
+          return [
+            [parseFloat(latitude), parseFloat(longtitude)],
+            [parseFloat(prevLat), parseFloat(prevLng)],
+          ];
+        })
+        .filter((coord) => coord !== null); // Loại bỏ các phần tử null;
+
       setElectricPoleCoordinate(coordinates);
 
       // If the coordinates array is not empty, set the map center and the center hasn't been set, set the map center
@@ -176,12 +197,17 @@ const FlightManageMap = () => {
               }
             />
             {/* render GIS tat ca cac cot */}
-            {missionData?.powerline_coordinates?.map((coordinate, index) => {
-              const [latitudeString, longitudeString] = coordinate.split(",");
+            {missionData?.powerline_coordinates?.map((info, index) => {
+              const [latitudeString, longitudeString] =
+                info?.coordinates.split(",");
               return (
                 <>
                   <Marker
                     key={index}
+                    eventHandlers={{
+                      mouseover: (event) => event.target.openTooltip(),
+                      click: (event) => event.target.openPopup(),
+                    }}
                     position={{
                       lat: parseFloat(latitudeString),
                       lng: parseFloat(longitudeString),
@@ -194,12 +220,24 @@ const FlightManageMap = () => {
                         lng: parseFloat(longitudeString),
                       }}
                     >
-                      <Box className="flightmanage-map__popup">
+                      <Box className="map__popup">
                         <p>
                           Tọa độ: {latitudeString} , {longitudeString}
                         </p>
                       </Box>
                     </Popup>
+                    <Tooltip
+                      position={{
+                        lat: parseFloat(latitudeString),
+                        lng: parseFloat(longitudeString),
+                      }}
+                    >
+                      <Box className="map__tooltip">
+                        <p>
+                          Tọa độ: {latitudeString} , {longitudeString}
+                        </p>
+                      </Box>
+                    </Tooltip>
                   </Marker>
                 </>
               );
@@ -215,17 +253,29 @@ const FlightManageMap = () => {
                   <>
                     <Marker
                       key={index}
+                      eventHandlers={{
+                        mouseover: (event) => event.target.openTooltip(),
+                        click: (event) => event.target.openPopup(),
+                      }}
                       position={{ lat: latitude, lng: longtitude }}
                       icon={customErrorIcon}
                     >
                       <Popup position={{ lat: latitude, lng: longtitude }}>
-                        <Box className="flightmanage-map__popup">
+                        <Box className="map__popup">
                           <p>Tên lỗi: {item.errorname}</p>
                           <p>
                             Tọa độ: {latitude} , {longtitude}
                           </p>
                         </Box>
                       </Popup>
+                      <Tooltip>
+                        <Box className="map__tooltip">
+                          <p>Tên lỗi: {item.errorname}</p>
+                          <p>
+                            Tọa độ: {latitude} , {longtitude}
+                          </p>
+                        </Box>
+                      </Tooltip>
                     </Marker>
 
                     <SetCenterMapOnClick coords={[latitude, longtitude]} />

@@ -68,9 +68,17 @@
 .powerline-route-manage__update-route-btn {
   text-align: center;
   text-transform: uppercase;
-  width: 105px;
-  height: 36px;
   color: white;
+}
+
+.powerline-route-manage__delete-route-btn {
+  width: 115px;
+  height: 36px;
+}
+
+.powerline-route-manage__update-route-btn {
+  width: 150px;
+  height: 36px;
 }
 
 .powerline-route-manage-map {
@@ -86,12 +94,6 @@
 
 .powerline-route-manage-map__container-close-info-container {
   height: calc(100vh - 64px) !important;
-}
-
-.powerline-route-manage-map__popup {
-  color: black;
-  width: 100;
-  word-wrap: break-word;
 }
 
 @media (min-width: 1528px) {

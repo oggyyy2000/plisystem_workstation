@@ -494,10 +494,16 @@ const MainFlightDialogAfterFly = ({
       <DialogContent className="modal-afterfly__body">
         <Grid item className="modal-afterfly__img-list" xs={12}>
           {getMissionAndScheduleId !== undefined ? (
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Box
+              sx={{ borderBottom: 1, borderColor: "divider", display: "flex" }}
+            >
               <Tabs
+                className="modal-afterfly__tab-group"
                 value={tab}
                 onChange={handleChangeTabs}
+                indicatorColor="primary"
+                variant="scrollable"
+                scrollButtons="auto"
                 aria-label="basic tabs example"
               >
                 {Object.keys(imgList2).map((vt, index) => (
@@ -508,27 +514,27 @@ const MainFlightDialogAfterFly = ({
                     {...a11yProps(index)}
                   />
                 ))}
-
-                <div className="modal-afterfly__btn-group">
-                  <FormControlLabel
-                    className="modal-mission-data__form-label"
-                    control={
-                      <Checkbox
-                        checked={chooseAllImg}
-                        onChange={handleSelectAll}
-                      />
-                    }
-                    label={"Chọn tất cả ảnh"}
-                  />
-
-                  <FormControlLabel
-                    className="modal-afterfly__form-label"
-                    control={<Checkbox checked={errorImageBoxChecked} />}
-                    label="Ảnh bất thường"
-                    onChange={(e) => handleErrorImageBoxChecked(e)}
-                  />
-                </div>
               </Tabs>
+
+              <div className="modal-afterfly__btn-group">
+                <FormControlLabel
+                  className="modal-mission-data__form-label"
+                  control={
+                    <Checkbox
+                      checked={chooseAllImg}
+                      onChange={handleSelectAll}
+                    />
+                  }
+                  label={"Chọn tất cả ảnh"}
+                />
+
+                <FormControlLabel
+                  className="modal-afterfly__form-label"
+                  control={<Checkbox checked={errorImageBoxChecked} />}
+                  label="Ảnh bất thường"
+                  onChange={(e) => handleErrorImageBoxChecked(e)}
+                />
+              </div>
             </Box>
           ) : (
             <></>

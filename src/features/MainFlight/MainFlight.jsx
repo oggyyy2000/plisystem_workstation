@@ -24,6 +24,8 @@ import {
   Autocomplete,
 } from "@mui/material";
 
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import EventBusyIcon from "@mui/icons-material/EventBusy";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -372,7 +374,7 @@ const MainFlight = () => {
       if (!ws.current) return;
       ws.current.onmessage = (e) => {
         const data = JSON.parse(e.data);
-        if (data.data_state === "supervise_complete") {
+        if (data.data_state === "supervise_complete" && !data.notification) {
           console.log(data.data);
           setGetMissionAndScheduleId(data.data);
           setFlightComplete(true);
@@ -382,6 +384,19 @@ const MainFlight = () => {
           setHadSubmitedNewTicket(false);
           disconnect();
           stompClient.disconnect();
+        } else if (
+          data.data_state === "supervise_complete" &&
+          data.notification
+        ) {
+          alert(data.notification);
+          console.log(data.data);
+          setGetMissionAndScheduleId(data.data);
+          setFlightComplete(true);
+          setStartFly(false);
+          dispatch({ type: actions.FlyMissionStart, data: false });
+          setHadSubmited(false);
+          setHadSubmitedNewTicket(false);
+          disconnect();
         }
         console.log("data:", data);
         const gis = data.data.gis;
@@ -892,6 +907,32 @@ const MainFlight = () => {
     );
   };
 
+  const buttonUsageInstructions = () => {
+    return (
+      <>
+        <div className="add-mission-dialog_btn-usage-instruction-container">
+          <div className="add-mission-dialog_btn-usage-instruction-item">
+            <span className="add-mission-dialog_btn-usage-instruction-label">
+              Nhấn phím <span style={{ color: "red" }}>ESC</span> để kết thúc
+            </span>
+            <span className="add-mission-dialog_btn-usage-instruction-icon">
+              <EventBusyIcon />
+            </span>
+          </div>
+
+          <div className="add-mission-dialog_btn-usage-instruction-item">
+            <span className="add-mission-dialog_btn-usage-instruction-label">
+              Nhấn phím <span style={{ color: "red" }}>S</span> để chụp ảnh
+            </span>
+            <span className="add-mission-dialog_btn-usage-instruction-icon">
+              <CameraAltIcon />
+            </span>
+          </div>
+        </div>
+      </>
+    );
+  };
+
   const handleInputNewTicketDocNo = (e) => {
     const inputValue = e.target.value;
     setNewTicketDocNo(inputValue);
@@ -1086,6 +1127,8 @@ const MainFlight = () => {
       <div>
         {/* Modal Addmission*/}
         {AddMissionDialog()}
+
+        {startFly ? buttonUsageInstructions() : <></>}
 
         {/* <Button variant="outlined" onClick={() => sendStompMessage()}>
           Send Stomp Message

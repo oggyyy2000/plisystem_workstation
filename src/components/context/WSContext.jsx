@@ -42,6 +42,36 @@ const WSContextProvider = ({ children }) => {
     }
   };
 
+  // const sendMessage = (message) => {
+  //   if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+  //     ws.current.send(message);
+  //   } else {
+  //     console.error("WebSocket is not open. Unable to send message.");
+  //   }
+  // };
+
+ // Check for URL changes and disconnect WebSocket if needed
+ useEffect(() => {
+  const handleLocationChange = () => {
+    const currentHashPath = window.location.hash;
+    const currentPath = window.location.pathname;
+    if (!(currentHashPath === "#/MainFlight" || currentPath === "/")) {
+      disconnect();
+    }
+  };
+
+  window.addEventListener("hashchange", handleLocationChange);
+  window.addEventListener("popstate", handleLocationChange);
+
+  // Initial check
+  handleLocationChange();
+
+  return () => {
+    window.removeEventListener("hashchange", handleLocationChange);
+    window.removeEventListener("popstate", handleLocationChange);
+  };
+}, []);
+
   // Context data
   const wsContextData = { ws, connect, disconnect };
 

@@ -8,6 +8,7 @@ import {
   Polyline,
   useMap,
   Popup,
+  Tooltip,
 } from "react-leaflet";
 import L from "leaflet";
 
@@ -15,8 +16,8 @@ import { Box } from "@mui/material";
 
 import DroneIcon from "../../assets/images/drone2.png";
 import ErrorIcon from "../../assets/images/error-icon.png";
-import markerIcon from "../../assets/images/mdi--powerline.svg";
-import blueDot from "../../assets/images/blue_dot.png"
+import markerIcon from "../../assets/images/powerpole_logo.png";
+import blueDot from "../../assets/images/blue_dot.png";
 
 import "./css/MainFlightMap.css";
 import axios from "axios";
@@ -28,9 +29,9 @@ const MainFlightMap = ({
   defectInfo,
   streetLine,
   powerlineId,
-  startFly
+  startFly,
 }) => {
-  console.log(startFly)
+  console.log(startFly);
 
   //map variable
   const [typeMap, setTypeMap] = useState("roadmap");
@@ -38,7 +39,7 @@ const MainFlightMap = ({
   const [poleCoordinates, setPoleCoordinates] = useState({});
   console.log(poleCoordinates);
   const [polyline, setPolyline] = useState([]);
-  console.log(polyline);
+  console.log("polyline:", polyline);
   // const polyline = Object.keys(poleCoordinates) > 0
   //   ? poleCoordinates.coordinates.map((coordinate) => {
   //       const [latitude, longtitude] = coordinate.split(",");
@@ -62,14 +63,34 @@ const MainFlightMap = ({
         console.log(responseData.data);
         const coordinatesPolyline =
           responseData.data &&
-          responseData.data.map((data) => {
-            console.log("data: ", data);
-            const [latitude, longtitude] = data.coordinates.split(",");
-            return {
-              lat: parseFloat(latitude),
-              lng: parseFloat(longtitude),
-            };
-          });
+          responseData.data
+            .map((data) => {
+              console.log("data: ", data);
+              const [latitude, longtitude] = data.coordinates
+                .split(",")
+                .map((coord) => parseFloat(coord.trim()));
+              const [prevLat, prevLng] = data.prev_coordinates
+                .split(",")
+                .map((coord) => parseFloat(coord.trim()));
+              if (
+                isNaN(latitude) ||
+                isNaN(longtitude) ||
+                isNaN(prevLat) ||
+                isNaN(prevLng)
+              ) {
+                console.error(
+                  "Invalid coordinates",
+                  data.coordinates,
+                  data.prev_coordinates
+                );
+                return null;
+              }
+              return [
+                [parseFloat(latitude), parseFloat(longtitude)],
+                [parseFloat(prevLat), parseFloat(prevLng)],
+              ];
+            })
+            .filter((coord) => coord !== null); // Loại bỏ các phần tử null;
         setPolyline(coordinatesPolyline);
       } catch (error) {
         console.log(error);
@@ -79,11 +100,11 @@ const MainFlightMap = ({
   }, [powerlineId, startFly]);
 
   useEffect(() => {
-    if(!startFly) {
+    if (!startFly) {
       setPoleCoordinates({});
       setPolyline([]);
     }
-  }, [startFly])
+  }, [startFly]);
 
   // useEffect(() => {
   //   const coordinatesPolyline =
@@ -133,6 +154,10 @@ const MainFlightMap = ({
               <>
                 <Marker
                   key={index}
+                  eventHandlers={{
+                    mouseover: (event) => event.target.openTooltip(),
+                    click: (event) => event.target.openPopup(),
+                  }}
                   position={{
                     lat: parseFloat(latitudeString),
                     lng: parseFloat(longitudeString),
@@ -145,22 +170,32 @@ const MainFlightMap = ({
                       lng: parseFloat(longitudeString),
                     }}
                   >
-                    <Box className="flightmanage-map__popup">
+                    <Box className="map__popup">
                       <p>
                         Tọa độ: {latitudeString} , {longitudeString}
                       </p>
                     </Box>
                   </Popup>
+                  <Tooltip>
+                    <Box className="map__tooltip">
+                      <p>
+                        Tọa độ: {latitudeString} , {longitudeString}
+                      </p>
+                    </Box>
+                  </Tooltip>
                 </Marker>
+
+                {polyline !== undefined ? (
+                  <Polyline
+                    pathOptions={{ color: "red" }}
+                    positions={polyline}
+                  />
+                ) : (
+                  <></>
+                )}
               </>
             );
           })}
-
-        {polyline ? (
-          <Polyline pathOptions={{ color: "green" }} positions={polyline} />
-        ) : (
-          <></>
-        )}
       </>
     );
   };
@@ -183,9 +218,37 @@ const MainFlightMap = ({
                     lat: parseFloat(gis1.defect_gis.latitude),
                     lng: parseFloat(gis1.defect_gis.longtitude),
                   }}
+                  eventHandlers={{
+                    mouseover: (event) => event.target.openTooltip(),
+                    click: (event) => event.target.openPopup(),
+                  }}
                   icon={customIcon}
                   animation={1}
-                ></Marker>
+                >
+                  <Popup
+                    position={{
+                      lat: parseFloat(gis1.defect_gis.latitude),
+                      lng: parseFloat(gis1.defect_gis.longtitude),
+                    }}
+                  >
+                    <Box className="map__popup">
+                      <p>Tên lỗi: {gis1.defect_name}</p>
+                      <p>
+                        Tọa độ: {parseFloat(gis1.defect_gis.latitude)} ,{" "}
+                        {parseFloat(gis1.defect_gis.longtitude)}
+                      </p>
+                    </Box>
+                  </Popup>
+                  <Tooltip>
+                    <Box className="map__tooltip">
+                      <p>Tên lỗi: {gis1.defect_name}</p>
+                      <p>
+                        Tọa độ: {parseFloat(gis1.defect_gis.latitude)} ,{" "}
+                        {parseFloat(gis1.defect_gis.longtitude)}
+                      </p>
+                    </Box>
+                  </Tooltip>
+                </Marker>
               </>
             );
           })}
@@ -217,7 +280,7 @@ const MainFlightMap = ({
         </>
       );
     }
-  }
+  };
 
   const renderMapWithMarker = () => {
     const customIcon = new L.Icon({
@@ -250,7 +313,7 @@ const MainFlightMap = ({
             {/* render tat ca cot */}
             {renderMarkerPole()}
 
-              {/* render marker may bay bay theo lo trinh */}
+            {/* render marker may bay bay theo lo trinh */}
             {currentLocation.latitude && currentLocation.longtitude !== "" ? (
               <Marker
                 key={1}

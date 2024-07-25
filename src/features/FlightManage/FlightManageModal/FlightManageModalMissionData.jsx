@@ -596,60 +596,6 @@ const ModalMissionData = ({
         </DialogTitle>
         <DialogContent className="modal-mission-data__body">
           <Grid container spacing={0} className="modal-mission-data__body">
-            <Grid item xs={12}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs
-                  value={tab}
-                  onChange={handleChangeTabs}
-                  aria-label="basic tabs example"
-                >
-                  {chooseMissionIndex != null ? (
-                    Object.keys(imgList2).map((vt, index) => (
-                      <Tab
-                        key={index}
-                        label={vt}
-                        onClick={() => handleTabClick(vt)}
-                        {...a11yProps(index)}
-                      />
-                    ))
-                  ) : (
-                    <></>
-                  )}
-
-                  <div className="modal-afterfly__btn-group">
-                    <FormControlLabel
-                      className="modal-mission-data__form-label"
-                      control={
-                        <Checkbox
-                          checked={chooseAllImg}
-                          onChange={handleSelectAll}
-                        />
-                      }
-                      label={"Chọn tất cả ảnh"}
-                    />
-
-                    <FormControlLabel
-                      className="modal-mission-data__form-label"
-                      control={<Checkbox checked={errorImageBoxChecked} />}
-                      label="Ảnh bất thường"
-                      onChange={(e) => handleErrorImageBoxChecked(e)}
-                    />
-
-                    <FlightManageImportData
-                      powerline_id={powerline_id}
-                      implementation_date={implementation_date}
-                      docNo={docNo}
-                      type_ticket={type_ticket}
-                      setTab={setTab}
-                      schedule_id={schedule_id}
-                      setHadImportNewData={setHadImportNewData}
-                      suggestOptions={suggestOptionEditLabel}
-                    />
-                  </div>
-                </Tabs>
-              </Box>
-            </Grid>
-
             <Grid
               item
               className="modal-mission-data__list-mission"
@@ -670,6 +616,67 @@ const ModalMissionData = ({
               xs={8}
               className="modal-mission-data__img-list"
             >
+              <Box
+                sx={{
+                  borderBottom: 1,
+                  borderColor: "divider",
+                  display: "flex",
+                }}
+              >
+                <Tabs
+                  className="modal-mission-data__tab-group"
+                  value={tab}
+                  onChange={handleChangeTabs}
+                  indicatorColor="primary"
+                  variant="scrollable"
+                  scrollButtons="auto"
+                  aria-label="basic tabs example"
+                >
+                  {chooseMissionIndex != null ? (
+                    Object.keys(imgList2).map((vt, index) => (
+                      <Tab
+                        key={index}
+                        label={vt}
+                        onClick={() => handleTabClick(vt)}
+                        {...a11yProps(index)}
+                      />
+                    ))
+                  ) : (
+                    <></>
+                  )}
+                </Tabs>
+
+                <div className="modal-afterfly__btn-group">
+                  <FormControlLabel
+                    className="modal-mission-data__form-label"
+                    control={
+                      <Checkbox
+                        checked={chooseAllImg}
+                        onChange={handleSelectAll}
+                      />
+                    }
+                    label={"Chọn tất cả ảnh"}
+                  />
+
+                  <FormControlLabel
+                    className="modal-mission-data__form-label"
+                    control={<Checkbox checked={errorImageBoxChecked} />}
+                    label="Ảnh bất thường"
+                    onChange={(e) => handleErrorImageBoxChecked(e)}
+                  />
+
+                  <FlightManageImportData
+                    powerline_id={powerline_id}
+                    implementation_date={implementation_date}
+                    docNo={docNo}
+                    type_ticket={type_ticket}
+                    setTab={setTab}
+                    schedule_id={schedule_id}
+                    setHadImportNewData={setHadImportNewData}
+                    suggestOptions={suggestOptionEditLabel}
+                  />
+                </div>
+              </Box>
               {renderImageList()}
             </Grid>
           </Grid>

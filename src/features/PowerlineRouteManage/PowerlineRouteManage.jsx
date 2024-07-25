@@ -10,13 +10,15 @@ import {
   Popup,
   Polyline,
   useMap,
+  Tooltip,
 } from "react-leaflet";
 import L from "leaflet";
 
-import markerIcon from "../../assets/images/logo.png";
+import markerIcon from "../../assets/images/powerpole_logo.png";
 
 import { Box, Button, TextField, Autocomplete } from "@mui/material";
 
+import Loading from "../../components/LoadingPage/LoadingPage";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import "./css/PowerlineRouteManage.css";
@@ -41,8 +43,13 @@ const PowerlineRouteManage = () => {
   // route data
   const [manageRouteData, setManageRouteData] = useState({});
   const [electricPoleCoordinate, setElectricPoleCoordinate] = useState([]);
+  console.log("electricPoleCoordinate: ", electricPoleCoordinate);
   const [defaultRouteName, setDefaultRouteName] = useState("");
   const [defaultRouteID, setDefaultRouteID] = useState("");
+
+  // check variable
+  const [deleteClicked, setDeleteClicked] = useState(false);
+  const [updateClicked, setUpdateClicked] = useState(false);
 
   useEffect(() => {
     const powerlines = process.env.REACT_APP_API_URL + "powerline/";
@@ -79,15 +86,34 @@ const PowerlineRouteManage = () => {
 
   useEffect(() => {
     if (manageRouteData?.powerline_location_route) {
-      const coordinates = manageRouteData?.powerline_location_route.map(
-        (info) => {
-          const [latitude, longtitude] = info.coordinates.split(",");
-          return {
-            lat: parseFloat(latitude),
-            lng: parseFloat(longtitude),
-          };
-        }
-      );
+      const coordinates = manageRouteData?.powerline_location_route
+        .map((info) => {
+          const [latitude, longtitude] = info.coordinates
+            .split(",")
+            .map((coord) => parseFloat(coord.trim()));
+          const [prevLat, prevLng] = info.prev_coordinates
+            .split(",")
+            .map((coord) => parseFloat(coord.trim()));
+
+          if (
+            isNaN(latitude) ||
+            isNaN(longtitude) ||
+            isNaN(prevLat) ||
+            isNaN(prevLng)
+          ) {
+            console.error(
+              "Invalid coordinates",
+              info.coordinates,
+              info.prev_coordinates
+            );
+            return null;
+          }
+          return [
+            [parseFloat(latitude), parseFloat(longtitude)],
+            [parseFloat(prevLat), parseFloat(prevLng)],
+          ];
+        })
+        .filter((coord) => coord !== null); // Loại bỏ các phần tử null;
       setElectricPoleCoordinate(coordinates);
 
       // If the coordinates array is not empty, set the map center and the center hasn't been set, set the map center
@@ -116,11 +142,14 @@ const PowerlineRouteManage = () => {
     );
 
     if ((routeID || defaultRouteID) && confirmed) {
+      setDeleteClicked(true);
       try {
         const response = await axios.delete(routeAPI);
+        setDeleteClicked(false);
         alert(response.data.message);
         window.location.reload();
       } catch (error) {
+        setDeleteClicked(false);
         alert(error.response.data.error);
         window.location.reload();
       }
@@ -139,11 +168,14 @@ const PowerlineRouteManage = () => {
     );
 
     if ((routeID || defaultRouteID) && confirmed) {
+      setUpdateClicked(true);
       try {
         const response = await axios.put(routeAPI);
+        setUpdateClicked(false);
         alert(response.data.message);
         window.location.reload();
       } catch (error) {
+        setUpdateClicked(false);
         alert(error.response.data.error);
         window.location.reload();
       }
@@ -222,6 +254,10 @@ const PowerlineRouteManage = () => {
                 <>
                   <Marker
                     key={index}
+                    eventHandlers={{
+                      mouseover: (event) => event.target.openTooltip(),
+                      click: (event) => event.target.openPopup(),
+                    }}
                     position={{
                       lat: parseFloat(latitudeString),
                       lng: parseFloat(longitudeString),
@@ -234,7 +270,7 @@ const PowerlineRouteManage = () => {
                         lng: parseFloat(longitudeString),
                       }}
                     >
-                      <Box className="powerline-route-manage-map__popup">
+                      <Box className="map__popup">
                         <p>ID cột: {info.location_id}</p>
                         <p>Tên cột: {info.location_name}</p>
                         <p>
@@ -242,6 +278,15 @@ const PowerlineRouteManage = () => {
                         </p>
                       </Box>
                     </Popup>
+                    <Tooltip>
+                      <Box className="map__tooltip">
+                        <p>ID cột: {info.location_id}</p>
+                        <p>Tên cột: {info.location_name}</p>
+                        <p>
+                          Tọa độ: {latitudeString} , {longitudeString}
+                        </p>
+                      </Box>
+                    </Tooltip>
                   </Marker>
 
                   <SetCenterMapOnClick coords={middlePoleCoordinates} />
@@ -267,6 +312,7 @@ const PowerlineRouteManage = () => {
   return (
     <>
       <div className="powerline-route-manage__container">
+        {updateClicked || deleteClicked ? <Loading /> : <></>}
         <div
           className={`powerline-route-manage__info-container ${
             openInfoContainer
@@ -322,7 +368,7 @@ const PowerlineRouteManage = () => {
                 color="error"
                 onClick={deleteRoute}
               >
-                Xóa
+                Xóa tuyến
               </Button>
               <Button
                 className="powerline-route-manage__update-route-btn"
@@ -330,7 +376,7 @@ const PowerlineRouteManage = () => {
                 color="info"
                 onClick={updateRoute}
               >
-                Cập nhật
+                Cập nhật tuyến
               </Button>
             </div>
           </div>

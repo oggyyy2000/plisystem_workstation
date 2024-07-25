@@ -19,7 +19,7 @@ import {
   Input,
 } from "@mui/material";
 
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/powerpole_logo.png";
 import CloseIcon from "@mui/icons-material/Close";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
@@ -176,11 +176,13 @@ const Navbar = () => {
                 {pages.map((page) => (
                   // <MenuItem key={page.index} onClick={handleCloseNavMenu}>
                   <Link
-                  className={`${styles.hamNavItem} ${
-                    flyMissionStart 
-                      ? page.ten_navbar !== "Bay" ? styles.disableLink : styles.disableLinkWithoutOpacity
-                      : ""
-                  }`}
+                    className={`${styles.hamNavItem} ${
+                      flyMissionStart
+                        ? page.ten_navbar !== "Bay"
+                          ? styles.disableLink
+                          : styles.disableLinkWithoutOpacity
+                        : ""
+                    }`}
                     onClick={handleCloseNavMenu}
                     key={page.index}
                     to={page.url}
@@ -215,8 +217,10 @@ const Navbar = () => {
               {pages.map((page) => (
                 <Link
                   className={`${styles.navigateItem} ${
-                    flyMissionStart 
-                      ? page.ten_navbar !== "Bay" ? styles.disableLink : styles.disableLinkWithoutOpacity
+                    flyMissionStart
+                      ? page.ten_navbar !== "Bay"
+                        ? styles.disableLink
+                        : styles.disableLinkWithoutOpacity
                       : ""
                   }`}
                   key={page.index}
@@ -326,7 +330,7 @@ const Navbar = () => {
                   }}
                 >
                   <Button variant="contained" onClick={handleUpdateTemperature}>
-                    Cập nhật
+                    Cập nhật cài đặt nhiệt độ
                   </Button>
                 </DialogActions>
               </Dialog>

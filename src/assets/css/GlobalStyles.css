@@ -82,7 +82,18 @@ html {
   transform: translate(-50%, -50%);
 }
 
-/* Responsive */
+/* Map */
+.map__popup {
+  color: black;
+  width: 100;
+  word-wrap: break-word;
+}
+
+.map__tooltip {
+  color: black;
+  width: 100;
+  word-wrap: break-word;
+}
 
 /* MUI style */
 .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop {

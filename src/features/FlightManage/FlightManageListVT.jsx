@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import itemIcon from "../../assets/images/logo.png";
+import itemIcon from "../../assets/images/powerpole_logo.png";
 
 import axios from "axios";
 

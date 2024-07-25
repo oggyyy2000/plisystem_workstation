@@ -17,12 +17,6 @@
   font-weight: bold;
 }
 
-.flightmanage-map__popup {
-  color: black;
-  width: 100;
-  word-wrap: break-word;
-}
-
 .flightmanage-map {
   height: 100%;
   width: 100%;

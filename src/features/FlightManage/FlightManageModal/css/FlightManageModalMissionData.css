@@ -6,7 +6,7 @@
   border-left: 1px solid black;
   border-right: 1px solid black;
   overflow-y: auto;
-  height: calc(100vh - 84px);
+  height: calc(100vh - 88px);
 }
 
 .list-mission-items__container {
@@ -80,6 +80,10 @@
   overflow: hidden;
 }
 
+.modal-mission-data__tab-group {
+  width: 60% !important;
+}
+
 .modal-mission-data__img-list {
   height: calc(100% - 50px);
   overflow-y: auto;
@@ -107,8 +111,7 @@
 
 .modal-mission-data__img-list-items-label {
   position: relative;
-  width: 708.45px;
-  height: 405px;
+  height: 272px;
 }
 
 .modal-mission-data__img-list-items-label:hover {

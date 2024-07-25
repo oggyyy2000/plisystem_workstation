@@ -52,6 +52,10 @@
   overflow: hidden;
 }
 
+.modal-afterfly__tab-group{
+  width: 60% !important;
+}
+
 .modal-afterfly__img-list {
   height: 99.9%;
   overflow-y: auto;
@@ -79,8 +83,7 @@
 
 .modal-afterfly__img-list-items-label {
   position: relative;
-  width: 708.45px;
-  height: 405px;
+  height: 272px;
 }
 
 .modal-afterfly__img-list-items-label:hover {
