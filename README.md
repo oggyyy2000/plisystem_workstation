@@ -1,2 +1,3 @@
 Hệ thống kiểm tra giám sát thiết bị đường dây lưới điện cao thế 110kV (website version)
 
+[![Demo Video](assets/thumbnail.png)](https://www.youtube.com/)
