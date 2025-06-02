@@ -1,0 +1,95 @@
+.mainflight-container {
+  position: relative;
+  height: calc(100vh - 64px);
+  width: 100vw;
+}
+
+/* Dialog */
+.add-mission-dialog__btn-close {
+  position: absolute !important;
+  top: 15px;
+  right: 10px;
+  padding: 3px 13px !important;
+  min-width: 10px !important;
+  width: 25px !important;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-mission-dialog__btn-addmission {
+  text-align: center;
+  text-transform: uppercase;
+  width: 85px;
+  height: 36px;
+  margin-left: 16px !important;
+  margin-top: 60px !important;
+  z-index: 1;
+  position: absolute !important;
+  color: white;
+}
+
+.add-mission-dialog__icon {
+  display: flex;
+  margin-left: auto;
+  margin-right: 10px;
+  align-items: center;
+}
+
+.add-mission-dialog__form-id-textfield,
+.add-mission-dialog__select-date-textfield,
+.add-mission-dialog__select-tuyen-form,
+.add-mission-dialog__select-UAV-form,
+.add-mission-dialog__select-superviseType-form {
+  min-width: 120px;
+  margin-top: 8px;
+}
+
+.add-mission-dialog_btn-usage-instruction-container {
+  position: absolute;
+  z-index: 3;
+  top: 74px;
+  right: 17px;
+  background-color: white;
+  opacity: 0.8;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  width: 200px;
+}
+
+.add-mission-dialog_btn-usage-instruction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.add-mission-dialog_btn-usage-instruction-icon {
+  margin-right: 10px;
+}
+
+.add-mission-dialog_btn-usage-instruction-label {
+  font-size: 12px;
+  flex-grow: 1;
+}
+
+@media (max-width: 895px) {
+  .mainflight-container {
+    background-color: #a0a0a0;
+    height: calc(100vh - 64px);
+    width: 100vw;
+  }
+
+  .add-mission-dialog_btn-usage-instruction-container {
+    position: absolute;
+    z-index: 3;
+    top: calc(100% - 64px - 12px - 40px);
+    left: 10px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    width: 200px;
+  }
+}

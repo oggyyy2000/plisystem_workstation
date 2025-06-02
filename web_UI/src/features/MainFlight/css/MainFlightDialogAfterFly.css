@@ -1,0 +1,113 @@
+.modal-afterfly__header {
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  padding: 0px !important;
+  background-color: #1976d2;
+  color: white;
+}
+
+.modal-afterfly__btn-group,
+.modal-afterfly__form-label,
+.modal-afterfly__import-btn {
+  display: flex !important;
+  align-items: center;
+}
+
+.modal-afterfly__btn-group {
+  margin-left: auto !important;
+}
+
+.modal-afterfly__import-btn {
+  background-color: #1976d2 !important;
+  color: var(--white-color) !important;
+  margin-left: 30px !important;
+  margin-right: 10px !important;
+  height: 32.5px;
+}
+
+.modal-afterfly__submit-btn {
+  background-color: #1976d2 !important;
+  color: var(--white-color) !important;
+  height: 32.5px;
+}
+
+.modal-afterfly__close-btn {
+  position: absolute !important;
+  top: 10px;
+  right: 10px;
+  padding: 3px 13px !important;
+  min-width: 10px !important;
+  width: 25px !important;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.modal-afterfly__body {
+  height: 100vh;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.modal-afterfly__tab-group{
+  width: 60% !important;
+}
+
+.modal-afterfly__img-list {
+  height: 99.9%;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.modal-afterfly__img-list-title {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.modal-afterfly__img-list-items-container {
+  position: relative;
+  overflow-y: hidden !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 4px;
+}
+
+.modal-afterfly__img-list-items-label {
+  position: relative;
+  height: 272px;
+}
+
+.modal-afterfly__img-list-items-label:hover {
+  border: 2px solid red;
+}
+
+.modal-afterfly__edit-btn {
+  max-height: 36px !important;
+  min-width: 10px !important;
+}
+
+.modal-afterfly__load-more-btn {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}
+
+@media (max-width: 760px) {
+  .modal-afterfly__img-list-items-container {
+    position: relative;
+    overflow-y: hidden !important;
+    grid-template-columns: repeat(1, 1fr) !important;
+    gap: 4px;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1279px) {
+  .modal-afterfly__img-list-items-container {
+    position: relative;
+    overflow-y: hidden !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 4px;
+  }
+}

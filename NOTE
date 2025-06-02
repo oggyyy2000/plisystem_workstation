@@ -1,0 +1,11 @@
+- folder này thiếu plisystem_workstation_deploy => cần thêm bản mới nhất và chạy build 
+- lệnh start ở máy laptop bình thường là: 
+ + "start": "electron-forge start" 
+nhưng trên máy jetson cần sửa (do cần disable sandbox thì mới có thể chạy trên máy jetson) thành : 
+ + "start": "electron . --no-sandbox"
+- sau khi chạy build ra app electron và install deb file trong folder out cần làm thêm vài bước để khi ấn vào icon có thể chạy app: 
++ vào other locations -> usr -> share -> applications -> sau đó tìm plisystem-workstation.desktop
++ sudo nano plisystem-workstation.desktop để có quyền truy cập và chỉnh sửa file desktop trong thư mục 
++ thêm --no-sandbox vào dòng Exec (Exec=plisystem-workstation --no-sandbox %U)
++ sau đó thêm DISPLAY:=0 vào đầu dòng Exec (Exec=DISPLAY:=0 plisystem-workstation --no-sandbox %U) khi này icon sẽ bị ẩn trên máy
++ sau đó bỏ DISPLAY:=0 đi lưu lại và lúc này khi click icon sẽ chạy được

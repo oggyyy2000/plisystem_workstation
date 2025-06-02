@@ -1,0 +1,165 @@
+.powerline-route-manage__btn-change-maptype {
+  margin: 0.625rem 0 0 1rem;
+  position: absolute;
+  z-index: 1; /* The z-index should be higher than Maps */
+  text-align: center;
+  width: 75px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  border: none;
+  background-color: white;
+  border-radius: 7px;
+}
+
+.powerline-route-manage__open-info-container-btn {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+}
+
+.powerline-route-manage__open-info-container-btn button {
+  margin-left: 50%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 26px;
+  height: 12px;
+}
+
+.powerline-route-manage__info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.powerline-route-manage__info-container--close {
+  height: 0 !important;
+  opacity: 0;
+  display: none !important;
+}
+
+.powerline-route-manage__info-container--open {
+  height: 15vh !important;
+  opacity: 1;
+}
+
+.powerline-route-manage__all-route-info-container,
+.powerline-route-manage__specific-route-info-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.powerline-route-manage__select-route {
+  display: flex;
+  justify-content: space-evenly;
+  min-width: 550px !important;
+}
+
+.powerline-route-manage__specific-route-info {
+  display: flex;
+  justify-content: space-evenly;
+  width: 20%;
+}
+
+.powerline-route-manage__btn-container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 22%;
+}
+
+.powerline-route-manage__delete-route-btn,
+.powerline-route-manage__update-route-btn {
+  text-align: center;
+  text-transform: uppercase;
+  color: white;
+}
+
+.powerline-route-manage__delete-route-btn {
+  width: 115px;
+  height: 36px;
+}
+
+.powerline-route-manage__update-route-btn {
+  width: 150px;
+  height: 36px;
+}
+
+.powerline-route-manage-map {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  z-index: 0; /* Set z-index to 0 as it will be on a layer below */
+}
+
+.powerline-route-manage-map__container-open-info-container {
+  height: calc(100vh - 15vh - 64px) !important;
+}
+
+.powerline-route-manage-map__container-close-info-container {
+  height: calc(100vh - 64px) !important;
+}
+
+@media (min-width: 1528px) {
+  .powerline-route-manage__specific-route-info {
+    width: 25%;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1199px) {
+  .powerline-route-manage__specific-route-info-container {
+    flex-wrap: wrap;
+  }
+
+  .powerline-route-manage__info-container--open {
+    height: 25vh !important;
+  }
+
+  .powerline-route-manage-map__container-open-info-container {
+    height: calc(100vh - 25vh - 64px) !important;
+  }
+
+  .powerline-route-manage__select-route {
+    display: flex;
+    justify-content: space-evenly;
+    min-width: 500px !important;
+  }
+
+  .powerline-route-manage__specific-route-info {
+    width: 380px;
+  }
+
+  .powerline-route-manage__btn-container {
+    width: 50%;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .powerline-route-manage__specific-route-info-container {
+    flex-wrap: wrap;
+  }
+
+  .powerline-route-manage__info-container--open {
+    height: 25vh !important;
+  }
+
+  .powerline-route-manage-map__container-open-info-container {
+    height: calc(100vh - 25vh - 64px) !important;
+  }
+
+  .powerline-route-manage__select-route {
+    display: flex;
+    justify-content: space-evenly;
+    min-width: 500px !important;
+  }
+
+  .powerline-route-manage__specific-route-info {
+    width: 45%;
+    margin-top: 10px;
+  }
+
+  .powerline-route-manage__btn-container {
+    width: 45%;
+    margin-top: 10px;
+  }
+}

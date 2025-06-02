@@ -1,0 +1,94 @@
+.mission-card__container:hover,
+.mission-card__container--choosed:hover {
+  cursor: pointer;
+}
+.mission-card__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 15px auto;
+  background-color: #ffffff;
+  min-height: 54px;
+  width: 90%;
+  border-radius: 10px;
+}
+
+.mission-card__container--unchoosed {
+  height: 7%;
+}
+
+.mission-card__container--choosed {
+  min-height: fit-content;
+}
+
+.mission-card__header {
+  display: flex;
+  width: 90%;
+  align-content: center;
+  justify-content: center;
+}
+
+.mission-card__icon-plane {
+  border-radius: 10px;
+  background-color: #ffa500;
+  margin: 5px 10px 5px 0;
+}
+
+.mission-card__icon-plane-done {
+  background-color: #228b22;
+}
+
+.mission-card__icon-drop {
+  display: flex;
+  align-items: center;
+}
+
+.mission-card__title {
+  display: flex;
+  font-size: 1.8rem;
+  font-weight: bold;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mission-card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  background-color: #f0f0f0;
+  margin: 10px;
+}
+
+.mission-card__body span {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mission-card__body--unchoosed {
+  border-radius: 10px;
+  /* border: 1px solid black; */
+}
+
+.mission-card__body--choosed {
+  border-radius: 10px;
+  border: 2px solid red;
+}
+
+/* .mission-card__body--choosed:last-child {
+  border-radius: 0 0 10px 10px;
+} */
+
+@media (max-width: 899px) {
+  .mission-card__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 5px auto;
+    background-color: #ffffff;
+    min-height: 54px;
+  }
+}

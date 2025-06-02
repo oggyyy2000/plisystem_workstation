@@ -1,0 +1,64 @@
+.zoom-btn {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  min-width: 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  background-color: #fff !important;
+  border: none !important;
+  border-radius: inherit !important;
+}
+
+.img-list-items-container {
+  position: relative;
+  overflow: hidden !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 40px 20px !important;
+}
+
+.img-list-items-label {
+  position: relative;
+  height: 272px;
+  border-radius: 8px;
+  /* border: 1px solid black; */
+}
+
+.img-list-items-label img {
+  border-radius: inherit;
+}
+
+.img-list-items-label:hover {
+  border-radius: 0;
+}
+
+.img-list-items-label:hover::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid red;
+  border-radius: 0;
+  pointer-events: none; /* Prevents the pseudo-element from blocking interactions */
+}
+
+@media (max-width: 760px) {
+  .img-list-items-container {
+    position: relative;
+    overflow-y: hidden !important;
+    grid-template-columns: repeat(1, 1fr) !important;
+    gap: 4px;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1279px) {
+  .img-list-items-container {
+    position: relative;
+    overflow-y: hidden !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 4px;
+  }
+}

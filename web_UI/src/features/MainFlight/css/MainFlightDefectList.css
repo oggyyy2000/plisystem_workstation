@@ -1,0 +1,114 @@
+/* defect list button */
+.defect-list__btn {
+  position: absolute;
+  z-index: 2;
+}
+
+.defect-list__btn button {
+  display: flex;
+  justify-content: center;
+  width: 12px;
+}
+
+.defect-list__btn--open {
+  bottom: calc((100% - 64px - 60px + 210px) / 3);
+  left: 330px !important;
+  transition: 0.5s ease-out;
+}
+
+.defect-list__btn--close {
+  left: 0;
+  bottom: calc((100% - 64px - 60px + 210px) / 3);
+  transition: 0.5s ease-in;
+}
+
+.defect-list__container {
+  position: absolute;
+  z-index: 1;
+  width: 330px;
+  height: calc(100% - 64px - 60px - 82px);
+  background-color: rgba(255, 255, 255, 0.8);
+  left: 0;
+  bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  border-radius: 0 15px 15px 0;
+}
+
+.defect-list__container--open {
+  opacity: 1 !important;
+  transition: opacity 0.5s ease-in;
+}
+
+.defect-list__container--close {
+  opacity: 0;
+}
+
+.defect-items-card {
+  margin-top: 10px;
+  width: 95%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+  border-radius: 10px;
+}
+
+.defect-items-card__header {
+  background-color: red;
+  color: white;
+  padding: 1px;
+  font-size: 8px;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 10px 10px 0 0;
+}
+
+.defect-items-card__body {
+  padding: 10px;
+  text-transform: uppercase;
+}
+
+.defect-items-card__footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 895px) {
+  .defect-list__container {
+    position: absolute;
+    top: 0;
+    left: calc(100% - 409px - 12px);
+    width: 409px;
+    height: calc(100% - 24px - 306px - 150px);
+    margin: 6px;
+    z-index: 1;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    opacity: 1 !important;
+    border-radius: 5px;
+  }
+
+  .defect-list__btn--open {
+    display: none;
+  }
+
+  .defect-list__btn--close {
+    display: none;
+  }
+
+  .defect-list__container--open {
+    opacity: 1;
+  }
+
+  .defect-list__container--close {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,53 @@
+.list-VT-title {
+  font-weight: bold;
+  text-align: center;
+}
+
+.list-VT-container {
+  /* border: 1px solid black; */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.listVT-item {
+  padding: 12px;
+  min-width: 50px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.error {
+  border: 1px solid red;
+}
+
+@media (max-width: 599px) {
+  .list-VT-title {
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.8rem;
+    height: 25px;
+  }
+
+  .list-VT-container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    grid-gap: 8px;
+    padding: 8px;
+  }
+
+  .listVT-item {
+    margin: 14px 0;
+    padding: 0 10px;
+    min-width: 50px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}

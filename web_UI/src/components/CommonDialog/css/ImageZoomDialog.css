@@ -1,0 +1,32 @@
+/* .zoom-btn {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  min-width: 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  background-color: #fff !important;
+  border: none !important;
+  border-radius: inherit !important;
+} */
+
+.btn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: #fff;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.btn-container button {
+  border: none;
+  color: #737373;
+  background-color: #fff;
+  padding: 5px;
+  cursor: pointer;
+}

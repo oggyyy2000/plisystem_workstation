@@ -1,0 +1,140 @@
+.logoNormal,
+.logoResponsive {
+  width: 50px;
+  height: 50px;
+}
+
+.userAccountSettingCancelBtn {
+  height: 25px;
+  position: absolute !important;
+  top: 5px;
+  right: 5px;
+  padding: 0 13px !important;
+  min-width: 10px !important;
+  width: 20px !important;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.disableLink {
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+.disableLinkWithoutOpacity {
+  pointer-events: none;
+}
+
+.hamNavItem {
+  display: flex;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  font-family: Roboto;
+  font-size: 0.975rem;
+  line-height: 1.75;
+  border-radius: 4px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.hamNavItem:hover {
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.navigateItem {
+  position: relative;
+  box-sizing: border-box;
+  background-color: transparent;
+  outline: 0;
+  border: 0;
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  text-align: center;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  text-transform: uppercase;
+  min-width: 64px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  margin-left: 32px;
+  color: white;
+  display: block;
+}
+
+.navigateItem:hover {
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navigateItem:active {
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.userManualList {
+  height: 100%;
+  overflow-y: auto;
+  padding: 2;
+}
+
+.userManualList ul {
+  list-style-type: none;
+}
+
+.userManualList ul li {
+  margin-top: 6px;
+  border-radius: 10px;
+  text-align:justify;
+  padding: 4px;
+}
+
+.userManualList ul li:hover {
+  background-color: #f0f0f0;
+}
+
+.userManualItemChoosed {
+  background-color: #f0f0f0;
+}
+
+/* For xs screen sizes, set display to none */
+@media only screen and (max-width: 599px) {
+  .logoNormal {
+    display: none;
+  }
+
+  .logoResponsive {
+    display: flex;
+    margin-right: 1;
+  }
+}
+
+/* For md screen sizes and above, set display to flex and add margin-right of 1 unit */
+@media only screen and (min-width: 600px) {
+  .logoNormal {
+    display: flex;
+    margin-right: 1;
+  }
+
+  .logoResponsive {
+    display: none;
+  }
+}

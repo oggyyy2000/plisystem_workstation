@@ -1,0 +1,55 @@
+.flightmanage-map__btn-change-maptype {
+  margin: 0.625rem 0 0 1rem;
+  position: absolute;
+  z-index: 1; /* The z-index should be higher than Maps */
+  text-align: center;
+  width: 75px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  border: none;
+  background-color: white;
+  border-radius: 7px;
+}
+
+.flightmanage-map__title {
+  position: absolute;
+  bottom: 16px;
+  right: 0;
+  z-index: 1;
+  color: black;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.flightmanage-map {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  z-index: 0; /* Set z-index to 0 as it will be on a layer below */
+  border-radius: 10px;
+}
+
+@media (max-width: 599px) {
+  .flightmanage-map__title {
+    position: absolute;
+    bottom: 6px;
+    right: 0;
+    z-index: 1;
+    color: black;
+    font-weight: bold;
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+  .flightmanage-map__title {
+    position: absolute;
+    bottom: 6px;
+    right: 0;
+    z-index: 1;
+    color: black;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+}
