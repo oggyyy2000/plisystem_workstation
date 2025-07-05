@@ -1,6 +1,6 @@
 {
-  "name": "plisystem_workstation_deskapp_deploy",
-  "version": "1.9.0",
+  "name": "plisystem_workstation",
+  "version": "0.0.0",
   "description": "deskapp version of plisystem_workstation",
   "main": "main.js",
   "scripts": {
