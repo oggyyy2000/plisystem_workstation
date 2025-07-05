@@ -11,7 +11,7 @@ let windowCount = 0;
 const configFilePath = "/tmp/plisystem_workstation_first_launch.json";
 
 const logFile =
-  "/home/orin/tuan/EVN/desktop_app/plisystem_workstation/plisystem_workstation_app.log";
+  "link to your log file"; // Replace with your desired log file path
 
 function logToFile(message) {
   fs.appendFileSync(logFile, message + "\n");
@@ -37,20 +37,6 @@ function createMainWindow() {
         myWindow.focus();
       }
     });
-
-    // const script = spawn("/usr/share/backend/run_uav_app.sh");
-
-    // script.stdout.on("data", (data) => {
-    //   console.log(`STDOUT: ${data}`);
-    // });
-
-    // script.stderr.on("data", (data) => {
-    //   console.error(`STDERR: ${data}`);
-    // });
-
-    // script.on("close", (code) => {
-    //   console.log(`child process exited with code ${code}`);
-    // });
 
     // Create a temporary loading window
     loadingWindow = new BrowserWindow({
@@ -92,7 +78,7 @@ function createMainWindow() {
       const startUrl = url.format({
         pathname: path.join(
           __dirname,
-          "./plisystem_workstation_deploy/build/index.html"
+          "./web_UI/build/index.html"
         ),
         protocol: "file",
       });
@@ -112,7 +98,7 @@ app.whenReady().then(() => {
   console.log("firstLaunch: ", firstLaunch);
   if (!firstLaunch) {
     const script = spawn(
-      "/home/orin/tuan/EVN/desktop_app/plisystem_workstation_app_experiment_21052025_latest_stable/run_uav_app.sh"
+      "link to your .sh file", // Replace with the path to your .sh file
     );
 
     script.stdout.on("data", (data) => {
@@ -138,8 +124,9 @@ app.whenReady().then(() => {
       if (myWindow.isMinimized()) myWindow.restore();
       myWindow.focus();
     }
+    // }
+    createMainWindow();
   }
-  createMainWindow();
 });
 
 app.disableHardwareAcceleration();
