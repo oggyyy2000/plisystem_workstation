@@ -2,10 +2,9 @@ import customAxios from "../utils/customAxios";
 
 export const getAllData = async () => {
   try {
-    const response = await customAxios.get(
-      process.env.REACT_APP_API_URL + "settingworkstation/"
+    const response = await customAxios.get("settingworkstation/"
     );
-    
+
     return response.data;
   } catch (error) {
     console.log("getUserPassError: ", error);
@@ -14,8 +13,7 @@ export const getAllData = async () => {
 
 export const postData = async ({ formData }) => {
   try {
-    const response = await customAxios.post(
-      process.env.REACT_APP_API_URL + "settingworkstation/",
+    const response = await customAxios.post("settingworkstation/",
       formData,
       {
         headers: {

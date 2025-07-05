@@ -48,6 +48,8 @@ import CreateManualJobTicket from "./UserManual/CreateManualJobTicket";
 import EditImageResultLabel from "./UserManual/EditImageResultLabel";
 import ImportData from "./UserManual/ImportData";
 
+import MoreInfoPopover from "../CommonDialog/MoreInfoPopover";
+
 const pages = [
   {
     index: 0,
@@ -64,11 +66,6 @@ const pages = [
     ten_navbar: "Quản lý tuyến",
     url: "/PowerlineRouteManage",
   },
-  // {
-  //   index: 3,
-  //   ten_navbar: "Demo",
-  //   url: "/DemoFlight",
-  // },
 ];
 
 const Navbar = () => {
@@ -79,8 +76,8 @@ const Navbar = () => {
   const [openIntroDialog, setOpenIntroDialog] = useState(false);
   const [openHelpDialog, setOpenHelpDialog] = useState(false);
   const [userPass, setUserPass] = useState({});
-  const [thermalWarning, setThermalWarning] = useState(0);
-  const [thermalDifference, setThermalDifference] = useState(0);
+  const [maxDeltaDifferenceTemp, setMaxDeltaDifferenceTemp] = useState(0);
+  const [avgDeltaDifferenceTemp, setThermalDifference] = useState(0);
   const [totalDayKeep, setTotalDayKeep] = useState(0);
   const flyMissionStart = useSelector(FlyMissionStart);
   const [selectedUserManualItem, setSelectedUserManualItem] = useState(1);
@@ -88,10 +85,11 @@ const Navbar = () => {
   useEffect(() => {
     const getUserPass = async () => {
       const response = await settingWorkstationService.getAllData();
+      console.log("getUserPassResponse: ", response);
       if (response) {
         setUserPass(response);
-        setThermalWarning(response.thermal_warning);
-        setThermalDifference(response.thermal_difference);
+        setMaxDeltaDifferenceTemp(response.max_difference);
+        setThermalDifference(response.avg_difference);
         setTotalDayKeep(response.date_delete);
       }
     };
@@ -108,9 +106,9 @@ const Navbar = () => {
 
   const handleInputSettingAdjust = (event) => {
     const { name, value } = event.target;
-    if (name === "thermalWarning") {
-      setThermalWarning(value);
-    } else if (name === "thermalDifference") {
+    if (name === "maxDeltaDifferenceTemp") {
+      setMaxDeltaDifferenceTemp(value);
+    } else if (name === "avgDeltaDifferenceTemp") {
       setThermalDifference(value);
     } else if (name === "totalDayKeep") {
       setTotalDayKeep(value);
@@ -121,8 +119,8 @@ const Navbar = () => {
 
   const handleUpdateTemperature = async () => {
     const formData = new FormData();
-    formData.append("thermal_warning", thermalWarning);
-    formData.append("thermal_difference", thermalDifference);
+    formData.append("max_difference", maxDeltaDifferenceTemp);
+    formData.append("avg_difference", avgDeltaDifferenceTemp);
     formData.append("date_delete", totalDayKeep);
     const response = await settingWorkstationService.postData({
       formData: formData,
@@ -345,9 +343,9 @@ const Navbar = () => {
                     </span>
 
                     <div style={{ textAlign: "center" }}>
-                      <span>Nhiệt độ bắt đầu cảnh báo</span>
+                      <span>Nhiệt độ cao nhất mối nối</span>
                       <Input
-                        value={thermalWarning}
+                        value={maxDeltaDifferenceTemp}
                         size="small"
                         onChange={handleInputSettingAdjust}
                         inputProps={{
@@ -356,16 +354,17 @@ const Navbar = () => {
                           max: 1000,
                           type: "number",
                           "aria-labelledby": "input-slider",
-                          name: "thermalWarning", // Add a unique name for identification
+                          name: "maxDeltaDifferenceTemp", // Add a unique name for identification
                         }}
                         style={{ width: "40px", marginLeft: "10px" }}
                       />
+                      <MoreInfoPopover content="Giá trị chênh lệch nhiệt độ tối đa giữa mối nối và môi trường. Nếu vượt ngưỡng này, hệ thống sẽ đưa ra cảnh báo." />
                     </div>
 
                     <div style={{ textAlign: "center" }}>
-                      <span>Nhiệt độ chênh lệch cảnh báo</span>
+                      <span>Nhiệt độ trung bình mối nối</span>
                       <Input
-                        value={thermalDifference}
+                        value={avgDeltaDifferenceTemp}
                         size="small"
                         onChange={handleInputSettingAdjust}
                         inputProps={{
@@ -374,10 +373,11 @@ const Navbar = () => {
                           max: 1000,
                           type: "number",
                           "aria-labelledby": "input-slider",
-                          name: "thermalDifference", // Add a unique name for identification
+                          name: "avgDeltaDifferenceTemp", // Add a unique name for identification
                         }}
                         style={{ width: "40px", marginLeft: "10px" }}
                       />
+                      <MoreInfoPopover content="Giá trị chênh lệch nhiệt độ trung bình giữa mối nối và môi trường. Nếu vượt ngưỡng này, hệ thống sẽ đưa ra cảnh báo." />
                     </div>
                   </div>
                   <div style={{ padding: "20px" }}>
