@@ -5,7 +5,6 @@ import { Button } from "@mui/material";
 
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import NearMeIcon from "@mui/icons-material/NearMe";
-import DeviceThermostatIcon from "@mui/icons-material/DeviceThermostat";
 
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
@@ -14,7 +13,6 @@ import "./css/MainFlightDefectList.css";
 const MainFlightDefectList = ({
   startfly,
   defectInfo,
-  superviseType,
   setOpenZoomingImg,
 }) => {
   const [open, setOpen] = useState(false);
@@ -80,14 +78,6 @@ const MainFlightDefectList = ({
                             ĐỘ CAO: {parseFloat(gis1.defect_gis.altitude)}m
                           </td>
                         </tr>
-                        {superviseType === "nhiệt" && (
-                          <tr>
-                            <td>
-                              <DeviceThermostatIcon sx={{ color: "#00C8F8" }} />
-                            </td>
-                            <td colSpan={2}>NHIỆT ĐỘ: {gis1.temperature}°C</td>
-                          </tr>
-                        )}
                       </table>
                     </div>
                     <div className="defect-items-card__footer">

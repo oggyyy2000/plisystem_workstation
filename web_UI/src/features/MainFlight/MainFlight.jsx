@@ -67,6 +67,8 @@ const MainFlight = () => {
   const [DefectInfo, setDefectInfo] = useState([]);
   const [currentLocation, setCurrentLocation] = useState({});
   const [choosedIdTuyen, setChoosedIdTuyen] = useState("");
+  const [avgThermalBox, setAvgThermalBox] = useState([]);
+  console.log("avgThermalBox: ", avgThermalBox);
   const [defectBoxCoordinate, setDefectBoxCoordinate] = useState([]);
   console.log("defectBoxCoordinate: ", defectBoxCoordinate);
   const [minMaxThermal, setMinMaxThermal] = useState({});
@@ -254,6 +256,7 @@ const MainFlight = () => {
           setHadSubmitedNewTicket(false);
           setCurrentDefectReceivedLength(0);
           setLogDataSendToServer([]);
+          setDefectBoxCoordinate([]);
           disconnect();
           disconnectSockJS();
         } else if (
@@ -269,14 +272,17 @@ const MainFlight = () => {
           setHadSubmitedNewTicket(false);
           setCurrentDefectReceivedLength(0);
           setLogDataSendToServer([]);
+          setDefectBoxCoordinate([]);
           disconnect();
           disconnectSockJS();
         }
         console.log("data:", data);
         const gis = data.data.gis;
         const defectWS = data.data.defects;
+        const avgThermalBox = data.data.thermal_boxes;
         const defectBox = data.data.defect_boxes;
         const minMaxThermal = data.data.frame_thermal;
+        setAvgThermalBox(avgThermalBox);
         setDefectBoxCoordinate(defectBox);
         setMinMaxThermal(minMaxThermal);
 
@@ -396,7 +402,9 @@ const MainFlight = () => {
   const handleClose = () => {
     setOpen(false);
     disconnect();
-    disconnectSockJS();
+    if (stompClient) {
+      disconnectSockJS();
+    }
   };
 
   const handleUpdateLatestMission = async () => {
@@ -1112,7 +1120,6 @@ const MainFlight = () => {
         <MainFlightDefectList
           startfly={startFly}
           defectInfo={DefectInfo}
-          superviseType={superviseType ? superviseType : newTicketFlyType}
           setOpenZoomingImg={setOpenZoomingImg}
         />
 
@@ -1129,6 +1136,7 @@ const MainFlight = () => {
           currentvt={currentVT}
           currentlocation={currentLocation}
           superviseType={superviseType ? superviseType : newTicketFlyType}
+          avgThermalBox={avgThermalBox}
           defectBoxCoordinate={defectBoxCoordinate}
           minMaxThermal={minMaxThermal}
         />
@@ -1152,10 +1160,8 @@ const MainFlight = () => {
           setOpenZoomingImg={setOpenZoomingImg}
         />
 
-        {!startFly && !open && (hadSubmited || hadSubmitedNewTicket) ? (
+        {!startFly && !open && (hadSubmited || hadSubmitedNewTicket) && (
           <Loading startFly={startFly} />
-        ) : (
-          <></>
         )}
       </div>
     </>
