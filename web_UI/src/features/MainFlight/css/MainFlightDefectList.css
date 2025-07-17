@@ -1,7 +1,7 @@
 /* defect list button */
 .defect-list__btn {
   position: absolute;
-  z-index: 2;
+  z-index: 1;
 }
 
 .defect-list__btn button {
@@ -44,6 +44,7 @@
 
 .defect-list__container--close {
   opacity: 0;
+  z-index: 0 !important;
 }
 
 .defect-items-card {

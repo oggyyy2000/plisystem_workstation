@@ -5,7 +5,6 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PowerlinePoleIcon from "../../assets/images/mdi--powerline.svg";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import DeviceThermostatIcon from "@mui/icons-material/DeviceThermostat";
 
 import Webcam from "react-webcam";
 
@@ -18,7 +17,6 @@ const MainFlightInMission = ({
   superviseType,
   avgThermalBox,
   defectBoxCoordinate,
-  minMaxThermal,
 }) => {
   const [openInMissionPanel, setOpenInMissionPanel] = useState(true);
   const [openZoomView, setOpenZoomView] = useState(false);

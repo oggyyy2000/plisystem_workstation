@@ -20,6 +20,10 @@ import {
   Input,
   MenuItem,
   Grid,
+  Badge,
+  Popover,
+  Divider,
+  List,
 } from "@mui/material";
 
 import logo from "../../assets/images/powerpole_logo.png";
@@ -30,10 +34,15 @@ import HelpIcon from "@mui/icons-material/Help";
 import InfoIcon from "@mui/icons-material/Info";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 import CopyrightIcon from "@mui/icons-material/Copyright";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import SettingsIcon from "@mui/icons-material/Settings";
+import BrowserUpdatedIcon from "@mui/icons-material/BrowserUpdated";
 
 import styles from "./css/Navbar.module.css";
 
 import * as settingWorkstationService from "../../APIServices/SettingWorkstationService";
+import * as UpdateModelService from "../../APIServices/UpdateModelService";
+
 import UpdateJobticket from "./UserManual/UpdateJobticket";
 import FillInfoBeforeFlight from "./UserManual/FillInfoBeforeFlight";
 import FlightInProgress from "./UserManual/FlightInProgress";
@@ -49,6 +58,8 @@ import EditImageResultLabel from "./UserManual/EditImageResultLabel";
 import ImportData from "./UserManual/ImportData";
 
 import MoreInfoPopover from "../CommonDialog/MoreInfoPopover";
+import NotificationItem from "../CommonDialog/NotificationItem";
+import Loading from "../LoadingPage/LoadingPage";
 
 const pages = [
   {
@@ -68,19 +79,31 @@ const pages = [
   },
 ];
 
-const Navbar = () => {
-  const [openUserAccountSetting, setOpenUserAccountSetting] = useState(false);
+const Navbar = ({ hasNewUpdate, setHasNewUpdate }) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
+
   const [anchorHelpMenu, setAnchorHelpMenu] = useState(null);
   const openHelpMenu = Boolean(anchorHelpMenu);
+
+  const [anchorSettingMenu, setAnchorSettingMenu] = useState(null);
+  const openSettingMenu = Boolean(anchorSettingMenu);
+
+  const [anchorElNotification, setAnchorElNotification] = useState(null);
+  const openNotificationMenu = Boolean(anchorElNotification);
+
   const [openIntroDialog, setOpenIntroDialog] = useState(false);
   const [openHelpDialog, setOpenHelpDialog] = useState(false);
+  const [openSettingDialog, setOpenSettingDialog] = useState(false);
+  const [openUpdateModelDialog, setOpenUpdateModelDialog] = useState(false);
   const [userPass, setUserPass] = useState({});
   const [maxDeltaDifferenceTemp, setMaxDeltaDifferenceTemp] = useState(0);
   const [avgDeltaDifferenceTemp, setThermalDifference] = useState(0);
   const [totalDayKeep, setTotalDayKeep] = useState(0);
   const flyMissionStart = useSelector(FlyMissionStart);
   const [selectedUserManualItem, setSelectedUserManualItem] = useState(1);
+
+  const [isUpdatingModel, setIsUpdatingModel] = useState(false);
+  console.log("hasNewUpdate: ", isUpdatingModel);
 
   useEffect(() => {
     const getUserPass = async () => {
@@ -94,7 +117,7 @@ const Navbar = () => {
       }
     };
     getUserPass();
-  }, [openUserAccountSetting]);
+  }, [openSettingDialog]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -138,6 +161,39 @@ const Navbar = () => {
   const handleClickHelp = () => {
     setAnchorHelpMenu(null);
     setOpenHelpDialog(true);
+  };
+
+  const handleClickSetting = () => {
+    setAnchorSettingMenu(null);
+    setOpenSettingDialog(true);
+  };
+
+  const handleClickUpdateModel = () => {
+    setAnchorSettingMenu(null);
+    setOpenUpdateModelDialog(true);
+  };
+
+  const handleClickUpdateModelBtn = async () => {
+    setIsUpdatingModel(true);
+    const response = await UpdateModelService.postData();
+    console.log("handleClickUpdateModelBtn response: ", response);
+    if (response && response.success === true) {
+      toast.success("Cập nhật Model AI thành công!");
+      setOpenUpdateModelDialog(false);
+      setIsUpdatingModel(false);
+      setHasNewUpdate(false);
+    } else {
+      toast.error("Cập nhật Model AI thất bại, vui lòng thử lại sau!");
+      setIsUpdatingModel(false);
+    }
+  };
+
+  const handleClickNotification = (event) => {
+    setAnchorElNotification(event.currentTarget);
+  };
+
+  const handleCloseNotification = () => {
+    setAnchorElNotification(null);
   };
 
   const handleUserManualItemClick = (itemIndex) => {
@@ -290,9 +346,9 @@ const Navbar = () => {
 
             <Box sx={{ flexGrow: 0 }}>
               <IconButton
-                onClick={() => setOpenUserAccountSetting(true)}
+                onClick={(event) => setAnchorSettingMenu(event.currentTarget)}
                 sx={{ p: 1 }}
-                title="Xem thông tin tài khoản"
+                title="Cài đặt"
               >
                 <ManageAccountsIcon
                   alt="Workstation Account Setting"
@@ -300,9 +356,23 @@ const Navbar = () => {
                   style={{ color: "white" }}
                 />
               </IconButton>
-              <Dialog open={openUserAccountSetting} fullWidth maxWidth={"sm"}>
+              <Menu
+                anchorEl={anchorSettingMenu}
+                open={openSettingMenu}
+                onClose={() => setAnchorSettingMenu(null)}
+              >
+                <MenuItem onClick={handleClickSetting}>
+                  <SettingsIcon color="warning" />
+                  <Typography sx={{ ml: 1 }}>Cài đặt nhanh</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleClickUpdateModel}>
+                  <BrowserUpdatedIcon color="warning" />
+                  <Typography sx={{ ml: 1 }}>Cập nhật Model AI</Typography>
+                </MenuItem>
+              </Menu>
+              <Dialog open={openSettingDialog} fullWidth maxWidth={"sm"}>
                 <DialogTitle
-                  style={{
+                  sx={{
                     display: "flex",
                     justifyContent: "center",
                     backgroundColor: "#1976d2",
@@ -315,7 +385,7 @@ const Navbar = () => {
                     className={styles.userAccountSettingCancelBtn}
                     color="error"
                     variant="contained"
-                    onClick={() => setOpenUserAccountSetting(false)}
+                    onClick={() => setOpenSettingDialog(false)}
                   >
                     <CloseIcon fontSize="small" />
                   </Button>
@@ -431,6 +501,42 @@ const Navbar = () => {
                     onClick={handleUpdateTemperature}
                   >
                     Cập nhật cài đặt
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              <Dialog open={openUpdateModelDialog} fullWidth maxWidth={"xs"}>
+                <DialogTitle
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    backgroundColor: "#1976d2",
+                    color: "white",
+                    textTransform: "uppercase",
+                    p: 1,
+                  }}
+                >
+                  Cập nhật Model AI
+                  <Button
+                    className={styles.userAccountSettingCancelBtn}
+                    color="error"
+                    variant="contained"
+                    onClick={() => setOpenUpdateModelDialog(false)}
+                  >
+                    <CloseIcon fontSize="small" />
+                  </Button>
+                </DialogTitle>
+                <DialogActions
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={handleClickUpdateModelBtn}
+                  >
+                    Cập nhật
                   </Button>
                 </DialogActions>
               </Dialog>
@@ -672,9 +778,66 @@ const Navbar = () => {
                 </DialogActions>
               </Dialog>
             </Box>
+
+            <Box>
+              <IconButton
+                size="large"
+                color="inherit"
+                sx={{ p: 1, ml: 3 }}
+                title="Thông báo"
+                onClick={handleClickNotification}
+              >
+                <Badge badgeContent={hasNewUpdate ? 1 : 0} color="error">
+                  <NotificationsIcon
+                    fontSize="large"
+                    style={{ color: "white" }}
+                  />
+                </Badge>
+              </IconButton>
+              <Popover
+                open={openNotificationMenu}
+                anchorEl={anchorElNotification}
+                onClose={handleCloseNotification}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                PaperProps={{ sx: { width: 360, maxHeight: 500 } }}
+              >
+                <Box p={2}>
+                  <Typography variant="h6" fontWeight="bold">
+                    Thông báo
+                  </Typography>
+                </Box>
+                <Divider />
+                <List sx={{ maxHeight: 400, overflowY: "auto" }}>
+                  {hasNewUpdate ? (
+                    <NotificationItem
+                      key={"noti1"}
+                      notiIconColor="warning"
+                      title={
+                        "Model AI có phiên bản mới, vui lòng cập nhật bằng cách vào ấn vào biểu tượng cài đặt => Cập nhật Model AI => Ấn nút cập nhật"
+                      }
+                    />
+                  ) : (
+                    <NotificationItem
+                      key={"nonNoti"}
+                      notiIconColor="success"
+                      title={"Không có thông báo mới"}
+                    />
+                  )}
+                </List>
+              </Popover>
+            </Box>
           </Toolbar>
         </Container>
       </AppBar>
+
+      {isUpdatingModel && <Loading />}
     </>
   );
 };
