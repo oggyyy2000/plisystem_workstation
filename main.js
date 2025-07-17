@@ -125,8 +125,8 @@ app.whenReady().then(() => {
       myWindow.focus();
     }
     // }
-    createMainWindow();
   }
+  createMainWindow();
 });
 
 app.disableHardwareAcceleration();
