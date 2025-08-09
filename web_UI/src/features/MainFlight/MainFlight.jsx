@@ -484,15 +484,22 @@ const MainFlight = () => {
                 >
                   {jobTicketData && jobTicketData.data_ticket && DateDB ? (
                     jobTicketData.data_ticket.map((data) => (
-                      <MenuItem value={data.ticket_id}>
-                        {data.docNo} ({data.type})
-                      </MenuItem>
+                      <MenuItem value={data.ticket_id}>{data.docNo}</MenuItem>
                     ))
                   ) : (
                     <MenuItem>Chưa chọn ngày</MenuItem>
                   )}
                 </Select>
               </FormControl>
+            </Box>
+
+            <Box className="add-mission-dialog__select-tuyen-form">
+              <TextField
+                fullWidth
+                disabled
+                label="Tên loại phiếu kiểm tra"
+                value={selectedTicket ? selectedTicket.typeName : ""}
+              />
             </Box>
 
             <Box className="add-mission-dialog__select-tuyen-form">
@@ -701,7 +708,9 @@ const MainFlight = () => {
                   <MenuItem value={"F"}>Sửa chữa</MenuItem> */}
                   {ticketTypeOptions.length > 0 ? (
                     ticketTypeOptions.map((options) => (
-                      <MenuItem value={options}>{options}</MenuItem>
+                      <MenuItem value={options.type_name}>
+                        {options.type_title}
+                      </MenuItem>
                     ))
                   ) : (
                     <MenuItem>Chưa có dữ liệu</MenuItem>
@@ -861,7 +870,7 @@ const MainFlight = () => {
 
     // Kiểm tra độ dài
     if (inputValue.length < 1) {
-      errors.characters = "Nhập ít nhất 2 ký tự";
+      errors.characters = "Nhập ít nhất 1 ký tự";
     }
 
     // Kiểm tra ký tự đặc biệt

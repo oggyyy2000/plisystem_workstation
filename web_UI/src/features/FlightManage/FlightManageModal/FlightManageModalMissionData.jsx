@@ -48,6 +48,7 @@ const ModalMissionData = ({
   implementation_date,
   docNo,
   type_ticket,
+  typeName,
   supervision_status,
   setHadImportNewData,
 }) => {
@@ -403,7 +404,7 @@ const ModalMissionData = ({
               <CalendarMonthIcon /> &nbsp; Ngày: {implementation_date}
             </span>
             <span>
-              <EditCalendarIcon /> &nbsp; Phiếu: {docNo} - {`(${type_ticket})`}
+              <EditCalendarIcon /> &nbsp; Phiếu: {docNo} - {`(${typeName})`}
             </span>
             <span>
               <svg

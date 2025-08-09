@@ -16,7 +16,6 @@ const MainFlightDefectList = ({
   setOpenZoomingImg,
 }) => {
   const [open, setOpen] = useState(false);
-  const [hadDefect, setHadDefect] = useState({});
 
   useEffect(() => {
     if (startfly && defectInfo.length > 0) {
@@ -44,14 +43,6 @@ const MainFlightDefectList = ({
                 <>
                   <div
                     className="defect-items-card"
-                    onClick={() =>
-                      Object.keys(hadDefect).length !== 0
-                        ? setHadDefect({})
-                        : setHadDefect({
-                            info: gis1.defect_image[0],
-                            index: index,
-                          })
-                    }
                   >
                     <div className="defect-items-card__header">
                       <h1>{gis1.defect_name}</h1>

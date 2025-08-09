@@ -131,8 +131,14 @@ const FlightManageListMission = () => {
                     {powerline.powerline_name} <br />
                   </span>
 
-                  <span>
-                    {`(${powerline.type})`}
+                  <span
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      textAlign: "center",
+                    }}
+                  >
+                    {`(${powerline.typeName})`}
                     {powerline.supervision_status === "done" ? (
                       <CheckCircleIcon
                         color="success"
@@ -150,6 +156,7 @@ const FlightManageListMission = () => {
                     implementation_date={powerline.implementation_date}
                     docNo={powerline.docNo}
                     type_ticket={powerline.type}
+                    typeName={powerline.typeName}
                     supervision_status={powerline.supervision_status}
                     setHadImportNewData={setHadImportNewData}
                   />
