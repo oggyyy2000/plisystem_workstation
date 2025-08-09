@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
+import CloseIcon from "@mui/icons-material/Close";
 
-import { Dialog } from "@mui/material";
+import { Dialog, Button } from "@mui/material";
 
 import "./css/ImageZoomDialog.css";
 
@@ -97,6 +98,24 @@ const ImageZoomDiaglog = ({ info, openZoomingImg, setOpenZoomingImg }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
+        <Button
+          color="error"
+          variant="contained"
+          sx={{
+            height: "25px",
+            position: "absolute",
+            top: 0,
+            right: 0,
+            zIndex: 1,
+            padding: "0 13px !important",
+            minWidth: "10px !important",
+            width: "20px !important",
+            borderRadius: "50% !important",
+          }}
+          onClick={() => setOpenZoomingImg(false)}
+        >
+          <CloseIcon fontSize="small" />
+        </Button>
         <div className="btn-container">
           {/* Button to zoom in */}
           <button onClick={handleZoomIn}>

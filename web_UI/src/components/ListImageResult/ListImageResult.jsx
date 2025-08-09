@@ -60,7 +60,12 @@ const ListImageResult = ({
   const imagesPerPage = 12; // Number of images per page
   return Object.keys(imgList).map((vt, index) => {
     return (
-      <CustomTabPanel key={index} value={tab} index={index}>
+      <CustomTabPanel
+        key={index}
+        value={tab}
+        index={index}
+        sx={{ position: "relative" }}
+      >
         <ImageList className="img-list-items-container">
           {imgList[vt]
             .slice((page - 1) * imagesPerPage, page * imagesPerPage) // --------- xu ly pagination --------
@@ -157,7 +162,15 @@ const ListImageResult = ({
           count={totalPages}
           page={page}
           onChange={handlePageChange}
-          sx={{ display: "flex", justifyContent: "center", mt: 2 }}
+          sx={{
+            position: "sticky",
+            bottom: "-1px",
+            zIndex: 10,
+            backgroundColor: "white",
+            padding: "10px 0",
+            display: "flex",
+            justifyContent: "center",
+          }}
         />
       </CustomTabPanel>
     );
